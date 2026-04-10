@@ -15,7 +15,7 @@ export function HeroSection() {
           <div>
             <div className="flex items-center gap-2 text-sm text-primary mb-6">
               <span className="h-px w-8 bg-primary" />
-              Projetos de Engenharia
+              Projetos de Engenharia Teste
             </div>
             <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl text-balance">
               Uma Nova Opção em Projetos Complementares

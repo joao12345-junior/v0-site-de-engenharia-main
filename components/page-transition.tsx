@@ -14,13 +14,13 @@ const pageVariants = {
     y: 20,
     scale: 0.98,
   },
-  enter: {
+  animate: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: "easeInOut",
     },
   },
   exit: {
@@ -29,7 +29,7 @@ const pageVariants = {
     scale: 0.98,
     transition: {
       duration: 0.3,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: "easeInOut",
     },
   },
 };
@@ -42,9 +42,8 @@ export function PageTransition({ children }: PageTransitionProps) {
       <motion.div
         key={pathname}
         initial="initial"
-        animate="enter"
+        animate="animate"
         exit="exit"
-        variants={pageVariants}
         className="min-h-screen"
       >
         {children}
@@ -70,7 +69,7 @@ export function FadeIn({
       transition={{
         duration: 0.6,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: "easeInOut",
       }}
       className={className}
     >
@@ -98,7 +97,7 @@ export function SlideIn({
       transition={{
         duration: 0.6,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: "easeInOut",
       }}
       className={className}
     >
@@ -124,7 +123,7 @@ export function ScaleIn({
       transition={{
         duration: 0.5,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: "easeInOut",
       }}
       className={className}
     >
@@ -179,7 +178,7 @@ export function StaggerItem({
           y: 0,
           transition: {
             duration: 0.5,
-            ease: [0.25, 0.46, 0.45, 0.94],
+            ease: "easeInOut",
           },
         },
       }}
