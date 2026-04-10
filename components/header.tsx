@@ -114,7 +114,7 @@ export function Header() {
               </div>
               
               {/* Links de navegação */}
-              <nav className="px-4 py-2 space-y-2">
+              <nav className="px-6 py-4 space-y-1">
                 {navigation.map((item, index) => {
                   const isActive = pathname === item.href;
                   return (
@@ -127,10 +127,10 @@ export function Header() {
                     >
                       <Link
                         href={item.href}
-                        className={`block rounded-xl px-4 py-3.5 text-base font-medium transition-all ${
+                        className={`block px-3 py-3 text-base font-medium transition-colors border-l-2 ${
                           isActive
-                            ? "bg-primary text-primary-foreground shadow-md"
-                            : "bg-muted/50 text-foreground hover:bg-muted"
+                            ? "text-primary border-primary"
+                            : "text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
