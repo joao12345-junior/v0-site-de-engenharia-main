@@ -40,7 +40,9 @@ export function HeroSection() {
             <div className="space-y-4">
               <div className="bg-card p-6 rounded-lg border border-border">
                 <Droplets className="h-10 w-10 text-primary mb-4" />
-                <h3 className="font-semibold text-foreground">Hidrossanitários</h3>
+                <h3 className="font-semibold text-foreground">
+                  <span className="block sm:inline">Hidrossani</span><span className="block sm:inline">tários</span>
+                </h3>
                 <p className="text-sm text-muted-foreground mt-2">
                   Projetos completos de instalações hidráulicas e sanitárias.
                 </p>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 const navigation = {
@@ -22,13 +23,10 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <div className="relative h-10 w-10 rounded-md bg-primary/10 flex items-center justify-center overflow-hidden">
-                <span className="text-lg font-bold text-primary">O</span>
+            <Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
+              <div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
+                <Image src="/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
               </div>
-              <span className="text-xl font-bold text-foreground">
-                OPTARE
-              </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               Uma nova opção em projetos complementares. Trabalhando em parceria com as maiores construtoras, redes de varejo, hospitais, indústrias e condomínios do Rio Grande do Sul.

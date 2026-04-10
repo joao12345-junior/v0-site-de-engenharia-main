@@ -24,8 +24,7 @@ export function Header() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
-            {/* Campo para Logo - substitua o src pelo caminho da sua logo */}
-            <div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white dark:bg-white p-2">
+            <div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
               <Image src="/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
             </div>
           </Link>
