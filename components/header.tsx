@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -80,67 +80,70 @@ export function Header() {
       </nav>
 
       {/* Mobile menu - Barra lateral */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
-          {/* Overlay escuro */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-          
-          {/* Barra lateral */}
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-background shadow-2xl border-l border-border"
-          >
-            {/* Botão fechar */}
-            <div className="flex justify-end p-4">
-              <button
-                type="button"
-                className="rounded-full p-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Fechar menu</span>
-                <X className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <div className="lg:hidden fixed inset-0 z-50">
+            {/* Overlay escuro */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
             
-            {/* Links de navegação */}
-            <nav className="px-4 py-2 space-y-2">
-              {navigation.map((item, index) => {
-                const isActive = pathname === item.href;
-                return (
-                  <motion.div
-                    key={item.name}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 + 0.1, type: "spring", stiffness: 300, damping: 25 }}
-                  >
-                    <Link
-                      href={item.href}
-                      className={`block rounded-xl px-4 py-3.5 text-base font-medium transition-all ${
-                        isActive
-                          ? "bg-primary text-primary-foreground shadow-md"
-                          : "bg-muted/50 text-foreground hover:bg-muted"
-                      }`}
-                      onClick={() => setMobileMenuOpen(false)}
+            {/* Barra lateral */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-background shadow-2xl border-l border-border"
+            >
+              {/* Botão fechar */}
+              <div className="flex justify-end p-4">
+                <button
+                  type="button"
+                  className="rounded-full p-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="sr-only">Fechar menu</span>
+                  <X className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+              
+              {/* Links de navegação */}
+              <nav className="px-4 py-2 space-y-2">
+                {navigation.map((item, index) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 30 }}
+                      transition={{ delay: index * 0.05 + 0.1, type: "spring", stiffness: 300, damping: 25 }}
                     >
-                      {item.name}
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </nav>
-          </motion.div>
-        </div>
-      )}
+                      <Link
+                        href={item.href}
+                        className={`block rounded-xl px-4 py-3.5 text-base font-medium transition-all ${
+                          isActive
+                            ? "bg-primary text-primary-foreground shadow-md"
+                            : "bg-muted/50 text-foreground hover:bg-muted"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
