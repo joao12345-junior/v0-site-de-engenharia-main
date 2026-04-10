@@ -3,7 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -18,6 +20,7 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
@@ -41,15 +44,32 @@ export function Header() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-8">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navigation.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="relative text-sm font-medium transition-colors group"
+              >
+                <span className={isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}>
+                  {item.name}
+                </span>
+                {isActive && (
+                  <motion.div
+                    layoutId="activeNav"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                    initial={false}
+                    transition={{
+                      type: "spring",
+                      stiffness: 380,
+                      damping: 30,
+                    }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-4">
           <ThemeToggle />
@@ -59,52 +79,71 @@ export function Header() {
         </div>
       </nav>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50">
-          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border">
-            <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
-                <div className="relative h-12 w-32 flex items-center justify-center overflow-hidden rounded-md bg-white dark:bg-white p-2">
-                  <Image src="/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
-                </div>
-              </Link>
-              <button
-                type="button"
-                className="-m-2.5 rounded-md p-2.5 text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="sr-only">Fechar menu</span>
-                <X className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-border">
-                <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-medium text-foreground hover:bg-muted"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                <div className="py-6">
-                  <Button asChild className="w-full">
-                    <Link href="/contato" onClick={() => setMobileMenuOpen(false)}>
-                      Solicitar Orçamento
-                    </Link>
-                  </Button>
-                </div>
+      {/* Mobile menu - Barra lateral */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <div className="lg:hidden fixed inset-0 z-50">
+            {/* Overlay escuro */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            
+            {/* Barra lateral */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-background shadow-2xl border-l border-border"
+            >
+              {/* Botão fechar */}
+              <div className="flex justify-end p-4">
+                <button
+                  type="button"
+                  className="rounded-full p-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className="sr-only">Fechar menu</span>
+                  <X className="h-6 w-6" aria-hidden="true" />
+                </button>
               </div>
-            </div>
+              
+              {/* Links de navegação */}
+              <nav className="px-6 py-4 space-y-1">
+                {navigation.map((item, index) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 30 }}
+                      transition={{ delay: index * 0.05 + 0.1, type: "spring", stiffness: 300, damping: 25 }}
+                    >
+                      <Link
+                        href={item.href}
+                        className={`block px-3 py-3 text-base font-medium transition-colors border-l-2 ${
+                          isActive
+                            ? "text-primary border-primary"
+                            : "text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </header>
   );
 }
