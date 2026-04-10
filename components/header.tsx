@@ -79,80 +79,65 @@ export function Header() {
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - Barra lateral */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
+          {/* Overlay escuro */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setMobileMenuOpen(false)}
           />
+          
+          {/* Barra lateral */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-border"
+            className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-background shadow-2xl border-l border-border"
           >
-            <div className="flex items-center justify-between">
-              <Link href="/" className="-m-1.5 p-1.5 flex items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
-                <div className="relative h-12 w-32 flex items-center justify-center overflow-hidden rounded-md bg-white dark:bg-white p-2">
-                  <Image src="/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
-                </div>
-              </Link>
+            {/* Botão fechar */}
+            <div className="flex justify-end p-4">
               <button
                 type="button"
-                className="-m-2.5 rounded-md p-2.5 text-foreground"
+                className="rounded-full p-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Fechar menu</span>
                 <X className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
-            <div className="mt-6 flow-root">
-              <div className="-my-6 divide-y divide-border">
-                <div className="space-y-2 py-6">
-                  {navigation.map((item, index) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <motion.div
-                        key={item.name}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 + 0.1 }}
-                      >
-                        <Link
-                          href={item.href}
-                          className={`-mx-3 block rounded-lg px-3 py-2 text-base font-medium transition-colors ${
-                            isActive
-                              ? "bg-primary/10 text-primary"
-                              : "text-foreground hover:bg-muted"
-                          }`}
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="py-6"
-                >
-                  <Button asChild className="w-full">
-                    <Link href="/contato" onClick={() => setMobileMenuOpen(false)}>
-                      Solicitar Orçamento
+            
+            {/* Links de navegação */}
+            <nav className="px-4 py-2">
+              {navigation.map((item, index) => {
+                const isActive = pathname === item.href;
+                return (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 + 0.1, type: "spring", stiffness: 300, damping: 25 }}
+                  >
+                    <Link
+                      href={item.href}
+                      className={`block rounded-lg px-4 py-3 text-base font-medium transition-all ${
+                        isActive
+                          ? "bg-primary/10 text-primary border-l-2 border-primary"
+                          : "text-foreground hover:bg-muted hover:pl-5"
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
                     </Link>
-                  </Button>
-                </motion.div>
-              </div>
-            </div>
+                  </motion.div>
+                );
+              })}
+            </nav>
           </motion.div>
         </div>
       )}
