@@ -2,21 +2,27 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, Quote, Star, Building, Factory, Hospital, School, ShoppingBag, Landmark } from "lucide-react";
+import { ArrowRight, Quote, Star, Building, Hospital, ShoppingBag, ShoppingBasket } from "lucide-react";
 
 const clients = [
-  { name: "Empresa Alpha", sector: "Indústria", icon: Factory },
-  { name: "Construtora Beta", sector: "Construção", icon: Building },
-  { name: "Hospital Gamma", sector: "Saúde", icon: Hospital },
-  { name: "Universidade Delta", sector: "Educação", icon: School },
-  { name: "Shopping Epsilon", sector: "Varejo", icon: ShoppingBag },
-  { name: "Banco Zeta", sector: "Financeiro", icon: Landmark },
-  { name: "Indústria Eta", sector: "Indústria", icon: Factory },
-  { name: "Construtora Theta", sector: "Construção", icon: Building },
-  { name: "Clínica Iota", sector: "Saúde", icon: Hospital },
-  { name: "Escola Kappa", sector: "Educação", icon: School },
-  { name: "Loja Lambda", sector: "Varejo", icon: ShoppingBag },
-  { name: "Financeira Mu", sector: "Financeiro", icon: Landmark },
+  { name: "Lojas Renner", sector: "Varejo", icon: ShoppingBag },
+  { name: "Grupo Plaenge", sector: "Construção", icon: Building },
+  { name: "Grupo Carrefour", sector: "Varejo", icon: ShoppingBag },
+  { name: "Melnick", sector: "Construção", icon: Building },
+  { name: "Lojas Petz", sector: "Varejo", icon: ShoppingBag },
+  { name: "Cyrela", sector: "Construção", icon: Building },
+  { name: "Hospital Moinhos de Vento", sector: "Saúde", icon: Hospital },
+  { name: "Multiplan", sector: "Shopping Centers", icon: ShoppingBasket },
+  { name: "Wagnerpar", sector: "Construção", icon: Building },
+  { name: "Maiojama", sector: "Construção", icon: Building },
+  { name: "ABF Developments", sector: "Construção", icon: Building },
+  { name: "Grupo Isdra", sector: "Construção", icon: Building },
+];
+
+const sectors = [
+  { name: "Construção", count: 8, icon: Building },
+  { name: "Saúde", count: 1, icon: Hospital },
+  { name: "Varejo", count: 3, icon: ShoppingBag },
 ];
 
 const testimonials = [
@@ -41,15 +47,6 @@ const testimonials = [
     company: "Hospital Gamma",
     rating: 5,
   },
-];
-
-const sectors = [
-  { name: "Indústria", count: 45, icon: Factory },
-  { name: "Construção", count: 38, icon: Building },
-  { name: "Saúde", count: 22, icon: Hospital },
-  { name: "Educação", count: 18, icon: School },
-  { name: "Varejo", count: 15, icon: ShoppingBag },
-  { name: "Financeiro", count: 12, icon: Landmark },
 ];
 
 export default function ClientesPage() {
@@ -84,19 +81,19 @@ export default function ClientesPage() {
                 Setores que Atendemos
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Atualmente, atendemos clientes de diversos setores, com destaque para construção, saúde e varejo.
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-20">
               {sectors.map((sector) => (
                 <div
                   key={sector.name}
                   className="bg-card p-6 rounded-lg border border-border text-center hover:border-primary/50 transition-colors"
                 >
                   <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3 mb-4">
-                    <sector.icon className="h-6 w-6 text-primary" />
+                    <sector.icon className="h-10 w-10 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground">{sector.name}</h3>
+                  <h1 className="font-semibold text-foreground">{sector.name}</h1>
                   <p className="text-2xl font-bold text-primary mt-2">{sector.count}+</p>
                   <p className="text-xs text-muted-foreground">clientes</p>
                 </div>

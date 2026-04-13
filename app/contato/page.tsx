@@ -3,32 +3,34 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
+import { Mail, MapPin, Clock, Send } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 const contactInfo = [
   {
     icon: Mail,
     title: "E-mail",
-    content: "contato@engetech.com.br",
-    description: "Lorem ipsum dolor sit amet",
+    content: "administrativo@optare.com.br",
+    description: "Envie-nos um e-mail e nossa equipe entrará em contato com você o mais breve possível.",
   },
   {
-    icon: Phone,
-    title: "Telefone",
-    content: "+55 (11) 99999-9999",
-    description: "Lorem ipsum dolor sit amet",
+    icon: () => <FontAwesomeIcon icon={faWhatsapp} className="h-6 w-6 text-primary" />,
+    title: "WhatsApp",
+    content: "+55 51 99865-5612",
+    description: "Converse conosco via WhatsApp para atendimento rápido e eficiente.",
   },
   {
     icon: MapPin,
     title: "Endereço",
-    content: "Av. Paulista, 1000 - São Paulo, SP",
-    description: "Lorem ipsum dolor sit amet",
+    content: "Praça Osvaldo Cruz, nº 15 - Sala 213",
+    description: "Porto Alegre/RS, Brasil - CEP: 90038-900",
   },
   {
     icon: Clock,
     title: "Horário",
     content: "Seg - Sex: 8h às 18h",
-    description: "Lorem ipsum dolor sit amet",
+    description: "Nosso time está disponível para atendimento durante o horário comercial.",
   },
 ];
 
@@ -50,7 +52,7 @@ export default function ContatoPage() {
                 Entre em Contato Conosco
               </h1>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Preencha o formulário abaixo ou utilize as informações de contato para falar diretamente com nossa equipe. Estamos aqui para ajudar!
               </p>
             </div>
           </div>
@@ -69,7 +71,7 @@ export default function ContatoPage() {
                     <info.icon className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-foreground">{info.title}</h3>
-                  <p className="text-primary font-medium mt-2">{info.content}</p>
+                  <p className="text-primary text-sm font-medium mt-2">{info.content}</p>
                   <p className="text-sm text-muted-foreground mt-1">{info.description}</p>
                 </div>
               ))}
@@ -87,7 +89,7 @@ export default function ContatoPage() {
                   Envie sua Mensagem
                 </h2>
                 <p className="mt-4 text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Preencha o formulário abaixo.
+                  Preencha o formulário abaixo e nossa equipe entrará em contato com você o mais breve possível.
                 </p>
 
                 <form className="mt-8 space-y-6">
@@ -96,7 +98,7 @@ export default function ContatoPage() {
                       <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                         Nome
                       </label>
-                      <Input id="name" placeholder="Seu nome" />
+                      <Input type="text" id="name" placeholder="Seu nome" />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
@@ -110,20 +112,20 @@ export default function ContatoPage() {
                       <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
                         Telefone
                       </label>
-                      <Input id="phone" placeholder="(00) 00000-0000" />
+                      <Input type="tel" id="phone" placeholder="(00) 00000-0000" />
                     </div>
                     <div>
                       <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
                         Empresa
                       </label>
-                      <Input id="company" placeholder="Nome da empresa" />
+                      <Input type="text" id="company" placeholder="Nome da empresa" />
                     </div>
                   </div>
                   <div>
                     <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
                       Assunto
                     </label>
-                    <Input id="subject" placeholder="Assunto da mensagem" />
+                    <Input type="text" id="subject" placeholder="Assunto da mensagem" />
                   </div>
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
@@ -132,7 +134,7 @@ export default function ContatoPage() {
                     <Textarea
                       id="message"
                       rows={5}
-                      placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit..."
+                      placeholder="Digite aqui o conteúdo da sua mensagem"
                     />
                   </div>
                   <Button type="submit" size="lg" className="w-full sm:w-auto">
@@ -148,15 +150,10 @@ export default function ContatoPage() {
                   Nossa Localização
                 </h2>
                 <p className="mt-4 text-muted-foreground">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Visite nosso escritório.
+                  Estamos localizados no coentro de Porto Alegre, prontos para receber sua visita ou atender suas necessidades de engenharia.
                 </p>
                 <div className="mt-8 aspect-square rounded-lg bg-muted flex items-center justify-center border border-border">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 text-primary/50 mx-auto mb-4" />
-                    <p className="text-muted-foreground">Av. Paulista, 1000</p>
-                    <p className="text-muted-foreground">São Paulo - SP</p>
-                    <p className="text-muted-foreground">CEP: 01310-100</p>
-                  </div>
+                  <iframe className="aspect-square rounded-lg bg-muted flex items-center justify-center border border-border" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.3666821029556!2d-51.22483642535233!3d-30.02633643043536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95197909cbd6a5d3%3A0x44ad2c623eb01216!2sOptare%20Engenharia!5e0!3m2!1spt-BR!2sbr!4v1776107636756!5m2!1spt-BR!2sbr"></iframe>
                 </div>
               </div>
             </div>

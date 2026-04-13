@@ -1,61 +1,138 @@
+"use client";
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, MapPin, Calendar, Building2 } from "lucide-react";
+import { ArrowRight, MapPin, Calendar, Building2, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { useState, useMemo } from "react";
+import imagesData from "@/public/images/projetos/images.json";
 
 const projects = [
   {
-    title: "Centro Empresarial Alpha",
+    title: "RENNER Shopping Iguatemi",
     category: "Construção Civil",
-    location: "São Paulo, SP",
-    year: "2024",
+    location: "Porto Alegre, RS",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    stats: { area: "15.000 m²", duration: "18 meses", value: "R$ 45M" },
   },
   {
     title: "Planta Industrial Beta",
     category: "Industrial",
     location: "Campinas, SP",
-    year: "2023",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    stats: { area: "25.000 m²", duration: "24 meses", value: "R$ 80M" },
   },
   {
     title: "Residencial Premium",
     category: "Residencial",
     location: "Rio de Janeiro, RJ",
-    year: "2023",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    stats: { area: "8.000 m²", duration: "12 meses", value: "R$ 25M" },
   },
   {
     title: "Hospital Regional",
     category: "Saúde",
     location: "Belo Horizonte, MG",
-    year: "2022",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    stats: { area: "12.000 m²", duration: "20 meses", value: "R$ 60M" },
   },
   {
     title: "Shopping Center Gamma",
     category: "Comercial",
     location: "Curitiba, PR",
-    year: "2022",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    stats: { area: "35.000 m²", duration: "30 meses", value: "R$ 120M" },
   },
   {
     title: "Universidade Delta",
     category: "Educação",
     location: "Porto Alegre, RS",
-    year: "2021",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    stats: { area: "20.000 m²", duration: "24 meses", value: "R$ 55M" },
   },
 ];
 
 const categories = ["Todos", "Construção Civil", "Industrial", "Residencial", "Saúde", "Comercial", "Educação"];
+
+// Função para buscar imagens baseado no título do projeto
+function getProjectImages(projectTitle: string): string[] {
+  for (const client of imagesData) {
+    for (const image of client.imagens) {
+      // Comparação fuzzy - verifica se o título está contido no subtítulo ou vice-versa
+      if (
+        image.subtitulo.toLowerCase().includes(projectTitle.toLowerCase()) ||
+        projectTitle.toLowerCase().includes(image.subtitulo.split(" ")[0].toLowerCase())
+      ) {
+        return image.urls_imagens || [];
+      }
+    }
+  }
+  return [];
+}
+
+// Componente do Carrossel de Imagens
+function ProjectImageCarousel({ projectTitle }: { projectTitle: string }) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = useMemo(() => getProjectImages(projectTitle), [projectTitle]);
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="aspect-video bg-muted flex items-center justify-center">
+        <Building2 className="h-16 w-16 text-primary/30" />
+      </div>
+    );
+  }
+
+  const handlePrev = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  return (
+    <div className="aspect-video relative overflow-hidden bg-muted">
+      <Image
+        src={images[currentImageIndex]}
+        alt={`${projectTitle} - Imagem ${currentImageIndex + 1}`}
+        fill
+        className="object-cover"
+        priority={currentImageIndex === 0}
+      />
+
+      {/* Navegação do Carrossel - Visível apenas se houver múltiplas imagens */}
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={handlePrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+            aria-label="Imagem anterior"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={handleNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+            aria-label="Próxima imagem"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {/* Indicador de página */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentImageIndex ? "bg-white" : "bg-white/50"
+                }`}
+                aria-label={`Ir para imagem ${index + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function ProjetosPage() {
   return (
@@ -75,15 +152,14 @@ export default function ProjetosPage() {
                 Projetos que Transformam
               </h1>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Desde edifícios icônicos até infraestruturas essenciais, nossos projetos refletem nosso compromisso com a excelência e a inovação. Explore nossa coleção de projetos e veja como estamos moldando o futuro da construção.
               </p>
             </div>
 
             {/* Stats */}
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-12">
               {[
                 { value: "500+", label: "Projetos Concluídos" },
-                { value: "R$ 2B+", label: "Valor Total" },
                 { value: "50+", label: "Cidades Atendidas" },
                 { value: "100%", label: "Entrega no Prazo" },
               ].map((stat) => (
@@ -103,11 +179,10 @@ export default function ProjetosPage() {
               {categories.map((category, index) => (
                 <button
                   key={category}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    index === 0
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
-                  }`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${index === 0
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    }`}
                 >
                   {category}
                 </button>
@@ -126,7 +201,12 @@ export default function ProjetosPage() {
                   className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
                 >
                   <div className="aspect-video bg-muted flex items-center justify-center relative">
-                    <Building2 className="h-16 w-16 text-primary/30" />
+                    <Image
+                      src={project.image}
+                      alt={project.title}  // Descrição acessível para a imagem
+                      fill  // Preenche o container pai (aspect-video)
+                      className="object-cover"  // Mantém proporção e corta se necessário
+                    />
                     <div className="absolute top-4 left-4">
                       <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
                         {project.category}
@@ -140,26 +220,8 @@ export default function ProjetosPage() {
                         <MapPin className="h-4 w-4" />
                         {project.location}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {project.year}
-                      </span>
                     </div>
                     <p className="mt-4 text-sm text-muted-foreground leading-relaxed">{project.description}</p>
-                    <div className="mt-4 pt-4 border-t border-border grid grid-cols-3 gap-4 text-center">
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">{project.stats.area}</p>
-                        <p className="text-xs text-muted-foreground">Área</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">{project.stats.duration}</p>
-                        <p className="text-xs text-muted-foreground">Duração</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">{project.stats.value}</p>
-                        <p className="text-xs text-muted-foreground">Valor</p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               ))}
