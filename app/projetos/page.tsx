@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, MapPin, Calendar, Building2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, MapPin, Building2, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import imagesData from "@/public/images/projetos/images.json";
@@ -17,35 +17,77 @@ const projects = [
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Planta Industrial Beta",
+    title: "Rodin",
     category: "Industrial",
     location: "Campinas, SP",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Residencial Premium",
+    title: "BIG Torres",
     category: "Residencial",
     location: "Rio de Janeiro, RJ",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Hospital Regional",
+    title: "Botanique Residences",
     category: "Saúde",
     location: "Belo Horizonte, MG",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Shopping Center Gamma",
+    title: "Petz Taguatinga",
     category: "Comercial",
     location: "Curitiba, PR",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    title: "Universidade Delta",
+    title: "MedPlex Eixo Norte",
     category: "Educação",
     location: "Porto Alegre, RS",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
+  {
+    title: "Complexo Hospitalar Moinhos de Vento",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    title: "Barra Shopping Sul",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    title: "Atlântida Lagos Park",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    title: "Anita Residences",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    title: "Magno Três Figueiras",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    title: "Hola Sunset Lofts",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    title: "Studio CB",
+    category: "Educação",
+    location: "Porto Alegre, RS",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  }
 ];
 
 const categories = ["Todos", "Construção Civil", "Industrial", "Residencial", "Saúde", "Comercial", "Educação"];
@@ -121,9 +163,8 @@ function ProjectImageCarousel({ projectTitle }: { projectTitle: string }) {
               <button
                 key={index}
                 onClick={() => setCurrentImageIndex(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentImageIndex ? "bg-white" : "bg-white/50"
-                }`}
+                className={`w-2 h-2 rounded-full transition-colors ${index === currentImageIndex ? "bg-white" : "bg-white/50"
+                  }`}
                 aria-label={`Ir para imagem ${index + 1}`}
               />
             ))}
@@ -200,13 +241,8 @@ export default function ProjetosPage() {
                   key={project.title}
                   className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
                 >
-                  <div className="aspect-video bg-muted flex items-center justify-center relative">
-                    <Image
-                      src={project.image}
-                      alt={project.title}  // Descrição acessível para a imagem
-                      fill  // Preenche o container pai (aspect-video)
-                      className="object-cover"  // Mantém proporção e corta se necessário
-                    />
+                  <div className="relative">
+                    <ProjectImageCarousel projectTitle={project.title} />
                     <div className="absolute top-4 left-4">
                       <span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
                         {project.category}
