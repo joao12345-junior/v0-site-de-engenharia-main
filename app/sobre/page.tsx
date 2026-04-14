@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CheckCircle2, Users, Target, Award, Clock } from "lucide-react";
+import Image from "next/image";
 
 const values = [
   {
@@ -86,10 +87,7 @@ export default function SobrePage() {
               </div>
               <div className="relative">
                 <div className="aspect-square rounded-lg bg-muted flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-7xl font-bold text-primary">2010</div>
-                    <div className="text-xl text-muted-foreground mt-2">Ano de Fundação</div>
-                  </div>
+                  <Image src="/images/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
                 </div>
               </div>
             </div>

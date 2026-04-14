@@ -27,7 +27,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
               <div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
-                <Image src="/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
+                <Image src="/images/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
               </div>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">

@@ -28,7 +28,7 @@ export function Header() {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
             <div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
-              <Image src="/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
+              <Image src="/images/optare_logo.png" alt="OPTARE Logo" fill className="object-contain p-1" />
             </div>
           </Link>
         </div>
@@ -92,7 +92,7 @@ export function Header() {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm"
               onClick={() => setMobileMenuOpen(false)}
             />
-            
+
             {/* Barra lateral */}
             <motion.div
               initial={{ x: "100%" }}
@@ -112,7 +112,7 @@ export function Header() {
                   <X className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
-              
+
               {/* Links de navegação */}
               <nav className="px-6 py-4 space-y-1">
                 {navigation.map((item, index) => {
@@ -127,11 +127,10 @@ export function Header() {
                     >
                       <Link
                         href={item.href}
-                        className={`block px-3 py-3 text-base font-medium transition-colors border-l-2 ${
-                          isActive
+                        className={`block px-3 py-3 text-base font-medium transition-colors border-l-2 ${isActive
                             ? "text-primary border-primary"
                             : "text-muted-foreground border-transparent hover:text-foreground hover:border-muted-foreground"
-                        }`}
+                          }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {item.name}

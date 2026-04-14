@@ -241,7 +241,7 @@ export default function ProjetosPage() {
             <div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-12">
               {[
                 { value: "500+", label: "Projetos Concluídos" },
-                { value: "50+", label: "Cidades Atendidas" },
+                { value: "20+", label: "Cidades Atendidas" },
                 { value: "100%", label: "Entrega no Prazo" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">

@@ -67,7 +67,7 @@ export default function ClientesPage() {
                 Parceiros de Confiança
               </h1>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Temos orgulho de trabalhar com uma variedade de clientes, desde grandes corporações até pequenas empresas, em diversos setores. Nossa dedicação à excelência e à inovação nos permite oferecer soluções personalizadas que atendem às necessidades específicas de cada cliente.
               </p>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function ClientesPage() {
                 Empresas que Confiam em Nós
               </h2>
               <p className="mt-4 text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Essas são algumas das empresas que já confiaram em nossos serviços e se beneficiaram de nossas soluções em engenharia.
               </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
