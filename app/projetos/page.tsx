@@ -9,88 +9,108 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import imagesData from "@/public/images/projetos/images.json";
 
+const categories = { Main: "Todos", Comercial: "Comercial", Industrial: "Industrial", Residencial: "Residencial", Saúde: "Saúde", Educação: "Educação" };
+
 const projects = [
   {
     title: "RENNER Shopping Iguatemi",
-    category: "Construção Civil",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Comercial,
+    location: "",
+    description: "",
   },
   {
     title: "Rodin",
-    category: "Industrial",
-    location: "Campinas, SP",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   },
   {
     title: "BIG Torres",
-    category: "Residencial",
-    location: "Rio de Janeiro, RJ",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Comercial,
+    location: "",
+    description: "",
   },
   {
     title: "Botanique Residences",
-    category: "Saúde",
-    location: "Belo Horizonte, MG",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   },
   {
     title: "Petz Taguatinga",
-    category: "Comercial",
-    location: "Curitiba, PR",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Comercial,
+    location: "",
+    description: "",
   },
   {
     title: "MedPlex Eixo Norte",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Saúde,
+    location: "",
+    description: "",
   },
   {
     title: "Complexo Hospitalar Moinhos de Vento",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Saúde,
+    location: "",
+    description: "",
   },
   {
     title: "Barra Shopping Sul",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Comercial,
+    location: "",
+    description: "",
   },
   {
     title: "Atlântida Lagos Park",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   },
   {
     title: "Anita Residences",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   },
   {
     title: "Magno Três Figueiras",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   },
   {
     title: "Hola Sunset Lofts",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   },
   {
     title: "Studio CB",
-    category: "Educação",
-    location: "Porto Alegre, RS",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    category: categories.Residencial,
+    location: "",
+    description: "",
+  },
+  {
+    title: "Verdan",
+    category: categories.Residencial,
+    location: "",
+    description: "",
   }
 ];
 
-const categories = ["Todos", "Construção Civil", "Industrial", "Residencial", "Saúde", "Comercial", "Educação"];
+function getLocationImage(json: any, project: any) {
+  for (const client of json) {
+    for (const image of client.imagens) {
+      console.log(`${image.subtitulo}, ${project.title}`)
+      if (image.subtitulo.toLowerCase().includes(project.title.toLowerCase())) {
+        project.location = image.localization || null;
+        return;
+      }
+    }
+  }
+}
+
+projects.map(project => getLocationImage(imagesData, project));
 
 // Função para buscar imagens baseado no título do projeto
 function getProjectImages(projectTitle: string): string[] {
@@ -217,7 +237,7 @@ export default function ProjetosPage() {
         <section className="py-8 border-b border-border">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex flex-wrap gap-2 justify-center">
-              {categories.map((category, index) => (
+              {Object.values(categories).map((category, index) => (
                 <button
                   key={category}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${index === 0
@@ -273,7 +293,7 @@ export default function ProjetosPage() {
                 Quer ver seu projeto aqui?
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Entre em contato conosco para transformar sua ideia em realidade.
+                Entre em contato conosco para discutir como podemos transformar sua visão em realidade. Nossa equipe de especialistas está pronta para ajudar a criar soluções de engenharia inovadoras e eficientes para o seu próximo projeto.
               </p>
               <Button size="lg" className="mt-8" asChild>
                 <Link href="/contato">
