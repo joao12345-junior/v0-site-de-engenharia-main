@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, MapPin, Building2, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, MapPin, Building2, ChevronLeft, ChevronRight, Key } from "lucide-react";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import imagesData from "@/public/images/projetos/images.json";
@@ -98,6 +98,7 @@ const projects = [
   }
 ];
 
+//Função para buscar no JSON as localizações dos projetos baseado no título
 function getLocationImage(json: any, project: any) {
   for (const client of json) {
     for (const image of client.imagens) {
@@ -111,6 +112,18 @@ function getLocationImage(json: any, project: any) {
 }
 
 projects.map(project => getLocationImage(imagesData, project));
+
+//Define as categorias únicas dos projetos para os filtros
+function setCategory(projects: any) {
+  const SetCategory = new Set<string>();
+  SetCategory.add(categories.Main);
+  for (const project of projects) {
+    if (project.category) {
+      SetCategory.add(project.category);
+    }
+  }
+  return SetCategory;
+}
 
 // Função para buscar imagens baseado no título do projeto
 function getProjectImages(projectTitle: string): string[] {
@@ -126,6 +139,13 @@ function getProjectImages(projectTitle: string): string[] {
     }
   }
   return [];
+}
+
+//Função para filtrar os projetos baseado nas categorias
+function filterProjectsByCategory(category: string) {
+  if (category === categories.Main) return projects.forEach(project => document.getElementById(project.title)?.classList.remove('hidden'));;
+  projects.filter(project => project.category !== category).forEach(project => document.getElementById(project.title)?.classList.add('hidden'));
+  return projects.filter(project => project.category === category).forEach(project => document.getElementById(project.title)?.classList.remove('hidden'));
 }
 
 // Componente do Carrossel de Imagens
@@ -237,13 +257,14 @@ export default function ProjetosPage() {
         <section className="py-8 border-b border-border">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex flex-wrap gap-2 justify-center">
-              {Object.values(categories).map((category, index) => (
+              {Array.from(setCategory(projects)).map((category, index) => (
                 <button
                   key={category}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${index === 0
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
                     }`}
+                  onClick={() => filterProjectsByCategory(category)}
                 >
                   {category}
                 </button>
@@ -260,6 +281,7 @@ export default function ProjetosPage() {
                 <div
                   key={project.title}
                   className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
+                  id={project.title}
                 >
                   <div className="relative">
                     <ProjectImageCarousel projectTitle={project.title} />
