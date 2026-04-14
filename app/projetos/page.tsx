@@ -95,6 +95,12 @@ const projects = [
     category: categories.Residencial,
     location: "",
     description: "",
+  },
+  {
+    title: "Master Hotel Holiday Inn",
+    category: categories.Residencial,
+    location: "",
+    description: ""
   }
 ];
 

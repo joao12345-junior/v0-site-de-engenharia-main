@@ -1,7 +1,10 @@
+'use client';
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { InputTel } from "@/components/ui/inputTel";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Clock, Send } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -52,7 +55,7 @@ export default function ContatoPage() {
                 Entre em Contato Conosco
               </h1>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                Preencha o formulário abaixo ou utilize as informações de contato para falar diretamente com nossa equipe. Estamos aqui para ajudar!
+                Você pode entrar em contato conosco por e-mail, Whatsapp ou visitando nosso escritório. Caso queira falar conosco, clique no nosso número ao final da página ou preencha o formulário abaixo para enviar um e-mail. Estamos ansiosos para ouvir de você e ajudar com suas necessidades de engenharia!
               </p>
             </div>
           </div>
@@ -112,7 +115,7 @@ export default function ContatoPage() {
                       <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
                         Telefone
                       </label>
-                      <Input type="tel" id="phone" placeholder="(00) 00000-0000" />
+                      <InputTel id="phone" />
                     </div>
                     <div>
                       <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">

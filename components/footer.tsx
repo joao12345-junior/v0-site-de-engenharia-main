@@ -73,7 +73,9 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2 text-sm text-muted-foreground">
                 <FontAwesomeIcon icon={faWhatsapp} className="h-4 w-4" />
-                +55 51 99865-5612
+                <Link href="https://wa.me/5551998655612?text=Entre%20em%20contato%20conosco%20para%20discutir%20como%20podemos%20transformar%20sua%20vis%C3%A3o%20em%20realidade.%20%0ANossa%20equipe%20de%20especialistas%20est%C3%A1%20pronta%20para%20ajudar%20a%20criar%20solu%C3%A7%C3%B5es%20de%20engenharia%20inovadoras%20e%20eficientes%20para%20o%20seu%20pr%C3%B3ximo%20projeto." target="_blank" rel="noopener noreferrer">
+                  +55 51 99865-5612
+                </Link>
               </li>
               <li className="flex items-start gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4 mt-0.5" />
