@@ -1,7 +1,7 @@
 const stats = [
   { value: "+15", label: "Anos de Experiência" },
   { value: "500+", label: "Projetos Realizados" },
-  { value: "100+", label: "Clientes Satisfeitos" },
+  { value: "30+", label: "Clientes Satisfeitos" },
   { value: "RS", label: "Atuação Regional" },
 ];
 

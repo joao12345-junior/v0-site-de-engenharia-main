@@ -22,7 +22,7 @@ const values = [
 ];
 
 const timeline = [
-  { year: "2010", title: "Fundação", description: "Criação da OPTARE pelos engenheiros Marcelo Berny e Márcio Trolli." },
+  { year: "2010", title: "Fundação", description: "Criação da Optare pelos engenheiros Marcelo Berny e Márcio Trolli." },
   { year: "2013", title: "Expansão", description: "Ampliação da carteira de clientes e novos serviços." },
   { year: "2016", title: "Consolidação", description: "Reconhecimento como referência em projetos complementares." },
   { year: "2020", title: "10 Anos", description: "Uma década de excelência em projetos de engenharia." },
@@ -52,7 +52,7 @@ export default function SobrePage() {
                 Uma Nova Opção em Projetos Complementares
               </h1>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                A OPTARE é uma empresa especializada na elaboração de projetos de engenharia para o setor da construção civil, trabalhando em parceria com as maiores construtoras do Rio Grande do Sul.
+                A Optare é uma empresa especializada na elaboração de projetos de engenharia para o setor da construção civil, trabalhando em parceria com as maiores construtoras do Rio Grande do Sul.
               </p>
             </div>
           </div>
@@ -71,10 +71,10 @@ export default function SobrePage() {
                   Desde 2010 no Mercado
                 </h2>
                 <p className="mt-6 text-muted-foreground leading-relaxed">
-                  A OPTARE foi fundada em 2010 pelos experientes engenheiros civis Marcelo Berny e Márcio Trolli. Desde então, crescemos e nos consolidamos como um dos principais agentes do mercado de projetos complementares.
+                  A Optare foi fundada em 2010 pelos experientes engenheiros civis Marcelo Berny e Márcio Trolli. Desde então, crescemos e nos consolidamos como um dos principais agentes do mercado de projetos complementares.
                 </p>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  Trabalhamos em parceria com algumas das maiores construtoras, redes de varejo, hospitais, indústrias e condomínios que atuam no Rio Grande do Sul, trazendo sempre uma nova opção em projetos complementares.
+                  Trabalhamos em parceria com algumas das maiores construtoras, redes de varejo, hospitais, e condomínios que atuam no Rio Grande do Sul, trazendo sempre uma nova opção em projetos complementares.
                 </p>
                 <ul className="mt-8 space-y-3">
                   {["Projetos Hidrossanitários", "Prevenção e Combate à Incêndios", "Projetos Elétricos, Telefonia e SPDA", "Projetos de Gás"].map((item) => (

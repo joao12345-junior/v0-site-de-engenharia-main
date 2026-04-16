@@ -12,7 +12,7 @@ export function CTASection() {
               Pronto para Começar seu Projeto?
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Aqui na Optare Engenharia, estamos prontos para transformar suas ideias em realidade. Entre em contato conosco hoje mesmo para discutir seu projeto e descobrir como podemos ajudar a torná-lo um sucesso.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Button size="lg" asChild>

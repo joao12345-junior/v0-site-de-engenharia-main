@@ -86,7 +86,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t border-border pt-8">
           <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} OPTARE Engenharia. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} Optare Engenharia. Todos os direitos reservados.
           </p>
         </div>
       </div>

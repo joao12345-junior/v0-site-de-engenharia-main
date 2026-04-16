@@ -33,13 +33,13 @@ export function AboutSection() {
           <div>
             <div className="flex items-center gap-2 text-sm text-primary mb-4">
               <span className="h-px w-8 bg-primary" />
-              Sobre a OPTARE
+              Sobre a Optare
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Uma Nova Opção em Projetos Complementares
             </h2>
             <p className="mt-6 text-muted-foreground leading-relaxed">
-              Fundada em 2010 pelos experientes engenheiros civis Marcelo Berny e Márcio Trolli, a OPTARE cresceu e se consolidou como um dos principais agentes do mercado de projetos complementares.
+              Fundada em 2010 pelos experientes engenheiros civis Marcelo Berny e Márcio Trolli, a Optare cresceu e se consolidou como um dos principais agentes do mercado de projetos complementares.
             </p>
             <p className="mt-4 text-muted-foreground leading-relaxed">
               Trabalhamos em parceria com algumas das maiores construtoras, redes de varejo, hospitais, indústrias e condomínios que atuam no Rio Grande do Sul.

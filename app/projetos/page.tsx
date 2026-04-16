@@ -108,7 +108,6 @@ const projects = [
 function getLocationImage(json: any, project: any) {
   for (const client of json) {
     for (const image of client.imagens) {
-      console.log(`${image.subtitulo}, ${project.title}`)
       if (image.subtitulo.toLowerCase().includes(project.title.toLowerCase())) {
         project.location = image.localization || null;
         return;
