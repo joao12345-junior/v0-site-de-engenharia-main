@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Clock, Send } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import Link from "next/link";
 
 const contactInfo = [
   {
@@ -20,7 +21,9 @@ const contactInfo = [
   {
     icon: () => <FontAwesomeIcon icon={faWhatsapp} className="h-6 w-6 text-primary" />,
     title: "WhatsApp",
-    content: "+55 51 99865-5612",
+    content: <Link href="https://wa.me/5551998655612?text=Entre%20em%20contato%20conosco%20para%20discutir%20como%20podemos%20transformar%20sua%20vis%C3%A3o%20em%20realidade.%20%0ANossa%20equipe%20de%20especialistas%20est%C3%A1%20pronta%20para%20ajudar%20a%20criar%20solu%C3%A7%C3%B5es%20de%20engenharia%20inovadoras%20e%20eficientes%20para%20o%20seu%20pr%C3%B3ximo%20projeto." target="_blank" rel="noopener noreferrer">
+      +55 51 99865-5612
+    </Link>,
     description: "Converse conosco via WhatsApp para atendimento rápido e eficiente.",
   },
   {
@@ -36,6 +39,21 @@ const contactInfo = [
     description: "Nosso time está disponível para atendimento durante o horário comercial.",
   },
 ];
+
+document.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const TelInput = document.querySelector('input[type="tel"]') as HTMLInputElement;
+  if (TelInput.value.includes('_')) {
+    return alert("Por favor, preencha o campo de telefone corretamente.");
+  }
+
+  const form = event.target as HTMLFormElement;
+  const formData = new FormData(form);
+  formData.append('phone', TelInput.value);
+  const data = Object.fromEntries(formData.entries());
+  console.log(data);
+});
 
 export default function ContatoPage() {
   return (
@@ -101,13 +119,13 @@ export default function ContatoPage() {
                       <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                         Nome
                       </label>
-                      <Input type="text" id="name" placeholder="Seu nome" />
+                      <Input type="text" id="name" name="name" placeholder="Seu nome" required={true} />
                     </div>
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
                         E-mail
                       </label>
-                      <Input id="email" type="email" placeholder="seu@email.com" />
+                      <Input name="email" id="email" type="email" placeholder="seu.email@exemplo.com" pattern="^\S+@\S+\.\S+$" required={true} />
                     </div>
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
@@ -115,20 +133,20 @@ export default function ContatoPage() {
                       <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
                         Telefone
                       </label>
-                      <InputTel id="phone" />
+                      <InputTel name="phone" id="phone" />
                     </div>
                     <div>
                       <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">
                         Empresa
                       </label>
-                      <Input type="text" id="company" placeholder="Nome da empresa" />
+                      <Input name="company" type="text" id="company" placeholder="Nome da empresa" required={true} />
                     </div>
                   </div>
                   <div>
                     <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
                       Assunto
                     </label>
-                    <Input type="text" id="subject" placeholder="Assunto da mensagem" />
+                    <Input name="subject" type="text" id="subject" placeholder="Assunto da mensagem" required={true} />
                   </div>
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
@@ -138,6 +156,8 @@ export default function ContatoPage() {
                       id="message"
                       rows={5}
                       placeholder="Digite aqui o conteúdo da sua mensagem"
+                      required={true}
+                      name="message"
                     />
                   </div>
                   <Button type="submit" size="lg" className="w-full sm:w-auto">
