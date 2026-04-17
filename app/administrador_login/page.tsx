@@ -6,24 +6,40 @@ import { Header } from "@/components/header";
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const data = Object.fromEntries(formData.entries());
+
+    const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    console.log(result);
+    if  (result.success) {
+        // Armazene o token no localStorage ou em um cookie
+        localStorage.setItem('token', result.body.token);
+        alert(result.message);
+        // Redirecione para a página de administração
+        window.location.href = '/administrador';
+    } else {
+        alert(result.message);
+    }
+}
+
 export default function AdministradorLoginPage() {
     const [showPassword, setShowPassword] = useState(false);
 
     function togglePasswordVisibilitry(){
         setShowPassword(prev => !prev);
     }
-    
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        
-        const formData = new FormData(e.currentTarget);
-        const email = formData.get('email') as string;
-        const password = formData.get('password') as string;
-
-        // Aqui você pode adicionar a lógica de autenticação, como enviar os dados para um servidor ou verificar as credenciais localmente
-        console.log('Email:', email);
-        console.log('Password:', password);
-    };
 
     return (
         <>

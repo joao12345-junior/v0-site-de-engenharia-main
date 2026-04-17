@@ -1,8 +1,13 @@
+'use client'
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Quote, Star, Building, Hospital, ShoppingBag, ShoppingBasket } from "lucide-react";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const clients = [
   { name: "Lojas Renner", sector: "Varejo", icon: ShoppingBag },
@@ -50,6 +55,37 @@ const testimonials = [
 ];
 
 export default function ClientesPage() {
+  //função para ver se o access token é valido
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/administrador_login");
+      return;
+    }
+
+    async function checkToken() {
+      const response = await fetch("/api/verify-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+
+      if (!response.ok) {
+        router.push("/administrador_login");
+        return;
+      }
+
+      const data = await response.json();
+      if (!data.valid) {
+        router.push("/administrador_login");
+      }
+    }
+
+    checkToken();
+  }, [router]);
+
   return (
     <>
       <Header />
