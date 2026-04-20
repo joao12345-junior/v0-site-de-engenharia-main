@@ -40,7 +40,7 @@ const contactInfo = [
   },
 ];
 
-document.addEventListener('submit', (event) => {
+async function handleSubmit(event: any){
   event.preventDefault();
 
   const TelInput = document.querySelector('input[type="tel"]') as HTMLInputElement;
@@ -53,7 +53,7 @@ document.addEventListener('submit', (event) => {
   formData.append('phone', TelInput.value);
   const data = Object.fromEntries(formData.entries());
   console.log(data);
-});
+};
 
 export default function ContatoPage() {
   return (
@@ -113,7 +113,7 @@ export default function ContatoPage() {
                   Preencha o formulário abaixo e nossa equipe entrará em contato com você o mais breve possível.
                 </p>
 
-                <form className="mt-8 space-y-6">
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
