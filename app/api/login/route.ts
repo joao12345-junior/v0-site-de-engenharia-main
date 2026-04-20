@@ -35,14 +35,14 @@ export async function POST(req: Request) {
     }
 
     try {
-        const id = (await pool.query('SELECT * FROM site_optare_user.user')).rowCount as number + 1;
-        
         const query = `
-          INSERT INTO site_optare_user.user (id, email, access_level, refresh_token, ip_address) 
-          VALUES ($1, $2, $3, $4, $5) 
-          RETURNING id
+        INSERT INTO site_optare_user.user (email, access_level, refresh_token, ip_address) 
+            VALUES ($1, $2, $3, $4)
+            ON CONFLICT (ip_address)
+            DO UPDATE SET refresh_token = EXCLUDED.refresh_token
+        RETURNING id;
         `;
-        const values = [id, body.email, '3', refresh_token, ip];
+        const values = [body.email, '3', refresh_token, ip];
         const result = await pool.query(query, values);
         console.log('Sessão criada para IP:', ip, '| ID:', result.rows[0].id);
         

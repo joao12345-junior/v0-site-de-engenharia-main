@@ -40,16 +40,15 @@ const contactInfo = [
   },
 ];
 
-async function handleSubmit(event: any){
-  event.preventDefault();
+async function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+  e.preventDefault();
 
   const TelInput = document.querySelector('input[type="tel"]') as HTMLInputElement;
   if (TelInput.value.includes('_')) {
     return alert("Por favor, preencha o campo de telefone corretamente.");
   }
 
-  const form = event.target as HTMLFormElement;
-  const formData = new FormData(form);
+  const formData = new FormData(e.currentTarget);
   formData.append('phone', TelInput.value);
   const data = Object.fromEntries(formData.entries());
   console.log(data);
