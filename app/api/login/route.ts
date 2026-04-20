@@ -10,6 +10,10 @@ export async function POST(req: Request) {
     const access_token = jwt.sign({email: body.email}, process.env.JWT_SECRET_ACCESS!, { expiresIn: process.env.JWT_EXPIRES_IN_ACCESS as any});
     const refresh_token = jwt.sign({email: body.email}, process.env.JWT_SECRET_REFRESH!, { expiresIn: process.env.JWT_EXPIRES_IN_REFRESH as any});
 
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim()
+        ?? req.headers.get('x-real-ip')
+        ?? 'unknown'
+
     try{
         const query = await pool.query('SELECT * FROM site_optare_user.user')
 
@@ -30,47 +34,48 @@ export async function POST(req: Request) {
         console.error('Erro delete tokens: ', err.message)
     }
 
-    try{
-        const id = (await pool.query('SELECT * FROM site_optare_user.user')).rowCount as number + 1;
-        console.log(id)
-        const query = 'INSERT INTO site_optare_user.user (id, email, access_level, refresh_token) VALUES ($1, $2, $3, $4) RETURNING id';
-        const values = [id, body.email, '3', refresh_token];
-        const result = await pool.query(query, values);
-        console.log('Novo usuário inserido com ID:', result.rows[0].id);
-    } catch (error: any){
-        console.error('Erro:', error.message);
-        return NextResponse.json({
-            message: error.message
-        }, { status: 500 });
-    }
-
     try {
-        const result = await pool.query('SELECT * FROM site_optare_admin.admin WHERE email = $1', [body.email]);
+        const id = (await pool.query('SELECT * FROM site_optare_user.user')).rowCount as number + 1;
         
-        if(result.rowCount === 0){
-            throw new Error('Email incorreto ou não encontrado');
+        const query = `
+          INSERT INTO site_optare_user.user (id, email, access_level, refresh_token, ip_address) 
+          VALUES ($1, $2, $3, $4, $5) 
+          RETURNING id
+        `;
+        const values = [id, body.email, '3', refresh_token, ip];
+        const result = await pool.query(query, values);
+        console.log('Sessão criada para IP:', ip, '| ID:', result.rows[0].id);
+        
+      } catch (error: any) {
+        console.error('Erro:', error.message);
+        return NextResponse.json({ message: error.message }, { status: 500 });
+      }
+    
+      // Verificação de credenciais (igual antes)
+      try {
+        const result = await pool.query(
+          'SELECT * FROM site_optare_admin.admin WHERE email = $1',
+          [body.email]
+        );
+        
+        if (result.rowCount === 0) {
+          throw new Error('Email incorreto ou não encontrado');
         }
-
-        if((await verifyUserPassword(body.password, result.rows[0].password))){
-            return NextResponse.json({
-                body: {
-                    email: result.rows[0].email,
-                    token: access_token
-                },
-                message: 'Login realizado com sucesso',
-                success: true
-            }, { status: 200 });
+    
+        if (await verifyUserPassword(body.password, result.rows[0].password)) {
+          return NextResponse.json({
+            body: { email: result.rows[0].email, token: access_token },
+            message: 'Login realizado com sucesso',
+            success: true
+          }, { status: 200 });
         }
+        
         return NextResponse.json({
-            message: 'Email ou senha incorretos',
-            success: false
+          message: 'Email ou senha incorretos',
+          success: false
         }, { status: 401 });
-
-    } catch (error: any) {
-        console.error('Erro ao consultar o banco de dados:', error.message);
-        return NextResponse.json({
-            user: null,
-            message: error.message
-        }, { status: 500 });
-    }
+    
+      } catch (error: any) {
+        return NextResponse.json({ user: null, message: error.message }, { status: 500 });
+      }
 }
