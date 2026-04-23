@@ -22,6 +22,21 @@ export async function POST(req: Request) {
 
 	// Verificação de credenciais (igual antes)
 	try {
+		const attempts = await pool.query(
+			`SELECT COUNT(*) FROM site_optare_user.attempts 
+       WHERE ip_address = $1 AND email = $2 AND created_at > NOW() - INTERVAL '10 minutes'`,
+			[ip, body.email],
+		);
+
+		if (Number(attempts.rows[0].count) > 5) {
+			return NextResponse.json(
+				{
+					message:
+						"Muitas tentativas, espere 10 minutos para tentar novamente!",
+				},
+				{ status: 429 },
+			);
+		}
 		const result = await pool.query(
 			"SELECT * FROM site_optare_admin.admin WHERE email = $1",
 			[body.email],
@@ -72,22 +87,6 @@ export async function POST(req: Request) {
 					success: true,
 				},
 				{ status: 200 },
-			);
-		}
-
-		const attempts = await pool.query(
-			`SELECT COUNT(*) FROM site_optare_user.attempts 
-       WHERE ip_address = $1 AND email = $2 AND created_at > NOW() - INTERVAL '10 minutes'`,
-			[ip, body.email],
-		);
-
-		if (Number(attempts.rows[0].count) > 5) {
-			return NextResponse.json(
-				{
-					message:
-						"Muitas tentativas, espere 10 minutos para tentar novamente!",
-				},
-				{ status: 429 },
 			);
 		}
 
