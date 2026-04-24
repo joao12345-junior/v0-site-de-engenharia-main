@@ -11,11 +11,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const navigation = [
 	{ name: "Home", href: "/" },
-	{ name: "Sobre Nós", href: "/sobre" },
-	{ name: "Produtos", href: "/produtos" },
-	{ name: "Projetos", href: "/projetos" },
-	{ name: "Clientes", href: "/clientes" },
-	{ name: "Contato", href: "/contato" },
+	{ name: "Sobre Nós", href: "/sobre/" },
+	{ name: "Produtos", href: "/produtos/" },
+	{ name: "Projetos", href: "/projetos/" },
+	{ name: "Clientes", href: "/clientes/" },
+	{ name: "Contato", href: "/contato/" },
 ];
 
 export function Header() {
@@ -41,11 +41,11 @@ export function Header() {
 
 	return (
 		<header
-			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-240 ${isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent border-b border-transparent"}`}
+			className={`fixed top-0 left-0 right-0 z-50 transition-all duration-240 ${isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-background/80 backdrop-blur-md border-b border-transparent"}`}
 		>
 			<nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
 				<div className="flex lg:flex-1">
-					<Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
+					<div className="-m-2.5 p-2.5 flex items-center gap-3">
 						<div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
 							<Image
 								src="/images/optare_logo.png"
@@ -54,7 +54,7 @@ export function Header() {
 								className="object-contain p-1"
 							/>
 						</div>
-					</Link>
+					</div>
 				</div>
 				<div className="flex items-center gap-2 lg:hidden">
 					<ThemeToggle />
