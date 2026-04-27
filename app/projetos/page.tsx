@@ -11,6 +11,7 @@ import {
 	findImagesByTitle,
 	findLocationByTitle,
 } from "@/lib/repositories/images-repository";
+import { title } from "process";
 
 const categories = {
 	Main: "Todos",
@@ -101,13 +102,13 @@ const json_projects = [
 		description: "",
 	},
 	{
-		title: "Verdan",
+		title: "Master Hotel Holiday Inn",
 		category: categories.Residencial,
 		location: "",
 		description: "",
 	},
 	{
-		title: "Master Hotel Holiday Inn",
+		title: "Grand Park Lindóia",
 		category: categories.Residencial,
 		location: "",
 		description: "",
