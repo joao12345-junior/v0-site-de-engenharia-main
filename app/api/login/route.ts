@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { pool } from "../../../lib/db";
 import { verifyUserPassword } from "../../../lib/hash";
 import * as jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
 	const body = await req.json();
@@ -62,6 +63,15 @@ export async function POST(req: Request) {
 				process.env.JWT_SECRET_REFRESH!,
 				{ expiresIn: process.env.JWT_EXPIRES_IN_REFRESH as any },
 			);
+
+			const cookieStore = await cookies();
+			cookieStore.set("access_token", access_token, {
+				httpOnly: true,
+				secure: true,
+				sameSite: "strict",
+				maxAge: 60 * 15,
+				path: "/",
+			});
 
 			await pool.query(
 				`INSERT INTO site_optare_user."user" (email, ip_address, refresh_token, access_level) 

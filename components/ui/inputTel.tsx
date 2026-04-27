@@ -1,11 +1,17 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { IMaskInput } from "react-imask";
-import { Value } from "@radix-ui/react-select";
 
-function InputTel({ className }: React.ComponentProps<"input">) {
+function InputTel({
+	className,
+	name,
+	id,
+	...rest
+}: React.ComponentProps<"input">) {
 	return (
 		<IMaskInput
+			name={name}
+			id={id}
 			type="tel"
 			mask="(00) 00000-0000"
 			lazy={false}

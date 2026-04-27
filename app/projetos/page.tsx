@@ -4,16 +4,13 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {
-	ArrowRight,
-	MapPin,
-	Building2,
-	ChevronLeft,
-	ChevronRight,
-} from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, MapPin } from "lucide-react";
 import { useState, useMemo } from "react";
-import imagesData from "@/public/images/projetos/images.json";
+import { ImageCarousel } from "@/components/ui/image-carousel";
+import {
+	findImagesByTitle,
+	findLocationByTitle,
+} from "@/lib/repositories/images-repository";
 
 const categories = {
 	Main: "Todos",
@@ -24,7 +21,7 @@ const categories = {
 	Educação: "Educação",
 };
 
-const projects = [
+const json_projects = [
 	{
 		title: "RENNER Shopping Iguatemi",
 		category: categories.Comercial,
@@ -117,22 +114,8 @@ const projects = [
 	},
 ];
 
-//Função para buscar no JSON as localizações dos projetos baseado no título
-function getLocationImage(json: any, project: any) {
-	for (const client of json) {
-		for (const image of client.imagens) {
-			if (image.subtitulo.toLowerCase().includes(project.title.toLowerCase())) {
-				project.location = image.localization || null;
-				return;
-			}
-		}
-	}
-}
-
-projects.map((project) => getLocationImage(imagesData, project));
-
 //Define as categorias únicas dos projetos para os filtros
-function setCategory(projects: any) {
+function setCategory(projects: typeof json_projects): Set<string> {
 	const SetCategory = new Set<string>();
 	SetCategory.add(categories.Main);
 	for (const project of projects) {
@@ -143,99 +126,20 @@ function setCategory(projects: any) {
 	return SetCategory;
 }
 
-// Função para buscar imagens baseado no título do projeto
-function getProjectImages(projectTitle: string): string[] {
-	for (const client of imagesData) {
-		for (const image of client.imagens) {
-			// Comparação fuzzy - verifica se o título está contido no subtítulo ou vice-versa
-			if (
-				image.subtitulo.toLowerCase().includes(projectTitle.toLowerCase()) ||
-				projectTitle
-					.toLowerCase()
-					.includes(image.subtitulo.split(" ")[0].toLowerCase())
-			) {
-				return image.urls_imagens || [];
-			}
-		}
-	}
-	return [];
-}
-
-// Componente do Carrossel de Imagens
-function ProjectImageCarousel({ projectTitle }: { projectTitle: string }) {
-	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-	const images = useMemo(() => getProjectImages(projectTitle), [projectTitle]);
-
-	if (!images || images.length === 0) {
-		return (
-			<div className="aspect-video bg-muted flex items-center justify-center">
-				<Building2 className="h-16 w-16 text-primary/30" />
-			</div>
-		);
-	}
-
-	const handlePrev = () => {
-		setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-	};
-
-	const handleNext = () => {
-		setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-	};
-
-	return (
-		<div className="aspect-video relative overflow-hidden bg-muted">
-			<Image
-				src={images[currentImageIndex]}
-				alt={`${projectTitle} - Imagem ${currentImageIndex + 1}`}
-				fill
-				className="object-cover"
-				priority={currentImageIndex === 0}
-			/>
-
-			{/* Navegação do Carrossel - Visível apenas se houver múltiplas imagens */}
-			{images.length > 1 && (
-				<>
-					<button
-						onClick={handlePrev}
-						className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
-						aria-label="Imagem anterior"
-					>
-						<ChevronLeft className="h-5 w-5" />
-					</button>
-					<button
-						onClick={handleNext}
-						className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
-						aria-label="Próxima imagem"
-					>
-						<ChevronRight className="h-5 w-5" />
-					</button>
-
-					{/* Indicador de página */}
-					<div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-						{images.map((_, index) => (
-							<button
-								key={index}
-								onClick={() => setCurrentImageIndex(index)}
-								className={`w-2 h-2 rounded-full transition-colors ${
-									index === currentImageIndex ? "bg-white" : "bg-white/50"
-								}`}
-								aria-label={`Ir para imagem ${index + 1}`}
-							/>
-						))}
-					</div>
-				</>
-			)}
-		</div>
-	);
-}
-
 export default function ProjetosPage() {
 	const [activeCategory, setActiveCategory] = useState("Todos");
 	const filteredProjects =
 		activeCategory === "Todos"
-			? projects
-			: projects.filter((p) => p.category === activeCategory);
-
+			? json_projects.map((project) => ({
+					...project,
+					location: findLocationByTitle(project.title),
+				}))
+			: json_projects
+					.filter((p) => p.category === activeCategory)
+					.map((project) => ({
+						...project,
+						location: findLocationByTitle(project.title),
+					}));
 	return (
 		<>
 			<Header />
@@ -284,7 +188,7 @@ export default function ProjetosPage() {
 				<section className="py-8 border-b border-border">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="flex flex-wrap gap-2 justify-center">
-							{Array.from(setCategory(projects)).map((category) => (
+							{Array.from(setCategory(json_projects)).map((category) => (
 								<button
 									key={category}
 									onClick={() => setActiveCategory(category)}
@@ -312,7 +216,10 @@ export default function ProjetosPage() {
 									id={project.title}
 								>
 									<div className="relative">
-										<ProjectImageCarousel projectTitle={project.title} />
+										<ImageCarousel
+											title={project.title}
+											images={findImagesByTitle(project.title)}
+										/>
 										<div className="absolute top-4 left-4">
 											<span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
 												{project.category}

@@ -18,8 +18,9 @@ import {
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import imagesData from "@/public/images/produtos/images.json";
+import { ImageCarousel } from "@/components/ui/image-carousel";
 
-const products = [
+const json_products = [
 	{
 		icon: Cog,
 		name: "Sistema de Automação Industrial",
@@ -110,20 +111,8 @@ const categories = {
 	Estrutural: "Estrutural",
 };
 
-//Função para buscar no JSON as localizações dos projetos baseado no título
-function getLocationImage(json: any, product: any) {
-	for (const client of json) {
-		for (const image of client.imagens) {
-			if (image.subtitulo.toLowerCase().includes(product.title.toLowerCase())) {
-				product.location = image.localization || null;
-				return;
-			}
-		}
-	}
-}
-
 //Define as categorias únicas dos projetos para os filtros
-function setCategory(products: any) {
+function setCategory(products: typeof json_products): Set<string> {
 	const SetCategory = new Set<string>();
 	SetCategory.add(categories.Main);
 	for (const product of products) {
@@ -152,81 +141,12 @@ function getProductImages(productTitle: string): string[] {
 	return [];
 }
 
-// Componente do Carrossel de Imagens
-function ProductImageCarousel({ productTitle }: { productTitle: string }) {
-	const [currentImageIndex, setCurrentImageIndex] = useState(0);
-	const images = useMemo(() => getProductImages(productTitle), [productTitle]);
-
-	if (!images || images.length === 0) {
-		return (
-			<div className="aspect-video bg-muted flex items-center justify-center">
-				<Building2 className="h-16 w-16 text-primary/30" />
-			</div>
-		);
-	}
-
-	const handlePrev = () => {
-		setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-	};
-
-	const handleNext = () => {
-		setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-	};
-
-	return (
-		<div className="aspect-video relative overflow-hidden bg-muted">
-			<Image
-				src={images[currentImageIndex]}
-				alt={`${productTitle} - Imagem ${currentImageIndex + 1}`}
-				fill
-				className="object-cover"
-				priority={currentImageIndex === 0}
-			/>
-
-			{/* Navegação do Carrossel - Visível apenas se houver múltiplas imagens */}
-			{images.length > 1 && (
-				<>
-					<button
-						onClick={handlePrev}
-						className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
-						aria-label="Imagem anterior"
-					>
-						<ChevronLeft className="h-5 w-5" />
-					</button>
-					<button
-						onClick={handleNext}
-						className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
-						aria-label="Próxima imagem"
-					>
-						<ChevronRight className="h-5 w-5" />
-					</button>
-
-					{/* Indicador de página */}
-					<div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
-						{images.map((_, index) => (
-							<button
-								key={index}
-								onClick={() => setCurrentImageIndex(index)}
-								className={`w-2 h-2 rounded-full transition-colors ${
-									index === currentImageIndex ? "bg-white" : "bg-white/50"
-								}`}
-								aria-label={`Ir para imagem ${index + 1}`}
-							/>
-						))}
-					</div>
-				</>
-			)}
-		</div>
-	);
-}
-
 export default function ProdutosPage() {
 	const [activeCategory, setActiveCategory] = useState("Todos");
 	const filteredProducts =
 		activeCategory === "Todos"
-			? products
-			: products.filter((p) => p.category === activeCategory);
-
+			? json_products
+			: json_products.filter((p) => p.category === activeCategory);
 	return (
 		<>
 			<Header />
@@ -255,7 +175,7 @@ export default function ProdutosPage() {
 				<section className="py-8 border-b border-border">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="flex flex-wrap gap-2 justify-center">
-							{Array.from(setCategory(products)).map((category) => (
+							{Array.from(setCategory(json_products)).map((category) => (
 								<button
 									key={category}
 									onClick={() => setActiveCategory(category)}
@@ -282,7 +202,10 @@ export default function ProdutosPage() {
 									className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
 								>
 									<div className="aspect-video bg-muted flex items-center justify-center">
-										<ProductImageCarousel productTitle={product.name} />
+										<ImageCarousel
+											title={product.name}
+											images={getProductImages(product.name)}
+										/>
 									</div>
 									<div className="p-6">
 										<span className="text-xs font-medium text-primary">
