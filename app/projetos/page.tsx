@@ -11,7 +11,6 @@ import {
 	findImagesByTitle,
 	findLocationByTitle,
 } from "@/lib/repositories/images-repository";
-import { title } from "process";
 
 const categories = {
 	Main: "Todos",
@@ -27,91 +26,76 @@ const json_projects = [
 		title: "RENNER Shopping Iguatemi",
 		category: categories.Comercial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Rodin",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "BIG Torres",
 		category: categories.Comercial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Botanique Residences",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Petz Taguatinga",
 		category: categories.Comercial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "MedPlex Eixo Norte",
 		category: categories.Saúde,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Complexo Hospitalar Moinhos de Vento",
 		category: categories.Saúde,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Barra Shopping Sul",
 		category: categories.Comercial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Atlântida Lagos Park",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Anita Residences",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Magno Três Figueiras",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Hola Sunset Lofts",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Studio CB",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Master Hotel Holiday Inn",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 	{
 		title: "Grand Park Lindóia",
 		category: categories.Residencial,
 		location: "",
-		description: "",
 	},
 ];
 
@@ -129,18 +113,20 @@ function setCategory(projects: typeof json_projects): Set<string> {
 
 export default function ProjetosPage() {
 	const [activeCategory, setActiveCategory] = useState("Todos");
-	const filteredProjects =
-		activeCategory === "Todos"
-			? json_projects.map((project) => ({
-					...project,
-					location: findLocationByTitle(project.title),
-				}))
-			: json_projects
-					.filter((p) => p.category === activeCategory)
-					.map((project) => ({
-						...project,
-						location: findLocationByTitle(project.title),
-					}));
+
+	const filteredProjects = useMemo(() => {
+		const lista =
+			activeCategory === "Todos"
+				? json_projects
+				: json_projects.filter((p) => p.category === activeCategory);
+
+		return lista.map((project) => ({
+			...project,
+			location:
+				findLocationByTitle(project.title) || "Localização Desconhecida",
+		}));
+	}, [activeCategory]);
+
 	return (
 		<>
 			<Header />
@@ -237,9 +223,6 @@ export default function ProjetosPage() {
 												{project.location}
 											</span>
 										</div>
-										<p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-											{project.description}
-										</p>
 									</div>
 								</div>
 							))}

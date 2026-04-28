@@ -16,21 +16,6 @@ import {
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { verifyTokenAccess } from "@/lib/token";
-
-export async function middleware(req: NextRequest) {
-	const token = req.cookies.get("access_token")?.value;
-
-	if (!token || !(await verifyTokenAccess(token)))
-		return NextResponse.redirect(new URL("/administrador_login", req.url));
-	return NextResponse.next();
-}
-
-export const config = {
-	matcher: ["/administrador/:path*"],
-};
 const clients = [
 	{ name: "Lojas Renner", sector: "Varejo", icon: ShoppingBag },
 	{ name: "Grupo Plaenge", sector: "Construção", icon: Building },
@@ -79,7 +64,7 @@ const testimonials = [
 	},
 ];
 
-export default function ClientesPage() {
+export default function AdministradorPage() {
 	const router = useRouter();
 
 	useEffect(() => {

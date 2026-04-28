@@ -92,7 +92,6 @@ export async function POST(req: Request) {
 
 			return NextResponse.json(
 				{
-					body: { email: result.rows[0].email, token: access_token },
 					message: "Login realizado com sucesso",
 					success: true,
 				},

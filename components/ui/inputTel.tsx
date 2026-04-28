@@ -6,12 +6,14 @@ function InputTel({
 	className,
 	name,
 	id,
+	ref,
 	...rest
 }: React.ComponentProps<"input">) {
 	return (
 		<IMaskInput
 			name={name}
 			id={id}
+			ref={ref}
 			type="tel"
 			mask="(00) 00000-0000"
 			lazy={false}

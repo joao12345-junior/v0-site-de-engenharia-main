@@ -10,6 +10,7 @@ import { Mail, MapPin, Clock, Send } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
+import { useRef } from "react";
 
 const contactInfo = [
 	{
@@ -51,40 +52,31 @@ const contactInfo = [
 	},
 ];
 
-async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-	e.preventDefault();
-
-	const TelInput = document.querySelector(
-		'input[type="tel"]',
-	) as HTMLInputElement;
-	if (TelInput.value.includes("_")) {
-		return alert("Por favor, preencha o campo de telefone corretamente.");
-	}
-
-	const formData = new FormData(e.currentTarget);
-	formData.append("phone", TelInput.value);
-	const data = Object.fromEntries(formData.entries());
-	console.log(data);
-	const res = await fetch("/api/email", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(data),
-	});
-
-	const result = await res.json();
-	alert(result.message);
-	if (result.success) {
-		window.location.reload();
-		return;
-	}
-	alert(
-		"Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.",
-	);
-}
-
 export default function ContatoPage() {
+	const telRef = useRef<any>(null);
+
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+
+		if (telRef.current?.element.value.includes("_"))
+			return alert("Por favor, preencha o campo de telefone corretamente.");
+
+		const formData = new FormData(e.currentTarget);
+		formData.set("phone", telRef.current?.element.value);
+		const data = Object.fromEntries(formData.entries());
+		console.log(data);
+		const res = await fetch("/api/email", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		});
+
+		const result = await res.json();
+		alert(result.message);
+	}
+
 	return (
 		<>
 			<Header />
@@ -195,7 +187,7 @@ export default function ContatoPage() {
 											>
 												Telefone
 											</label>
-											<InputTel name="phone" id="phone" />
+											<InputTel name="phone" ref={telRef} id="phone" />
 										</div>
 										<div>
 											<label
