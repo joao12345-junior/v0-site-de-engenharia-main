@@ -74,7 +74,14 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 	});
 
 	const result = await res.json();
-	console.log(result);
+	alert(result.message);
+	if (result.success) {
+		window.location.reload();
+		return;
+	}
+	alert(
+		"Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente mais tarde.",
+	);
 }
 
 export default function ContatoPage() {
