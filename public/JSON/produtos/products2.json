@@ -1,57 +1,61 @@
-{
-	"titulo_do_slide": "Nossos Produtos",
-	"lista_de_itens": [
-		{
-			"Projetos Completos": [
-				{
-					"Instalações Prediais": [
-						"Instalações Hidrossanitárias Prediais",
-						"Instalações Elétricas Prediais"
-					]
-				},
-				{
-					"Infraestrutura para Loteamentos": [
-						"Infraestrutura Hidráulica para Loteamentos",
-						"Infraestrutura Elétrica para Loteamentos"
-					]
-				},
-				{
-					"Instalações de Gás": [
-						"Instalações de Gás Natural",
-						"Instalações de Gás Liquefeito de Petróleo"
-					]
-				},
-				"Prevenção e Combate à Incêndios"
-			]
-		},
-		{
-			"Projetos Pontuais": [
-				"Bacias de detenção pluvial",
-				"Sistemas de reuso",
-				"Personalizações de apartamentos",
-				"Aprovações de projetos nos órgãos responsáveis",
-				"Cálculos e dimensionamentos específicos",
-				"Extensões de redes",
-				"Personalização do modelo BIM"
-			]
-		},
-		{
-			"Consultorias": [
-				{
-					"Relatórios de Análise Crítica": [
-						"Relatórios de análise crítica de produtos arquitetônicoS",
-						"Relatórios de análise crítica de projetos de terceiros",
-						"Relatórios de análise crítica de terrenos e edificações onde se pretendem incorporar empreendimentos novos"
-					]
-				},
-				{
-					"Vistorias e Laudos": [
-						"Visitas e relatórios técnicos para solução de problemas específicos em obras já construídas",
-						"Laudos técnicos"
-					]
-				},
-				"Levantamentos e graficação de projetos de instalações"
+[
+	{
+		"titulo": "Projetos de Instalações Prediais em CAD e BIM",
+		"categorias": {
+			"hidrossanitarios": ["Instalações Hidrossanitárias"],
+			"eletricos": ["Instalações Elétricas"],
+			"gas": [
+				"Instalações de Gás Natural",
+				"Instalações de Gás Liquefeito de Petróleo"
+			],
+			"seguranca_contra_incendio": ["Prevenção e Combate à Incêndios"]
+		}
+	},
+	{
+		"titulo": "Projetos Específicos e Consultorias",
+		"categorias": {
+			"personalizacao_comercial_residencial": [
+				"Projetos de personalizações de apartamentos, lojas e/ou salas comerciais"
+			],
+			"aprovacoes_regularizacoes": [
+				"Projetos de adequação e aprovação de bacias de detenção pluvial",
+				"Projetos aprovativos de instalações de água e esgoto",
+				"Projetos aprovativos de instalações elétricas",
+				"Projetos de adequação e aprovação de projeto de prevenção e combate à incêndios"
+			],
+			"vistorias_atendimentos": [
+				"Atendimentos pontuais de notificações e/ou vistorias do corpo de bombeiros"
+			],
+			"sustentabilidade_reuso": [
+				"Projetos de sistemas de reuso de águas pluviais"
+			],
+			"extensao_redes_publicas": [
+				"Projetos de extensão de rede pública de água e/ou esgoto"
+			],
+			"automacao_protecao": ["Projetos de automação", "Projetos de SPDA"],
+			"estudos_tecnicos": [
+				"Estudos de coordenograma e seletividade",
+				"Relatórios de cálculo do TRRF e/ou da carga de incêndio da edificação"
+			],
+			"modelagem_bim_cad": [
+				"Modelagens personalizadas de projeto CAD em BIM, segundo padrão BEP do cliente"
+			],
+			"analises_criticas": [
+				"Relatórios de análise crítica de produtos arquitetônicos",
+				"Relatórios de análise crítica de projetos de terceiros",
+				"Relatórios de análise crítica de terrenos e/ou edificações visadas para novos empreendimentos"
+			],
+			"laudos_levantamentos": [
+				"Visitas, relatórios e/ou laudos técnicos para solução de problemas específicos",
+				"Levantamentos e graficação as built"
 			]
 		}
-	]
-}
+	},
+	{
+		"titulo": "Projetos de Infraestrutura para Loteamentos e Urbanizações",
+		"categorias": {
+			"hidraulica": ["Infraestrutura Hidráulica para Loteamentos"],
+			"eletrica": ["Infraestrutura Elétrica para Loteamentos"]
+		}
+	}
+]

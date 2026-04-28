@@ -1,37 +1,34 @@
-{
-	"titulo_do_slide": "Nossos Produtos",
-	"lista_de_itens": [
-		{
-			"Projetos Completos": [
-				"Instalações Hidrossanitárias Prediais",
-				"Infraestrutura Hidráulica para Loteamentos",
-				"Instalações Elétricas Prediais",
-				"Infraestrutura Elétrica para Loteamentos",
-				"Instalações de Gás Natural",
-				"Instalações de Gás Liquefeito de Petróleo",
-				"Prevenção e Combate à Incêndios"
-			]
-		},
-		{
-			"Projetos Pontuais": [
-				"Bacias de detenção pluvial",
-				"Sistemas de reuso",
-				"Personalizações de apartamentos",
-				"Aprovações de projetos nos órgãos responsáveis",
-				"Cálculos e dimensionamentos específicos",
-				"Extensões de redes",
-				"Personalização do modelo BIM"
-			]
-		},
-		{
-			"Consultorias": [
-				"Relatórios de análise crítica de produtos arquitetônicoS",
-				"Relatórios de análise crítica de projetos de terceiros",
-				"Relatórios de análise crítica de terrenos e edificações onde se pretendem incorporar empreendimentos novos",
-				"Visitas e relatórios técnicos para solução de problemas específicos em obras já construídas",
-				"Laudos técnicos",
-				"Levantamentos e graficação de projetos de instalações"
-			]
-		}
-	]
-}
+[
+	{
+		"Projetos Completos": [
+			"Instalações Hidrossanitárias Prediais",
+			"Infraestrutura Hidráulica para Loteamentos",
+			"Instalações Elétricas Prediais",
+			"Infraestrutura Elétrica para Loteamentos",
+			"Instalações de Gás Natural",
+			"Instalações de Gás Liquefeito de Petróleo",
+			"Prevenção e Combate à Incêndios"
+		]
+	},
+	{
+		"Projetos Pontuais": [
+			"Bacias de detenção pluvial",
+			"Sistemas de reuso",
+			"Personalizações de apartamentos",
+			"Aprovações de projetos nos órgãos responsáveis",
+			"Cálculos e dimensionamentos específicos",
+			"Extensões de redes",
+			"Personalização do modelo BIM"
+		]
+	},
+	{
+		"Consultorias": [
+			"Relatórios de análise crítica de produtos arquitetônicoS",
+			"Relatórios de análise crítica de projetos de terceiros",
+			"Relatórios de análise crítica de terrenos e edificações onde se pretendem incorporar empreendimentos novos",
+			"Visitas e relatórios técnicos para solução de problemas específicos em obras já construídas",
+			"Laudos técnicos",
+			"Levantamentos e graficação de projetos de instalações"
+		]
+	}
+]
