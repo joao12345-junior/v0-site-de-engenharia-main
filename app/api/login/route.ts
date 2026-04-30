@@ -3,6 +3,7 @@ import { pool } from "../../../lib/db";
 import { verifyUserPassword } from "../../../lib/hash";
 import * as jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { createTokenAccess, createTokenRefresh } from "@/lib/token";
 
 export async function POST(req: Request) {
 	const body = await req.json();
@@ -52,17 +53,8 @@ export async function POST(req: Request) {
 		}
 
 		if (await verifyUserPassword(body.password, result.rows[0].password)) {
-			const access_token = jwt.sign(
-				{ email: body.email },
-				process.env.JWT_SECRET_ACCESS!,
-				{ expiresIn: process.env.JWT_EXPIRES_IN_ACCESS as any },
-			);
-
-			const refresh_token = jwt.sign(
-				{ email: body.email },
-				process.env.JWT_SECRET_REFRESH!,
-				{ expiresIn: process.env.JWT_EXPIRES_IN_REFRESH as any },
-			);
+			const access_token = await createTokenAccess(body.email);
+			const refresh_token = await createTokenRefresh(body.email);
 
 			const cookieStore = await cookies();
 			cookieStore.set("access_token", access_token, {
