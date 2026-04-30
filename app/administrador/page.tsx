@@ -13,8 +13,6 @@ import {
 	ShoppingBag,
 	ShoppingBasket,
 } from "lucide-react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 const clients = [
 	{ name: "Lojas Renner", sector: "Varejo", icon: ShoppingBag },
@@ -65,15 +63,6 @@ const testimonials = [
 ];
 
 export default function AdministradorPage() {
-	const router = useRouter();
-
-	useEffect(() => {
-		// <- A página JÁ RENDERIZOU quando isso executa
-		// o usuário vê o conteúdo por uma fração de segundo
-		const token = localStorage.getItem("token");
-		if (!token) router.push("/administrador_login");
-	}, [router]);
-
 	return (
 		<>
 			<Header />

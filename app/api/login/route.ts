@@ -72,6 +72,7 @@ export async function POST(req: Request) {
 				maxAge: 60 * 15,
 				path: "/",
 			});
+			console.log("Cookie criado: ", cookieStore.get("access_token"));
 
 			await pool.query(
 				`INSERT INTO site_optare_user."user" (email, ip_address, refresh_token, access_level) 

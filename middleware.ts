@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
 	const token = req.cookies.get("access_token")?.value;
+	console.log("Token recebido no middleware:", token);
 
 	if (!token)
 		return NextResponse.redirect(new URL("/administrador_login", req.url));
