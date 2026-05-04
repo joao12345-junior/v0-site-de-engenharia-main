@@ -12,10 +12,7 @@ import {
 	Gauge,
 	Wrench,
 	Building2,
-	ChevronLeft,
-	ChevronRight,
 } from "lucide-react";
-import Image from "next/image";
 import { useState, useMemo } from "react";
 import imagesData from "@/public/images/produtos/images.json";
 import { ImageCarousel } from "@/components/ui/image-carousel";
@@ -143,10 +140,16 @@ function getProductImages(productTitle: string): string[] {
 
 export default function ProdutosPage() {
 	const [activeCategory, setActiveCategory] = useState("Todos");
-	const filteredProducts =
-		activeCategory === "Todos"
-			? json_products
-			: json_products.filter((p) => p.category === activeCategory);
+	const filteredProducts = useMemo(() => {
+		const lista =
+			activeCategory === "Todos"
+				? json_products
+				: json_products.filter((p) => p.category === activeCategory);
+
+		return lista.map((product) => ({
+			...product,
+		}));
+	}, [activeCategory]);
 	return (
 		<>
 			<Header />

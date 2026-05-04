@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-export async function verifyTokenAccess(token: string): Promise<boolean> {
+export function verifyTokenAccess(token: string): boolean {
 	try {
-		if (await jwt.verify(token, process.env.JWT_SECRET_ACCESS!)) {
+		if (jwt.verify(token, process.env.JWT_SECRET_ACCESS!)) {
 			return true;
 		}
 		return false;
@@ -12,9 +12,9 @@ export async function verifyTokenAccess(token: string): Promise<boolean> {
 	}
 }
 
-export async function verifyTokenRefresh(token: string): Promise<boolean> {
+export function verifyTokenRefresh(token: string): boolean {
 	try {
-		if (await jwt.verify(token, process.env.JWT_SECRET_REFRESH!)) {
+		if (jwt.verify(token, process.env.JWT_SECRET_REFRESH!)) {
 			return true;
 		}
 		return false;
@@ -24,9 +24,9 @@ export async function verifyTokenRefresh(token: string): Promise<boolean> {
 	}
 }
 
-export async function createTokenAccess(email: string): Promise<string> {
+export function createTokenAccess(email: string): string {
 	try {
-		return await jwt.sign({ email: email }, process.env.JWT_SECRET_ACCESS!, {
+		return jwt.sign({ email: email }, process.env.JWT_SECRET_ACCESS!, {
 			expiresIn: process.env.JWT_EXPIRES_IN_ACCESS as any,
 		});
 	} catch (err: any) {
@@ -35,9 +35,9 @@ export async function createTokenAccess(email: string): Promise<string> {
 	}
 }
 
-export async function createTokenRefresh(email: string): Promise<string> {
+export function createTokenRefresh(email: string): string {
 	try {
-		return await jwt.sign({ email: email }, process.env.JWT_SECRET_REFRESH!, {
+		return jwt.sign({ email: email }, process.env.JWT_SECRET_REFRESH!, {
 			expiresIn: process.env.JWT_EXPIRES_IN_REFRESH as any,
 		});
 	} catch (err: any) {

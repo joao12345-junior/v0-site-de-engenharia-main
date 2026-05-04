@@ -1,57 +1,75 @@
 // app/api/refresh/route.ts
-import { NextResponse } from 'next/server';
-import { pool } from '@/lib/db';
-import { verifyTokenRefresh } from '@/lib/token';
-import * as jwt from 'jsonwebtoken';
+import { NextResponse } from "next/server";
+import { pool } from "@/lib/db";
+import { createTokenAccess } from "@/lib/token";
+import { jwtVerify } from "jose";
+import { cookies } from "next/headers";
+
+const secretRefresh = new TextEncoder().encode(process.env.JWT_SECRET_REFRESH!);
 
 export async function POST(req: Request) {
-  // Pega o IP de quem está fazendo a requisição
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim()
-    ?? req.headers.get('x-real-ip')
-    ?? 'unknown';
+	// Leia o refresh_token que deveria estar num cookie httpOnly
+	const cookieStore = await cookies();
+	const refresh_token = cookieStore.get("refresh_token")?.value;
 
-  try {
-    // Busca a sessão pelo IP
-    const result = await pool.query(
-      'SELECT * FROM site_optare_user.user WHERE ip_address = $1',
-      [ip]
-    );
+	// Se não há refresh_token, a sessão não existe
+	if (!refresh_token) {
+		return NextResponse.json(
+			{
+				valid: false,
+				message: "Sessão não encontrada",
+			},
+			{ status: 401 },
+		);
+	}
 
-    if (result.rowCount === 0) {
-      return NextResponse.json(
-        { valid: false, message: 'Nenhuma sessão encontrada para este IP' },
-        { status: 404 }
-      );
-    }
+	try {
+		// 1. Valida a assinatura e expiração do token
+		await jwtVerify(refresh_token, secretRefresh);
 
-    const session = result.rows[0];
+		// 2. Busca a sessão pelo token
+		const result = await pool.query(
+			"SELECT * FROM site_optare_user.user WHERE refresh_token = $1",
+			[refresh_token],
+		);
 
-    // Valida se o refresh_token ainda é válido
-    const isValid = await verifyTokenRefresh(session.refresh_token);
-    
-    if (!isValid) {
-      // Limpa a sessão expirada
-      await pool.query('DELETE FROM site_optare_user.user WHERE ip_address = $1', [ip]);
-      return NextResponse.json(
-        { valid: false, message: 'Sessão expirada' },
-        { status: 401 }
-      );
-    }
+		if (result.rowCount === 0) {
+			return NextResponse.json(
+				{ valid: false, message: "Sessão inválida." },
+				{ status: 404 },
+			);
+		}
 
-    // Gera novo access_token
-    const new_access_token = jwt.sign(
-      { email: session.email },
-      process.env.JWT_SECRET_ACCESS!,
-      { expiresIn: process.env.JWT_EXPIRES_IN_ACCESS as any }
-    );
+		const session = result.rows[0];
 
-    return NextResponse.json({
-      valid: true,
-      token: new_access_token,
-      email: session.email
-    });
+		// 3. Gera novo access_token
+		const new_access_token = createTokenAccess(session.email);
 
-  } catch (error: any) {
-    return NextResponse.json({ valid: false, message: error.message }, { status: 500 });
-  }
+		// 4. Define o novo access_token como cookie
+		const response = NextResponse.json(
+			{
+				valid: true,
+			},
+			{ status: 200 },
+		) as any;
+		response.cookies.set("access_token", new_access_token, {
+			httpOnly: true,
+			secure: true,
+			sameSite: "strict",
+			maxAge: 60 * 15, // 15 minutos
+			path: "/",
+		});
+
+		return response;
+	} catch {
+		// Token expirado ou mal formado - limpa a sessão
+		await pool.query(
+			`DELETE FROM site_optare_user.user WHERE refresh_token = $1`,
+			[refresh_token],
+		);
+		return NextResponse.json(
+			{ valid: false, message: "Sessão expirada" },
+			{ status: 401 },
+		);
+	}
 }

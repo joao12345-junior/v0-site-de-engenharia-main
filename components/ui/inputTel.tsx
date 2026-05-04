@@ -13,7 +13,7 @@ function InputTel({
 		<IMaskInput
 			name={name}
 			id={id}
-			ref={ref}
+			inputRef={ref}
 			type="tel"
 			mask="(00) 00000-0000"
 			lazy={false}

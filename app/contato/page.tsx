@@ -10,7 +10,8 @@ import { Mail, MapPin, Clock, Send } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
-import { useRef } from "react";
+import React, { useRef } from "react";
+import { IMaskInput } from "react-imask";
 
 const contactInfo = [
 	{
@@ -53,18 +54,24 @@ const contactInfo = [
 ];
 
 export default function ContatoPage() {
-	const telRef = useRef<any>(null);
+	// HTMLInputElement é o tipo correto - é o que a ref vai conter em runtime
+	const telRef = useRef<HTMLInputElement>(null);
 
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		if (telRef.current?.element.value.includes("_"))
+		const tellValue = telRef.current?.value ?? "";
+
+		// Verifica se o campo ainda tem caracteres de máscara não preenchidos
+		if (tellValue.includes("_"))
 			return alert("Por favor, preencha o campo de telefone corretamente.");
 
 		const formData = new FormData(e.currentTarget);
-		formData.set("phone", telRef.current?.element.value);
+		formData.set("phone", tellValue);
+
 		const data = Object.fromEntries(formData.entries());
 		console.log(data);
+
 		const res = await fetch("/api/email", {
 			method: "POST",
 			headers: {

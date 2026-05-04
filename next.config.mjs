@@ -7,10 +7,9 @@ const nextConfig = {
 	images: {
 		unoptimized: true,
 		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "**",
-			},
+			{ protocol: "https", hostname: "**.amazonaws.com" },
+			{ protocol: "https", hostname: "**.melnick.com.br" },
+			{ protocol: "https", hostname: "images.petz.com.br" },
 		],
 	},
 };

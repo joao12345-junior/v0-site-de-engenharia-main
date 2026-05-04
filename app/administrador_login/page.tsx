@@ -11,7 +11,7 @@ export default function AdministradorLoginPage() {
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 
-	function togglePasswordVisibilitry() {
+	function togglePasswordVisibility() {
 		setShowPassword((prev) => !prev);
 	}
 
@@ -71,7 +71,7 @@ export default function AdministradorLoginPage() {
 							className="flex row gap-2 block text-sm font-medium text-foreground mb-1"
 						>
 							Senha
-							<button type="button" onClick={togglePasswordVisibilitry}>
+							<button type="button" onClick={togglePasswordVisibility}>
 								{showPassword ? <EyeOff /> : <Eye />}
 							</button>
 						</label>

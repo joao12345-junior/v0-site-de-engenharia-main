@@ -1,224 +1,355 @@
-"use client";
-
+// app/administrador/page.tsx
+// Server Component — busca dados diretamente do banco, sem chamadas de API
+import { pool } from "@/lib/db";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
-	ArrowRight,
-	Quote,
-	Star,
-	Building,
-	Hospital,
-	ShoppingBag,
-	ShoppingBasket,
+	Mail,
+	ShieldAlert,
+	TrendingUp,
+	Clock,
+	Building2,
+	User,
+	Phone,
+	MessageSquare,
+	Globe,
+	Calendar,
 } from "lucide-react";
 
-const clients = [
-	{ name: "Lojas Renner", sector: "Varejo", icon: ShoppingBag },
-	{ name: "Grupo Plaenge", sector: "Construção", icon: Building },
-	{ name: "Grupo Carrefour", sector: "Varejo", icon: ShoppingBag },
-	{ name: "Melnick", sector: "Construção", icon: Building },
-	{ name: "Lojas Petz", sector: "Varejo", icon: ShoppingBag },
-	{ name: "Cyrela", sector: "Construção", icon: Building },
-	{ name: "Hospital Moinhos de Vento", sector: "Saúde", icon: Hospital },
-	{ name: "Multiplan", sector: "Shopping Centers", icon: ShoppingBasket },
-	{ name: "Wagnerpar", sector: "Construção", icon: Building },
-	{ name: "Maiojama", sector: "Construção", icon: Building },
-	{ name: "ABF Developments", sector: "Construção", icon: Building },
-	{ name: "Grupo Isdra", sector: "Construção", icon: Building },
-];
+// ─── Tipos ────────────────────────────────────────────────────────────────────
 
-const sectors = [
-	{ name: "Construção", count: 8, icon: Building },
-	{ name: "Saúde", count: 1, icon: Hospital },
-	{ name: "Varejo", count: 3, icon: ShoppingBag },
-];
+interface Mensagem {
+	id: number;
+	name: string;
+	email: string;
+	phone: string | null;
+	company: string | null;
+	subject: string;
+	message: string;
+	ip_address: string;
+	created_at: Date;
+}
 
-const testimonials = [
-	{
-		quote:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-		author: "Carlos Mendes",
-		role: "Diretor de Operações",
-		company: "Empresa Alpha",
-		rating: 5,
-	},
-	{
-		quote:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-		author: "Fernanda Lima",
-		role: "Gerente de Projetos",
-		company: "Construtora Beta",
-		rating: 5,
-	},
-	{
-		quote:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-		author: "Roberto Silva",
-		role: "Superintendente",
-		company: "Hospital Gamma",
-		rating: 5,
-	},
-];
+interface Estatisticas {
+	totalMensagens: number;
+	mensagensHoje: number;
+	tentativasBloqueadas: number;
+	ultimaAtividade: Date | null;
+}
 
-export default function AdministradorPage() {
+// ─── Funções de busca no banco (Server-side) ──────────────────────────────────
+
+async function buscarEstatisticas(): Promise<Estatisticas> {
+	const [total, hoje, bloqueadas, ultima] = await Promise.all([
+		pool.query(`SELECT COUNT(*) FROM site_optare_email.mensagens`),
+		pool.query(
+			`SELECT COUNT(*) FROM site_optare_email.mensagens
+       WHERE created_at > NOW() - INTERVAL '24 hours'`,
+		),
+		pool.query(
+			`SELECT COUNT(*) FROM site_optare_email.attempts
+       WHERE created_at > NOW() - INTERVAL '24 hours'`,
+		),
+		pool.query(
+			`SELECT created_at FROM site_optare_email.mensagens
+       ORDER BY created_at DESC LIMIT 1`,
+		),
+	]);
+
+	return {
+		totalMensagens: Number(total.rows[0].count),
+		mensagensHoje: Number(hoje.rows[0].count),
+		tentativasBloqueadas: Number(bloqueadas.rows[0].count),
+		ultimaAtividade: ultima.rows[0]?.created_at ?? null,
+	};
+}
+
+async function buscarMensagens(): Promise<Mensagem[]> {
+	const resultado = await pool.query(
+		`SELECT id, name, email, phone, company, subject, message, ip_address, created_at
+     FROM site_optare_email.mensagens
+     ORDER BY created_at DESC
+     LIMIT 50`,
+	);
+	return resultado.rows;
+}
+
+// ─── Utilitários de formatação ─────────────────────────────────────────────
+
+function formatarData(data: Date): string {
+	return new Intl.DateTimeFormat("pt-BR", {
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric",
+		hour: "2-digit",
+		minute: "2-digit",
+	}).format(new Date(data));
+}
+
+function formatarDataRelativa(data: Date): string {
+	const agora = new Date();
+	const diff = agora.getTime() - new Date(data).getTime();
+	const minutos = Math.floor(diff / 60000);
+	const horas = Math.floor(minutos / 60);
+	const dias = Math.floor(horas / 24);
+
+	if (minutos < 1) return "agora mesmo";
+	if (minutos < 60) return `há ${minutos} min`;
+	if (horas < 24) return `há ${horas}h`;
+	if (dias === 1) return "ontem";
+	return `há ${dias} dias`;
+}
+
+// ─── Componentes de UI ─────────────────────────────────────────────────────
+
+function CartaoEstatistica({
+	icone: Icone,
+	rotulo,
+	valor,
+	destaque = false,
+}: {
+	icone: React.ElementType;
+	rotulo: string;
+	valor: string | number;
+	destaque?: boolean;
+}) {
+	return (
+		<div
+			className={`
+        p-6 border border-border
+        ${destaque ? "bg-primary text-primary-foreground" : "bg-card text-foreground"}
+      `}
+		>
+			<div className="flex items-center justify-between mb-4">
+				<span
+					className={`text-xs font-medium uppercase tracking-widest
+          ${destaque ? "text-primary-foreground/70" : "text-muted-foreground"}`}
+				>
+					{rotulo}
+				</span>
+				<Icone
+					className={`h-4 w-4 ${destaque ? "text-primary-foreground/70" : "text-muted-foreground"}`}
+				/>
+			</div>
+			<p className="text-4xl font-bold">{valor}</p>
+		</div>
+	);
+}
+
+function LinhaTabela({ mensagem }: { mensagem: Mensagem }) {
+	return (
+		<tr className="border-b border-border hover:bg-muted/30 transition-colors group">
+			<td className="px-4 py-4 text-xs text-muted-foreground font-mono">
+				#{mensagem.id}
+			</td>
+			<td className="px-4 py-4">
+				<div className="flex items-center gap-2">
+					<div className="w-7 h-7 bg-primary/10 flex items-center justify-center flex-shrink-0">
+						<span className="text-xs font-bold text-primary">
+							{mensagem.name.charAt(0).toUpperCase()}
+						</span>
+					</div>
+					<div>
+						<p className="text-sm font-medium text-foreground leading-none">
+							{mensagem.name}
+						</p>
+						<p className="text-xs text-muted-foreground mt-0.5">
+							{mensagem.email}
+						</p>
+					</div>
+				</div>
+			</td>
+			<td className="px-4 py-4">
+				<span className="text-sm text-foreground">
+					{mensagem.company ?? (
+						<span className="text-muted-foreground italic">—</span>
+					)}
+				</span>
+			</td>
+			<td className="px-4 py-4 max-w-[220px]">
+				<p className="text-sm text-foreground truncate">{mensagem.subject}</p>
+				<p className="text-xs text-muted-foreground truncate mt-0.5">
+					{mensagem.message}
+				</p>
+			</td>
+			<td className="px-4 py-4">
+				<span className="text-xs font-mono text-muted-foreground">
+					{mensagem.ip_address}
+				</span>
+			</td>
+			<td className="px-4 py-4 text-right">
+				<p className="text-xs text-muted-foreground">
+					{formatarDataRelativa(mensagem.created_at)}
+				</p>
+				<p className="text-xs text-muted-foreground/60 mt-0.5">
+					{formatarData(mensagem.created_at)}
+				</p>
+			</td>
+		</tr>
+	);
+}
+
+// ─── Página principal (Server Component) ──────────────────────────────────────
+
+export default async function AdministradorPage() {
+	// Busca paralela — as duas queries rodam ao mesmo tempo
+	const [estatisticas, mensagens] = await Promise.all([
+		buscarEstatisticas(),
+		buscarMensagens(),
+	]);
+
 	return (
 		<>
 			<Header />
-			<main className="pt-20">
-				{/* Hero */}
-				<section className="py-24 bg-card">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-3xl text-center">
-							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
-								<span className="h-px w-8 bg-primary" />
-								Nossos Clientes
-								<span className="h-px w-8 bg-primary" />
+			<main className="pt-20 min-h-screen bg-background">
+				{/* Cabeçalho da área administrativa */}
+				<section className="border-b border-border bg-card">
+					<div className="mx-auto max-w-7xl px-6 lg:px-8 py-8">
+						<div className="flex items-end justify-between">
+							<div>
+								<div className="flex items-center gap-2 text-xs text-primary mb-2 font-mono uppercase tracking-widest">
+									<span className="h-px w-6 bg-primary" />
+									Painel Administrativo
+								</div>
+								<h1 className="text-3xl font-bold tracking-tight text-foreground">
+									Central de Mensagens
+								</h1>
+								<p className="mt-1 text-sm text-muted-foreground">
+									Formulários de contato recebidos pelo site
+								</p>
 							</div>
-							<h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-								Parceiros de Confiança
-							</h1>
-							<p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-								Temos orgulho de trabalhar com uma variedade de clientes, desde
-								grandes corporações até pequenas empresas, em diversos setores.
-								Nossa dedicação à excelência e à inovação nos permite oferecer
-								soluções personalizadas que atendem às necessidades específicas
-								de cada cliente.
-							</p>
-						</div>
-					</div>
-				</section>
-
-				{/* Setores */}
-				<section className="py-24">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="text-center mb-16">
-							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-								Setores que Atendemos
-							</h2>
-							<p className="mt-4 text-muted-foreground">
-								Atualmente, atendemos clientes de diversos setores, com destaque
-								para construção, saúde e varejo.
-							</p>
-						</div>
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-20">
-							{sectors.map((sector) => (
-								<div
-									key={sector.name}
-									className="bg-card p-6 rounded-lg border border-border text-center hover:border-primary/50 transition-colors"
-								>
-									<div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3 mb-4">
-										<sector.icon className="h-10 w-10 text-primary" />
-									</div>
-									<h1 className="font-semibold text-foreground">
-										{sector.name}
-									</h1>
-									<p className="text-2xl font-bold text-primary mt-2">
-										{sector.count}+
-									</p>
-									<p className="text-xs text-muted-foreground">clientes</p>
+							{estatisticas.ultimaAtividade && (
+								<div className="flex items-center gap-2 text-xs text-muted-foreground">
+									<Clock className="h-3 w-3" />
+									<span>
+										Última mensagem{" "}
+										{formatarDataRelativa(estatisticas.ultimaAtividade)}
+									</span>
 								</div>
-							))}
+							)}
 						</div>
 					</div>
 				</section>
 
-				{/* Grid de Clientes */}
-				<section className="py-24 bg-card">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="text-center mb-16">
-							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-								Empresas que Confiam em Nós
-							</h2>
-							<p className="mt-4 text-muted-foreground">
-								Essas são algumas das empresas que já confiaram em nossos
-								serviços e se beneficiaram de nossas soluções em engenharia.
-							</p>
-						</div>
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-							{clients.map((client) => (
-								<div
-									key={client.name}
-									className="bg-background p-6 rounded-lg border border-border flex flex-col items-center text-center hover:border-primary/50 transition-colors"
-								>
-									<div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-										<client.icon className="h-8 w-8 text-primary/50" />
-									</div>
-									<h3 className="font-semibold text-foreground">
-										{client.name}
-									</h3>
-									<p className="text-sm text-muted-foreground mt-1">
-										{client.sector}
-									</p>
-								</div>
-							))}
-						</div>
+				{/* Cards de estatísticas */}
+				<section className="mx-auto max-w-7xl px-6 lg:px-8 py-8">
+					<div className="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-border">
+						<CartaoEstatistica
+							icone={Mail}
+							rotulo="Total recebido"
+							valor={estatisticas.totalMensagens}
+							destaque
+						/>
+						<CartaoEstatistica
+							icone={TrendingUp}
+							rotulo="Últimas 24h"
+							valor={estatisticas.mensagensHoje}
+						/>
+						<CartaoEstatistica
+							icone={ShieldAlert}
+							rotulo="Bloqueadas hoje"
+							valor={estatisticas.tentativasBloqueadas}
+						/>
+						<CartaoEstatistica
+							icone={MessageSquare}
+							rotulo="Exibindo agora"
+							valor={`${mensagens.length} de ${estatisticas.totalMensagens}`}
+						/>
 					</div>
 				</section>
 
-				{/* Depoimentos */}
-				<section className="py-24">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="text-center mb-16">
-							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-								O Que Nossos Clientes Dizem
+				{/* Tabela de mensagens */}
+				<section className="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
+					<div className="border border-border">
+						{/* Cabeçalho da tabela */}
+						<div className="px-6 py-4 border-b border-border bg-card flex items-center justify-between">
+							<h2 className="text-sm font-medium text-foreground">
+								Mensagens recentes
 							</h2>
-							<p className="mt-4 text-muted-foreground">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-							</p>
+							<span className="text-xs text-muted-foreground font-mono">
+								{mensagens.length} registros
+							</span>
 						</div>
-						<div className="grid md:grid-cols-3 gap-8">
-							{testimonials.map((testimonial) => (
-								<div
-									key={testimonial.author}
-									className="bg-card p-8 rounded-lg border border-border"
-								>
-									<Quote className="h-8 w-8 text-primary/30 mb-4" />
-									<div className="flex gap-1 mb-4">
-										{[...Array(testimonial.rating)].map((_, i) => (
-											<Star
-												key={i}
-												className="h-4 w-4 fill-primary text-primary"
-											/>
+
+						{mensagens.length === 0 ? (
+							// Estado vazio
+							<div className="py-20 text-center">
+								<Mail className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+								<p className="text-sm text-muted-foreground">
+									Nenhuma mensagem recebida ainda.
+								</p>
+							</div>
+						) : (
+							// Tabela com dados
+							<div className="overflow-x-auto">
+								<table className="w-full">
+									<thead>
+										<tr className="border-b border-border bg-muted/30">
+											<th className="px-4 py-3 text-left">
+												<span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+													ID
+												</span>
+											</th>
+											<th className="px-4 py-3 text-left">
+												<div className="flex items-center gap-1.5">
+													<User className="h-3 w-3 text-muted-foreground" />
+													<span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+														Remetente
+													</span>
+												</div>
+											</th>
+											<th className="px-4 py-3 text-left">
+												<div className="flex items-center gap-1.5">
+													<Building2 className="h-3 w-3 text-muted-foreground" />
+													<span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+														Empresa
+													</span>
+												</div>
+											</th>
+											<th className="px-4 py-3 text-left">
+												<div className="flex items-center gap-1.5">
+													<MessageSquare className="h-3 w-3 text-muted-foreground" />
+													<span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+														Assunto
+													</span>
+												</div>
+											</th>
+											<th className="px-4 py-3 text-left">
+												<div className="flex items-center gap-1.5">
+													<Globe className="h-3 w-3 text-muted-foreground" />
+													<span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+														IP
+													</span>
+												</div>
+											</th>
+											<th className="px-4 py-3 text-right">
+												<div className="flex items-center justify-end gap-1.5">
+													<Calendar className="h-3 w-3 text-muted-foreground" />
+													<span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+														Data
+													</span>
+												</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{mensagens.map((mensagem) => (
+											<LinhaTabela key={mensagem.id} mensagem={mensagem} />
 										))}
-									</div>
-									<p className="text-muted-foreground leading-relaxed">
-										{testimonial.quote}
-									</p>
-									<div className="mt-6 pt-6 border-t border-border">
-										<p className="font-semibold text-foreground">
-											{testimonial.author}
-										</p>
-										<p className="text-sm text-muted-foreground">
-											{testimonial.role}
-										</p>
-										<p className="text-sm text-primary">
-											{testimonial.company}
-										</p>
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</section>
+									</tbody>
+								</table>
+							</div>
+						)}
 
-				{/* CTA */}
-				<section className="py-24 bg-primary">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-						<h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
-							Faça Parte da Nossa Lista de Clientes
-						</h2>
-						<p className="mt-4 text-lg text-primary-foreground/80">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Junte-se
-							a centenas de empresas satisfeitas.
-						</p>
-						<Button size="lg" variant="secondary" className="mt-8" asChild>
-							<Link href="/contato">
-								Entrar em Contato
-								<ArrowRight className="ml-2 h-4 w-4" />
-							</Link>
-						</Button>
+						{/* Rodapé da tabela */}
+						{mensagens.length > 0 && (
+							<div className="px-6 py-3 border-t border-border bg-card">
+								<p className="text-xs text-muted-foreground">
+									Exibindo as {mensagens.length} mensagens mais recentes. Para
+									consultas avançadas, acesse o banco de dados diretamente.
+								</p>
+							</div>
+						)}
 					</div>
 				</section>
 			</main>
