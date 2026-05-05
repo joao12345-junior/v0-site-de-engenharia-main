@@ -11,7 +11,8 @@ const secretRefresh = new TextEncoder().encode(process.env.JWT_SECRET_REFRESH!);
 export async function POST() {
 	// Leia o refresh_token que deveria estar num cookie httpOnly
 	const cookieStore = await cookies();
-	const refresh_token = cookieStore.get("refresh_token")?.value;
+	const refresh_token = cookieStore.get("refresh_token")?.value as string;
+	const hashed_refresh_token = createHashToken(refresh_token);
 
 	// Se não há refresh_token, a sessão não existe
 	if (!refresh_token) {
@@ -26,9 +27,9 @@ export async function POST() {
 
 	try {
 		// 1. Valida a assinatura e expiração do token
-		await jwtVerify(refresh_token, secretRefresh);
+		if (!(await jwtVerify(refresh_token, secretRefresh)))
+			throw new Error("Token Expirado");
 
-		const hashed_refresh_token = createHashToken(refresh_token);
 		console.log(`\n [/refresh/route] token hash: ${hashed_refresh_token}`);
 		// 2. Busca a sessão pelo token
 		const result = await pool.query(
@@ -70,7 +71,7 @@ export async function POST() {
 		// Token expirado ou mal formado - limpa a sessão
 		await pool.query(
 			`DELETE FROM site_optare_user.user WHERE refresh_token = $1`,
-			[refresh_token],
+			[hashed_refresh_token],
 		);
 		return NextResponse.json(
 			{ valid: false, message: "Sessão expirada" },

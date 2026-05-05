@@ -3,7 +3,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { NextResponse } from "next/server";
 
 export default function AdministradorLayout({
 	children,
@@ -22,8 +21,9 @@ export default function AdministradorLayout({
 					"Content-Type": "application/json",
 				},
 			})) as any;
+			const data = await response.json();
 			if (!response.ok) {
-				console.log(await response.json().message);
+				console.log(data.message);
 				router.push("/administrador_login");
 				return;
 			}

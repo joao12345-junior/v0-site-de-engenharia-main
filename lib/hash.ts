@@ -20,16 +20,3 @@ export async function verifyHash(
 export function createHashToken(token: string): string {
 	return createHash("sha256").update(token).digest("hex");
 }
-
-export async function createHashString(Str: string): Promise<string> {
-	try {
-		return argon2.hash(Str, {
-			type: argon2.argon2d,
-			hashLength: 70,
-			timeCost: 1,
-		});
-	} catch (err: unknown) {
-		console.error("\n[/lib/hash]Error creating string hashed: ", err);
-		return "";
-	}
-}

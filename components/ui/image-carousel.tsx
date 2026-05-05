@@ -6,12 +6,14 @@ interface ImageCarouselProps {
 	title: string;
 	images: string[];
 	fallbackIcon?: React.ReactNode;
+	sizes?: string;
 }
 
 export function ImageCarousel({
 	title,
 	images,
 	fallbackIcon,
+	sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
 }: ImageCarouselProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -37,6 +39,7 @@ export function ImageCarousel({
 				fill
 				className="object-cover"
 				priority={currentIndex === 0}
+				sizes={sizes}
 			/>
 			{images.length > 1 && (
 				<>
