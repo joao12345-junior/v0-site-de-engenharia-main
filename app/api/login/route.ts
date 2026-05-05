@@ -2,10 +2,9 @@ import { NextResponse } from "next/server";
 import { pool } from "../../../lib/db";
 import { cookies } from "next/headers";
 import { createTokenAccess, createTokenRefresh } from "@/lib/token";
-import { createHashString, verifyHash } from "@/lib/hash";
+import { createHashToken, verifyHash } from "@/lib/hash";
 import { NIVEL_ACESSO } from "@/lib/constants/access-level";
 import { z } from "zod";
-import { tr } from "date-fns/locale";
 
 const LoginSchema = z.object({
 	email: z.string().email().max(254),
@@ -86,7 +85,7 @@ export async function POST(req: Request) {
 			);
 		}
 
-		if (await !verifyHash(password, result.rows[0].password)) {
+		if (!(await verifyHash(password, result.rows[0].password))) {
 			await InsertUserAttempt();
 			return NextResponse.json(
 				{ message: "Credenciais inválidas" },
@@ -96,7 +95,7 @@ export async function POST(req: Request) {
 
 		const access_token = await createTokenAccess(email);
 		const refresh_token = await createTokenRefresh(email);
-		const hashed_refresh_token = createHashString(refresh_token);
+		const hashed_refresh_token = createHashToken(refresh_token);
 
 		const cookieStore = await cookies();
 		cookieStore.set("access_token", access_token, {
@@ -123,7 +122,7 @@ export async function POST(req: Request) {
            refresh_token = EXCLUDED.refresh_token,
            ip_address = EXCLUDED.ip_address,
            access_level = EXCLUDED.access_level`,
-			[email, ip, refresh_token, NIVEL_ACESSO.ADMIN],
+			[email, ip, hashed_refresh_token, NIVEL_ACESSO.ADMIN],
 		);
 
 		await pool.query(

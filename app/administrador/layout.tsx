@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { NextResponse } from "next/server";
 
 export default function AdministradorLayout({
 	children,
@@ -10,23 +11,26 @@ export default function AdministradorLayout({
 	children: React.ReactNode;
 }) {
 	const router = useRouter();
+	const time = 14 * 60 * 1000; // 14 min
 
 	useEffect(() => {
-		// Inicia o timer quando o layout monta
-		// ou seja, quando o usuário entra na área protegida
-		const temporizador = setTimeout(
-			async () => {
-				const resposta = await fetch("/api/refresh", { method: "POST" });
-
-				if (!resposta.ok) {
-					router.push("/administrador_login");
-				}
-				// Se ok, o novo cookie já foi definido pelo servidor
-				// O próximo ciclo começa na próxima navegação
-			},
-			14 * 60 * 1000,
-		); // 14 minutos
-
+		let temporizador: ReturnType<typeof setTimeout>;
+		const renovar = async () => {
+			const response = (await fetch("/api/refresh", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})) as any;
+			if (!response.ok) {
+				console.log(await response.json().message);
+				router.push("/administrador_login");
+				return;
+			}
+			// Agenda o próximo intervalo
+			temporizador = setTimeout(renovar, time);
+		};
+		temporizador = setTimeout(renovar, time);
 		return () => clearTimeout(temporizador);
 	}, [router]);
 
