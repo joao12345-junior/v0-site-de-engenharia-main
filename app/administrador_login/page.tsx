@@ -6,6 +6,7 @@ import { Header } from "@/components/header";
 import { Eye, EyeOff } from "lucide-react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function AdministradorLoginPage() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -22,20 +23,32 @@ export default function AdministradorLoginPage() {
 
 		const data = Object.fromEntries(formData.entries());
 
-		const res = await fetch("/api/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
+		toast.promise<{ message: string }>(
+			fetch("/api/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+				credentials: "include", // Importante: inclui cookies na requisição
+			}).then(async (res) => {
+				const result = await res.json();
+				if (!res.ok) throw new Error(result.message);
+				return result;
+			}),
+			{
+				position: "top-center",
+				loading: "Loading...",
+				success: (data) => {
+					router.push("/administrador/teste/app");
+					return data.message;
+				},
+				error: (err) => {
+					router.refresh;
+					return err.message;
+				},
 			},
-			body: JSON.stringify(data),
-			credentials: "include", // Importante: inclui cookies na requisição
-		});
-
-		const result = await res.json();
-		alert(result.message);
-		if (result.success) {
-			router.push("/administrador");
-		}
+		);
 	}
 
 	return (

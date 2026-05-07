@@ -21,7 +21,7 @@ export function HeroSection() {
 							Uma Nova Opção em Projetos Complementares
 						</h1>
 						<p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-							A OPTARE é especializada na elaboração de projetos de engenharia
+							A Optare é especializada na elaboração de projetos de engenharia
 							para o setor da construção civil. Desenvolvemos projetos
 							hidrossanitários, de prevenção e combate à incêndios, elétricos,
 							de telefonia, SPDA e gás.

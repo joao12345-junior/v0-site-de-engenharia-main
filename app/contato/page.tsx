@@ -10,8 +10,9 @@ import { Mail, MapPin, Clock, Send } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
-import React, { useRef } from "react";
-import { IMaskInput } from "react-imask";
+import { useRef } from "react";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
 
 const contactInfo = [
 	{
@@ -56,33 +57,41 @@ const contactInfo = [
 export default function ContatoPage() {
 	// HTMLInputElement é o tipo correto - é o que a ref vai conter em runtime
 	const telRef = useRef<HTMLInputElement>(null);
+	const { register, handleSubmit, reset } = useForm();
 
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-
+	const onSubmit = async function (data: any) {
 		const tellValue = telRef.current?.value ?? "";
 
 		// Verifica se o campo ainda tem caracteres de máscara não preenchidos
 		if (tellValue.includes("_"))
-			return alert("Por favor, preencha o campo de telefone corretamente.");
-
-		const formData = new FormData(e.currentTarget);
-		formData.set("phone", tellValue);
-
-		const data = Object.fromEntries(formData.entries());
+			return toast.warning(
+				"Por favor, preencha o campo de telefone corretamente.",
+				{ position: "top-center" },
+			);
+		data.phone = tellValue;
 		console.log(data);
 
-		const res = await fetch("/api/email", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
+		toast.promise<{ message: string }>(
+			fetch("/api/email", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			}).then(async (res) => {
+				const result = await res.json();
+				if (!res.ok) throw new Error(result.message);
+				return result;
+			}),
+			{
+				position: "top-center",
+				loading: "Enviando...",
+				success: (data) => data.message,
+				error: (err) => err.message,
 			},
-			body: JSON.stringify(data),
-		});
-
-		const result = await res.json();
-		alert(result.message);
-	}
+		);
+		reset();
+	};
 
 	return (
 		<>
@@ -152,7 +161,10 @@ export default function ContatoPage() {
 									com você o mais breve possível.
 								</p>
 
-								<form onSubmit={handleSubmit} className="mt-8 space-y-6">
+								<form
+									onSubmit={handleSubmit(onSubmit)}
+									className="mt-8 space-y-6"
+								>
 									<div className="grid sm:grid-cols-2 gap-4">
 										<div>
 											<label
@@ -164,9 +176,9 @@ export default function ContatoPage() {
 											<Input
 												type="text"
 												id="name"
-												name="name"
 												placeholder="Seu nome"
 												required={true}
+												{...register("name")}
 											/>
 										</div>
 										<div>
@@ -177,12 +189,12 @@ export default function ContatoPage() {
 												E-mail
 											</label>
 											<Input
-												name="email"
 												id="email"
 												type="email"
 												placeholder="seu.email@exemplo.com"
 												pattern="^\S+@\S+\.\S+$"
 												required={true}
+												{...register("email")}
 											/>
 										</div>
 									</div>
@@ -194,7 +206,7 @@ export default function ContatoPage() {
 											>
 												Telefone
 											</label>
-											<InputTel name="phone" ref={telRef} id="phone" />
+											<InputTel name="phone" id="phone" ref={telRef} required />
 										</div>
 										<div>
 											<label
@@ -204,11 +216,11 @@ export default function ContatoPage() {
 												Empresa
 											</label>
 											<Input
-												name="company"
 												type="text"
 												id="company"
 												placeholder="Nome da empresa"
 												required={true}
+												{...register("company")}
 											/>
 										</div>
 									</div>
@@ -220,11 +232,11 @@ export default function ContatoPage() {
 											Assunto
 										</label>
 										<Input
-											name="subject"
 											type="text"
 											id="subject"
 											placeholder="Assunto da mensagem"
 											required={true}
+											{...register("subject")}
 										/>
 									</div>
 									<div>
@@ -239,7 +251,7 @@ export default function ContatoPage() {
 											rows={5}
 											placeholder="Digite aqui o conteúdo da sua mensagem"
 											required={true}
-											name="message"
+											{...register("message")}
 										/>
 									</div>
 									<Button type="submit" size="lg" className="w-full sm:w-auto">

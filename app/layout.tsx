@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const jetbrainsMono = JetBrains_Mono({
 	subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
 					{children}
 				</ThemeProvider>
+				<Toaster />
 			</body>
 		</html>
 	);

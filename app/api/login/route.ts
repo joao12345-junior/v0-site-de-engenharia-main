@@ -11,6 +11,26 @@ const LoginSchema = z.object({
 	password: z.string().min(1).max(128),
 });
 
+async function InsertUserAttempt(email: string, ip_address: string) {
+	await pool.query(
+		`INSERT INTO site_optare_user.attempts (email, ip_address) 
+	 VALUES ($1, $2)`,
+		[email, ip_address],
+	);
+}
+
+async function GetUserAttempts(
+	email: string,
+	ip_address: string,
+): Promise<number> {
+	const result = await pool.query(
+		`SELECT COUNT(*) FROM site_optare_user.attempts 
+   WHERE ip_address = $1 AND email = $2 AND created_at > NOW() - INTERVAL '10 minutes'`,
+		[ip_address, email],
+	);
+	return Number(result.rows[0].count);
+}
+
 export async function POST(req: Request) {
 	const body = await req.json();
 
@@ -29,26 +49,6 @@ export async function POST(req: Request) {
 		);
 
 	const { email, password } = validation.data;
-
-	async function InsertUserAttempt() {
-		await pool.query(
-			`INSERT INTO site_optare_user.attempts (email, ip_address) 
-         VALUES ($1, $2)`,
-			[email, ip],
-		);
-	}
-
-	async function GetUserAttempts(
-		email: string,
-		ip_address: string,
-	): Promise<number> {
-		const result = await pool.query(
-			`SELECT COUNT(*) FROM site_optare_user.attempts 
-       WHERE ip_address = $1 AND email = $2 AND created_at > NOW() - INTERVAL '10 minutes'`,
-			[ip_address, email],
-		);
-		return Number(result.rows[0].count);
-	}
 
 	// Numero de tentativas
 	try {
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
 			[email],
 		);
 		if (result.rowCount === 0) {
-			await InsertUserAttempt();
+			await InsertUserAttempt(email, ip);
 			return NextResponse.json(
 				{ message: "Credenciais inválidas" },
 				{ status: 401 },
@@ -86,7 +86,7 @@ export async function POST(req: Request) {
 		}
 
 		if (!(await verifyHash(password, result.rows[0].password))) {
-			await InsertUserAttempt();
+			await InsertUserAttempt(email, ip);
 			return NextResponse.json(
 				{ message: "Credenciais inválidas" },
 				{ status: 401 },

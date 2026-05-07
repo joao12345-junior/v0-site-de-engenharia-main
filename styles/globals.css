@@ -35,7 +35,7 @@
 	--sidebar-accent-foreground: oklch(0.4463 0.1678 27.4784);
 	--sidebar-border: oklch(0.3211 0 0);
 	--sidebar-ring: oklch(0.4463 0.1678 27.4784);
-	--font-sans: JetBrains Mono, monospace;
+	--font-sans: var(--font-jetbrains), monospace;
 	--font-serif: Courier New, Courier, monospace;
 	--font-mono: JetBrains Mono, monospace;
 	--radius: 0rem;
@@ -94,7 +94,7 @@
 	--sidebar-accent-foreground: oklch(0.5875 0.2303 28.2622);
 	--sidebar-border: oklch(0.3211 0 0);
 	--sidebar-ring: oklch(0.5164 0.2011 28.1378);
-	--font-sans: JetBrains Mono, monospace;
+	--font-sans: var(--font-jetbrains), monospace;
 	--font-serif: Courier New, Courier, monospace;
 	--font-mono: JetBrains Mono, monospace;
 	--radius: 0rem;

@@ -109,9 +109,9 @@ export default function ClientesPage() {
 									<div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3 mb-4">
 										<sector.icon className="h-10 w-10 text-primary" />
 									</div>
-									<h1 className="font-semibold text-foreground">
+									<h3 className="font-semibold text-foreground">
 										{sector.name}
-									</h1>
+									</h3>
 									<p className="text-2xl font-bold text-primary mt-2">
 										{sector.count}+
 									</p>

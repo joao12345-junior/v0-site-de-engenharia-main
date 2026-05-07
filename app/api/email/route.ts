@@ -85,7 +85,6 @@ export async function POST(req: Request) {
 		const attempts = await GetEmailAttempts(body.email, ip_address);
 		console.log("Numeros de tentativas: ", attempts);
 		if (attempts >= 5) {
-			await InsertEmailAttempt(body.email, ip_address);
 			return NextResponse.json(
 				{
 					message: "Muitas tentativas, espere 1 hora para tentar novamente!",
@@ -94,6 +93,7 @@ export async function POST(req: Request) {
 				{ status: 429 },
 			);
 		}
+		await InsertEmailAttempt(body.email, ip_address);
 	} catch (err: unknown) {
 		console.error("[/api/email] Erro ao verificar tentativas: ", err);
 		return NextResponse.json(
