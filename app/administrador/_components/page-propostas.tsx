@@ -272,7 +272,6 @@ export function PagePropostas({
 						} else {
 							setPropostas((prev) => prev.map((x) => (x.id === p.id ? p : x)));
 						}
-						window.toast && window.toast("Proposta " + p.numero + " salva.");
 						setEdit(null);
 					}}
 				/>

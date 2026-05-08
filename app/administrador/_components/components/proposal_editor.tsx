@@ -1,9 +1,8 @@
 import { ItemProposta, Proposta } from "../lib/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Ic } from "../lib/icons";
 import { TipoStatusProposta } from "../lib/types";
 import { fmtBRL } from "../lib/utils";
-
 interface ProposalEditorProps {
 	proposta: Proposta;
 	onClose: () => void;
@@ -18,7 +17,6 @@ export function ProposalEditor({
 	const [p, setP] = useState(proposta);
 
 	const total = p.itens.reduce((soma, item) => soma + item.val * item.q, 0);
-	const items = p.itens;
 
 	function atualizarItem(
 		id: string,
@@ -33,17 +31,17 @@ export function ProposalEditor({
 		}));
 	}
 
-	function adicionarItem(): undefined {
-		const newItem: ItemProposta = {
+	function adicionarItem(): void {
+		const novoItem: ItemProposta = {
 			id: crypto.randomUUID(),
-			desc: "",
+			desc: "Novo serviço",
 			un: "projeto",
 			q: 1,
 			val: 0,
 		};
 		setP((anterior) => ({
 			...anterior,
-			itens: [...anterior.itens, newItem],
+			itens: [...anterior.itens, novoItem],
 		}));
 	}
 
@@ -264,31 +262,111 @@ export function ProposalEditor({
 										background: "var(--bg-2)",
 									}}
 								>
-									{["Descrição", "Un", "Qtd", "Valor un.", "Total"].map((h) => (
-										<th
-											key={h}
-											style={{
-												padding: "10px 14px",
-												textAlign: "left",
-												fontSize: 10,
-												color: "var(--muted)",
-												textTransform: "uppercase",
-											}}
-										>
-											{h}
-										</th>
-									))}
+									<th
+										style={{
+											padding: "10px 10px",
+											textAlign: "left",
+											fontSize: 10,
+											color: "var(--muted)",
+											textTransform: "uppercase",
+										}}
+									>
+										Descrição
+									</th>
+									<th
+										style={{
+											padding: "10px 10px",
+											width: 80,
+											fontSize: 10,
+											color: "var(--muted)",
+											textTransform: "uppercase",
+										}}
+									>
+										Un
+									</th>
+									<th
+										style={{
+											padding: "10px 10px",
+											width: 60,
+											fontSize: 10,
+											color: "var(--muted)",
+											textTransform: "uppercase",
+										}}
+									>
+										Qtd
+									</th>
+									<th
+										style={{
+											padding: "10px 10px",
+											width: 120,
+											fontSize: 10,
+											color: "var(--muted)",
+											textTransform: "uppercase",
+										}}
+									>
+										Valor un.
+									</th>
+									<th
+										style={{
+											padding: "10px 10px",
+											width: 120,
+											fontSize: 10,
+											color: "var(--muted)",
+											textTransform: "uppercase",
+										}}
+									>
+										Total
+									</th>
+									<th style={{ width: 40 }} />
 								</tr>
 							</thead>
 							<tbody>
-								{items.map((it, i) => (
+								{p.itens.map((item) => (
 									<tr
-										key={i}
+										key={item.id}
 										style={{ borderBottom: "1px solid var(--border)" }}
 									>
-										<td style={{ padding: "10px 14px" }}>{it.desc}</td>
-										<td style={{ padding: "10px 14px", color: "var(--muted)" }}>
-											{it.un}
+										<td style={{ padding: "20px 14px" }}>
+											<input
+												className="input"
+												value={item.desc}
+												onChange={(e) =>
+													atualizarItem(item.id, "desc", e.target.value)
+												}
+											/>
+										</td>
+										<td
+											style={{
+												padding: "8px 6px",
+												width: 110,
+												color: "var(--muted)",
+											}}
+										>
+											<input
+												className="input"
+												value={item.un}
+												onChange={(e) =>
+													atualizarItem(item.id, "un", e.target.value)
+												}
+											/>
+										</td>
+										<td
+											style={{
+												padding: "8px 6px",
+												width: 80,
+												fontVariantNumeric: "tabular-nums",
+											}}
+										>
+											<input
+												className="input"
+												type="number"
+												value={item.q}
+												min={1}
+												style={{ MozAppearance: "textfield" }}
+												onChange={(e) =>
+													atualizarItem(item.id, "q", +e.target.value)
+												}
+											/>
 										</td>
 										<td
 											style={{
@@ -296,15 +374,15 @@ export function ProposalEditor({
 												fontVariantNumeric: "tabular-nums",
 											}}
 										>
-											{it.q}
-										</td>
-										<td
-											style={{
-												padding: "10px 14px",
-												fontVariantNumeric: "tabular-nums",
-											}}
-										>
-											{fmtBRL(it.val)}
+											<input
+												className="input"
+												type="number"
+												min={0}
+												value={item.val}
+												onChange={(e) =>
+													atualizarItem(item.id, "val", +e.target.value)
+												}
+											/>
 										</td>
 										<td
 											style={{
@@ -313,13 +391,24 @@ export function ProposalEditor({
 												fontVariantNumeric: "tabular-nums",
 											}}
 										>
-											{fmtBRL(it.val * it.q)}
+											{fmtBRL(item.val * item.q)}
 										</td>
-										<td>
-											<button onClick={removerItem(it.id)}></button>
+										<td style={{ padding: "8px 10px", textAlign: "center" }}>
+											<button
+												className="btn-ghost"
+												onClick={() => removerItem(item.id)}
+												style={{
+													padding: 4,
+													border: "1px solid var(--border)",
+												}}
+											>
+												<Ic.Trash size={12} />
+											</button>
 										</td>
 									</tr>
 								))}
+							</tbody>
+							<tfoot>
 								<tr>
 									<td
 										colSpan={4}
@@ -344,13 +433,13 @@ export function ProposalEditor({
 										{fmtBRL(total)}
 									</td>
 								</tr>
-							</tbody>
+							</tfoot>
 						</table>
 					</div>
 					<button
 						className="btn-ghost"
 						style={{ marginTop: 10 }}
-						onClick={adicionarItem()}
+						onClick={() => adicionarItem()}
 					>
 						<Ic.Plus size={13} /> Adicionar item
 					</button>
