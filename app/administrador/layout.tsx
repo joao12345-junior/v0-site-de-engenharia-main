@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import "./pages/style/style.css";
 
 export default function AdministradorLayout({
 	children,
