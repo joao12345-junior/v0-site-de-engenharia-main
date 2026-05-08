@@ -1,5 +1,9 @@
+import type { Proposta } from "./page-propostas";
+import type { Produto } from "./page-produtos";
+import type { Projeto } from "./page-projetos";
+
 // Mock data — Optare admin
-const SEED = (() => {
+export const SEED = (() => {
 	const projetosFuturos = [
 		{
 			id: "pf1",
@@ -11,7 +15,7 @@ const SEED = (() => {
 			prazo: "2027-Q1",
 			area: "18.400 m²",
 			fotos: 0,
-			capa: null,
+			capa: undefined,
 		},
 		{
 			id: "pf2",
@@ -23,7 +27,7 @@ const SEED = (() => {
 			prazo: "2026-Q3",
 			area: "4.200 m²",
 			fotos: 0,
-			capa: null,
+			capa: undefined,
 		},
 		{
 			id: "pf3",
@@ -35,7 +39,7 @@ const SEED = (() => {
 			prazo: "2027-Q4",
 			area: "32.000 m²",
 			fotos: 0,
-			capa: null,
+			capa: undefined,
 		},
 		{
 			id: "pf4",
@@ -47,7 +51,7 @@ const SEED = (() => {
 			prazo: "2027-Q2",
 			area: "9.800 m²",
 			fotos: 0,
-			capa: null,
+			capa: undefined,
 		},
 		{
 			id: "pf5",
@@ -59,7 +63,7 @@ const SEED = (() => {
 			prazo: "2026-Q4",
 			area: "12.500 m²",
 			fotos: 0,
-			capa: null,
+			capa: undefined,
 		},
 		{
 			id: "pf6",
@@ -71,9 +75,9 @@ const SEED = (() => {
 			prazo: "2026-Q3",
 			area: "1.900 m²",
 			fotos: 0,
-			capa: null,
+			capa: undefined,
 		},
-	];
+	] satisfies Projeto[];
 	const produtosFuturos = [
 		{
 			id: "pr1",
@@ -115,7 +119,7 @@ const SEED = (() => {
 			sku: "OPT-INC-SP",
 			fotos: 0,
 		},
-	];
+	] satisfies Produto[];
 	const emails = [
 		{
 			id: "e1",
@@ -288,7 +292,7 @@ const SEED = (() => {
 			vencimento: "2026-04-22",
 			responsavel: "Márcio Trolli",
 		},
-	];
+	] satisfies Proposta[];
 	const clientes = [
 		{
 			id: "c1",
@@ -508,9 +512,12 @@ const SEED = (() => {
 	// 12 weeks of synthetic activity
 	const atividade = Array.from({ length: 12 }, (_, i) => ({
 		semana: "S" + (i + 1),
-		propostas: 3 + Math.round(Math.sin(i * 0.7) * 2 + Math.random() * 3),
-		projetos: 1 + Math.round(Math.cos(i * 0.5) * 1 + Math.random() * 2),
-		emails: 18 + Math.round(Math.sin(i * 0.4) * 8 + Math.random() * 10),
+		// Apenas funções matemáticas puras — mesmo resultado sempre
+		propostas:
+			3 + Math.round(Math.abs(Math.sin(i * 0.7) * 2 + Math.sin(i * 1.3))),
+		projetos: 1 + Math.round(Math.abs(Math.cos(i * 0.5) + Math.sin(i * 0.9))),
+		emails:
+			18 + Math.round(Math.abs(Math.sin(i * 0.4) * 8 + Math.cos(i * 0.6) * 5)),
 	}));
 	return {
 		projetosFuturos,
@@ -524,7 +531,3 @@ const SEED = (() => {
 		atividade,
 	};
 })();
-
-window.SEED = SEED;
-window.fmtBRL = (n) =>
-	"R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: 0 });
