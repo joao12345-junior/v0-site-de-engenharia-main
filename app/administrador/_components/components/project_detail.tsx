@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ItemEditavel } from "../lib/types";
+import { ItemEditavel, Projeto } from "../lib/types";
 import { PhotoSlot } from "./photo_slot";
 import { Ic } from "../lib/icons";
 import { Field } from "./field";
@@ -10,6 +10,7 @@ interface ProjectDetailProps<T extends ItemEditavel> {
 	project: T;
 	onClose: () => void;
 	onUpdate: (updater: (p: T) => T) => void;
+	onSave: (p: Projeto) => void;
 	accent: string;
 	isProd?: boolean;
 }
@@ -18,11 +19,13 @@ export function ProjectDetail<T extends ItemEditavel>({
 	project,
 	onClose,
 	onUpdate,
+	onSave,
 	accent,
 	isProd = false,
 }: ProjectDetailProps<T>) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [drag, setDrag] = useState(false);
+	const [p, setP] = useState(project); // p => Project
 
 	const handleFiles = (files: FileList | null) => {
 		if (!files) return;
@@ -229,8 +232,6 @@ export function ProjectDetail<T extends ItemEditavel>({
 								<Field label="Cidade / UF" value={project.cidade} />
 								<Field label="Categoria" value={project.categoria} />
 								<Field label="Status" value={project.status} />
-								<Field label="Prazo estimado" value={project.prazo} />
-								<Field label="Área (m²)" value={project.area} />
 							</>
 						)}
 					</div>
@@ -245,10 +246,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 							paddingTop: 18,
 						}}
 					>
-						<button className="btn-ghost">
-							<Ic.Eye size={14} /> Pré-visualizar no site
-						</button>
-						<button className="btn-primary">
+						<button className="btn-primary" onClick={() => onSave(p)}>
 							<Ic.Check size={14} /> Salvar alterações
 						</button>
 					</div>

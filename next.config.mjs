@@ -16,6 +16,7 @@ const nextConfig = {
 			{ protocol: "https", hostname: "storage.agil.net" },
 
 			{ protocol: "https", hostname: "imgbr.**.com" },
+			{ protocol: "https", hostname: "images.**.com" },
 
 			// AWS S3 — já estava configurado
 			{ protocol: "https", hostname: "**.amazonaws.com" },

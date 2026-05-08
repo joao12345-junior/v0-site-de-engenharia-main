@@ -26,14 +26,12 @@ import { PageProjetos } from "./_components/page-projetos";
 import { PageProdutos } from "./_components/page-produtos";
 import { PageEmails } from "./_components/page-emails";
 import { PagePropostas } from "./_components/page-propostas";
-import {
-	PageConteudo,
-	PageClientes,
-	PageUsuarios,
-	PageLogs,
-	PageConfig,
-	PageAtividade,
-} from "./_components/page-outras";
+import { PageClientes } from "./_components/page-clients";
+import { PageAtividade } from "./_components/page-atividade";
+import { PageConfig } from "./_components/page-config";
+import { PageConteudo } from "./_components/page-conteudo";
+import { PageLogs } from "./_components/page-logs";
+import { PageUsuarios } from "./_components/page-users";
 
 import type { Pagina } from "./_components/lib/types";
 import type { Projeto } from "./_components/lib/types";

@@ -266,7 +266,6 @@ export function PagePropostas({
 								{
 									...p,
 									id: "p" + Date.now(),
-									numero: "#" + (2320 + prev.length),
 								},
 							]);
 						} else {

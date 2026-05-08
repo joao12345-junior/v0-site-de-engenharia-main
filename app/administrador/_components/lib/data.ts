@@ -1,83 +1,58 @@
-import { Proposta } from "./types";
+import { Proposta, TipoCategoria } from "./types";
 import { Projeto } from "./types";
 import { Produto } from "./types";
+import rawProjects from "@/public/JSON/projetos/projects.json";
+
+interface ImagesBruta {
+	subtitulo: string;
+	urls_imagens: string[];
+	localization: string;
+}
+interface ClienteBruto {
+	cliente: string;
+	imagens: ImagesBruta[];
+}
+const CategoriasPorCliente: Record<string, TipoCategoria> = {
+	Cyrela: "Residencial",
+	"Grupo Plaenge": "Residencial",
+	Maiojama: "Residencial",
+	"Hospital Moinhos de Vento": "Saúde",
+	"Grupo Carrefour": "Comercial",
+	"Lojas Renner": "Comercial",
+	// adicione outros conforme necessário...
+};
+
+function mapearProjetosDoJson(): Projeto[] {
+	return (rawProjects as ClienteBruto[]).flatMap((clienteBruto) =>
+		clienteBruto.imagens.map((imagem, indice): Projeto => {
+			// Extraímos a cidade do campo localization (ex: "Porto Alegre, RS")
+			const cidade = imagem.localization ?? "-";
+
+			// Lookup no dicionário - se não encontrar, usa "Comercial" como padrão
+			const categoria: TipoCategoria =
+				CategoriasPorCliente[clienteBruto.cliente] ?? "Comercial";
+
+			return {
+				// Geramos um id único combinando cliente + índice
+				id: `proj-${clienteBruto.cliente.toLowerCase().replace(/\s+/g, "-")}-${indice}`,
+				nome: imagem.subtitulo,
+				cliente: clienteBruto.cliente.slice(),
+				cidade,
+				categoria,
+				status: "Em projeto", // valor padrão — JSON não tem essa info
+				prazo: "—", // valor padrão — JSON não tem essa info
+				area: "—", // valor padrão — JSON não tem essa info
+				fotos: imagem.urls_imagens.length,
+				capa: imagem.urls_imagens[0], // primeira imagem como capa
+				photos: imagem.urls_imagens, // todas as imagens
+			};
+		}),
+	);
+}
 
 // Mock data — Optare admin
 export const SEED = (() => {
-	const projetosFuturos = [
-		{
-			id: "pf1",
-			nome: "Torre Belvedere",
-			cliente: "Construtora Cyrela",
-			cidade: "Porto Alegre/RS",
-			categoria: "Residencial",
-			status: "Em projeto",
-			prazo: "2027-Q1",
-			area: "18.400 m²",
-			fotos: 0,
-			capa: undefined,
-		},
-		{
-			id: "pf2",
-			nome: "Renner Iguatemi POA II",
-			cliente: "Lojas Renner",
-			cidade: "Porto Alegre/RS",
-			categoria: "Comercial",
-			status: "Aprovação",
-			prazo: "2026-Q3",
-			area: "4.200 m²",
-			fotos: 0,
-			capa: undefined,
-		},
-		{
-			id: "pf3",
-			nome: "MedPlex Sul",
-			cliente: "Hospital Moinhos de Vento",
-			cidade: "Porto Alegre/RS",
-			categoria: "Saúde",
-			status: "Em projeto",
-			prazo: "2027-Q4",
-			area: "32.000 m²",
-			fotos: 0,
-			capa: undefined,
-		},
-		{
-			id: "pf4",
-			nome: "Atlântida Beach Club",
-			cliente: "Maiojama",
-			cidade: "Xangri-lá/RS",
-			categoria: "Residencial",
-			status: "Pré-projeto",
-			prazo: "2027-Q2",
-			area: "9.800 m²",
-			fotos: 0,
-			capa: undefined,
-		},
-		{
-			id: "pf5",
-			nome: "Carrefour Distrito C",
-			cliente: "Grupo Carrefour",
-			cidade: "Canoas/RS",
-			categoria: "Comercial",
-			status: "Aprovação",
-			prazo: "2026-Q4",
-			area: "12.500 m²",
-			fotos: 0,
-			capa: undefined,
-		},
-		{
-			id: "pf6",
-			nome: "Petz Tristeza",
-			cliente: "Lojas Petz",
-			cidade: "Porto Alegre/RS",
-			categoria: "Comercial",
-			status: "Em projeto",
-			prazo: "2026-Q3",
-			area: "1.900 m²",
-			fotos: 0,
-			capa: undefined,
-		},
-	] satisfies Projeto[];
+	const projetosFuturos = mapearProjetosDoJson() satisfies Projeto[];
 	const produtosFuturos = [
 		{
 			id: "pr1",

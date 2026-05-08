@@ -27,14 +27,6 @@
 				"localization": "Tramandaí, RS"
 			},
 			{
-				"subtitulo": "RENNER Santa Cruz do Sul Santa Cruz do Sul, RS",
-				"query_busca": "loja renner RENNER Santa Cruz do Sul",
-				"urls_imagens": [
-					"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2642222819191436"
-				],
-				"localization": "Santa Cruz do Sul, RS"
-			},
-			{
 				"subtitulo": "RENNER Florida Buenos Aires, Argentina",
 				"query_busca": "loja renner RENNER Florida Buenos Aires, Argentina",
 				"urls_imagens": [
@@ -515,7 +507,7 @@
 		"cliente": "Hospital Moinhos de Vento",
 		"imagens": [
 			{
-				"subtitulo": "Complexo Hospitalar Moinhos de Vento (Projeto do Bloco 16, Banco de Sangue; reformas e adequações nos Bloco 12, Bloco C, ruas internas, emergência, CTI Adulto, entre outros.) Porto Alegre, RS",
+				"subtitulo": "Complexo Hospitalar Moinhos de Vento Porto Alegre, RS",
 				"query_busca": "hospital Complexo Hospitalar Moinhos de Vento (Projeto do Bloco 16, Banco Sangue; reformas e adequações nos 12, C, ruas internas, emergência, CTI Adulto, entre outros.) Porto Alegre",
 				"urls_imagens": [
 					"https://www.hospitalmoinhos.org.br/media/c9e0cfee-c901-4158-a487-e36cbffdf6ec.png"
@@ -601,14 +593,6 @@
 				"localization": "Capão da Canoa, RS"
 			},
 			{
-				"subtitulo": "Arenas Curumim Curumim, RS",
-				"query_busca": "Arenas Curumim fachada",
-				"urls_imagens": [
-					"https://www.absolutaimoveis.net/arenas-curumim-terreno-a-venda-em-capao-da-canoa-rio-grande-do-sul-codigo-20209"
-				],
-				"localization": "Curumim, RS"
-			},
-			{
 				"subtitulo": "Enseada Lagos Xangri-lá, RS",
 				"query_busca": "Enseada Lagos Xangri-lá fachada",
 				"urls_imagens": [
@@ -643,14 +627,6 @@
 				"urls_imagens": [
 					"https://eduardobecker.com/wp-content/uploads/2020/12/01_Trend-24-Maiojama.jpg",
 					"https://eduardobecker.com/wp-content/uploads/2020/12/02_Trend-24-Maiojama.jpg"
-				],
-				"localization": "Porto Alegre, RS"
-			},
-			{
-				"subtitulo": "Artsy Porto Alegre, RS",
-				"query_busca": "Artsy Porto Alegre fachada",
-				"urls_imagens": [
-					"https://images.adsttc.com/media/images/5cd4/78dd/284d/d103/9600/0022/newsletter/Renan_Constantin_(6).jpg?1557428441"
 				],
 				"localization": "Porto Alegre, RS"
 			},
@@ -750,14 +726,6 @@
 				"localization": "Porto Alegre, RS"
 			},
 			{
-				"subtitulo": "Astir Center Mall Porto Alegre, RS",
-				"query_busca": "Astir Center Mall Porto Alegre fachada",
-				"urls_imagens": [
-					"https://scontent-poa1-1.xx.fbcdn.net/v/t39.30808-6/498205328_2653645444831473_8638299519446418022_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=13d280&_nc_ohc=JLOBQy72_F8Q7kNvwFMs_Xl&_nc_oc=AdrXN5wxjRsZzE78DvjdnW0nqPWphLK2G5j5g9LT9FeL0BLEI82ro05_eQAllM9VvyN_SBszZAoPNj5pzfQu6Xeq&_nc_zt=23&_nc_ht=scontent-poa1-1.xx&_nc_gid=ZQMM-t9fuv_CY4WURACSWw&_nc_ss=7a389&oh=00_Af1ta48FcQMe6vnmGZA19h7W_7x2FBJqrftqzBN3Ctfldg&oe=69E34CA4"
-				],
-				"localization": "Porto Alegre, RS"
-			},
-			{
 				"subtitulo": "Switch Porto Alegre, RS",
 				"query_busca": "Switch Porto Alegre fachada",
 				"urls_imagens": [
@@ -781,15 +749,6 @@
 				"urls_imagens": [
 					"https://media-cdn.tripadvisor.com/media/photo-s/07/9c/05/f1/master-express-cidade.jpg",
 					"https://images.trvl-media.com/lodging/9000000/8130000/8120200/8120186/5fe37123.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
-				],
-				"localization": "Porto Alegre, RS"
-			},
-			{
-				"subtitulo": "Homero Porto Alegre, RS",
-				"query_busca": "Homero Porto Alegre fachada",
-				"urls_imagens": [
-					"https://images.foxter.com.br/rest/image/outer/300/1/foxter/Development/8859/developmentPictures/Homero_Astir%20fachada%20%40ElviraForttuna%20%20(1).JPG",
-					"https://images.foxter.com.br/rest/image/outer/300/1/foxter/Development/8859/developmentPictures/Homero_Astir%20fachada%20%40ElviraForttuna%20%20(5).jpg"
 				],
 				"localization": "Porto Alegre, RS"
 			},

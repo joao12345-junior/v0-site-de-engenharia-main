@@ -1,5 +1,6 @@
 import { Projeto, TipoStatusProjetos } from "../lib/types";
 import { Ic } from "../lib/icons";
+import { useEffect, useState } from "react";
 
 interface ProjectCardProps {
 	p: Projeto;
@@ -17,6 +18,26 @@ function StatusChip({ s }: StatusChipProps) {
 }
 
 export function ProjectCard({ p, onOpen, accent }: ProjectCardProps) {
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [backgroundStyle, setBackgroundStyle] = useState({});
+
+	useEffect(() => {
+		// 1. Cria uma nova imagem na memória
+		const img = new Image();
+		img.src = p.capa as string;
+
+		// 2. Espera o carregamento da URL
+		img.onload = () => {
+			setBackgroundStyle({
+				aspectRatio: "16/9",
+				background: `url(${p.capa}) center/cover`,
+				position: "relative",
+				borderBottom: "1px solid var(--border)",
+			});
+			setIsLoaded(true);
+		};
+	}, [p.capa]);
+
 	return (
 		<button
 			onClick={onOpen}
@@ -40,10 +61,7 @@ export function ProjectCard({ p, onOpen, accent }: ProjectCardProps) {
 		>
 			<div
 				style={{
-					aspectRatio: "16/9",
-					background: p.capa ? `url(${p.capa}) center/cover` : "var(--bg-3)",
-					position: "relative",
-					borderBottom: "1px solid var(--border)",
+					...backgroundStyle,
 				}}
 			>
 				{!p.capa && (
