@@ -40,7 +40,7 @@ export default function AdministradorLoginPage() {
 				position: "top-center",
 				loading: "Loading...",
 				success: (data) => {
-					router.push("/administrador/teste/");
+					router.push("/administrador/");
 					return data.message;
 				},
 				error: (err) => {
