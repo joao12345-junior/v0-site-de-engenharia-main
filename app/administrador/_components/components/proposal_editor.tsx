@@ -306,17 +306,6 @@ export function ProposalEditor({
 									>
 										Valor un.
 									</th>
-									<th
-										style={{
-											padding: "10px 10px",
-											width: 120,
-											fontSize: 10,
-											color: "var(--muted)",
-											textTransform: "uppercase",
-										}}
-									>
-										Total
-									</th>
 									<th style={{ width: 40 }} />
 								</tr>
 							</thead>
@@ -326,7 +315,7 @@ export function ProposalEditor({
 										key={item.id}
 										style={{ borderBottom: "1px solid var(--border)" }}
 									>
-										<td style={{ padding: "20px 14px" }}>
+										<td style={{ padding: "14px 6px" }}>
 											<input
 												className="input"
 												value={item.desc}
@@ -353,7 +342,7 @@ export function ProposalEditor({
 										<td
 											style={{
 												padding: "8px 6px",
-												width: 80,
+												width: 50,
 												fontVariantNumeric: "tabular-nums",
 											}}
 										>
@@ -362,7 +351,10 @@ export function ProposalEditor({
 												type="number"
 												value={item.q}
 												min={1}
-												style={{ MozAppearance: "textfield" }}
+												style={{
+													MozAppearance: "textfield",
+													textAlign: "center",
+												}}
 												onChange={(e) =>
 													atualizarItem(item.id, "q", +e.target.value)
 												}
@@ -383,15 +375,6 @@ export function ProposalEditor({
 													atualizarItem(item.id, "val", +e.target.value)
 												}
 											/>
-										</td>
-										<td
-											style={{
-												padding: "10px 14px",
-												fontWeight: 700,
-												fontVariantNumeric: "tabular-nums",
-											}}
-										>
-											{fmtBRL(item.val * item.q)}
 										</td>
 										<td style={{ padding: "8px 10px", textAlign: "center" }}>
 											<button
