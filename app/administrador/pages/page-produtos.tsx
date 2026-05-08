@@ -1,6 +1,6 @@
 import React from "react";
-import { Ic } from "./icons";
-import { PageContainer } from "./shell";
+import { Ic } from "./lib/icons";
+import { PageContainer } from "./lib/shell";
 import { ItemEditavel, ProjectDetail } from "./page-projetos";
 
 interface ProductCardProps {

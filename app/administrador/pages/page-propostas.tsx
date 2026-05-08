@@ -1,7 +1,7 @@
-import { PageContainer } from "./shell";
+import { PageContainer } from "./lib/shell";
 import React from "react";
 import { fmtBRL } from "./page-dashboard";
-import { Ic } from "./icons";
+import { Ic } from "./lib/icons";
 
 type TipoStatus = "Rascunho" | "Em análise" | "Aprovada" | "Recusada";
 

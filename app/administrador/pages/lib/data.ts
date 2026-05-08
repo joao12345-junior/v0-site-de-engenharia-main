@@ -1,6 +1,6 @@
-import type { Proposta } from "./page-propostas";
-import type { Produto } from "./page-produtos";
-import type { Projeto } from "./page-projetos";
+import type { Proposta } from "../page-propostas";
+import type { Produto } from "../page-produtos";
+import type { Projeto } from "../page-projetos";
 
 // Mock data — Optare admin
 export const SEED = (() => {

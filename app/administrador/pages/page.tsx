@@ -18,9 +18,9 @@ import {
 	TweakSection,
 	TweakRadio,
 	TweakColor,
-} from "./tweaks-panel";
-import { SEED } from "./data";
-import { Sidebar, Topbar } from "./shell";
+} from "./lib/tweaks-panel";
+import { SEED } from "./lib/data";
+import { Sidebar, Topbar } from "./lib/shell";
 import { PageDashboard } from "./page-dashboard";
 import { PageProjetos } from "./page-projetos";
 import { PageProdutos } from "./page-produtos";
@@ -34,7 +34,7 @@ import {
 	PageConfig,
 	PageAtividade,
 } from "./page-outras";
-import type { Pagina } from "./types";
+import type { Pagina } from "./lib/types";
 import type { Projeto } from "./page-projetos";
 import type { Produto } from "./page-produtos";
 import type { Proposta } from "./page-propostas";
