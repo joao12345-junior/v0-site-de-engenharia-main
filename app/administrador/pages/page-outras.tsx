@@ -1,6 +1,6 @@
-import { PageContainer } from "./lib/shell";
-import { SEED } from "./lib/data";
-import { Ic } from "./lib/icons";
+import { PageContainer } from "../lib/shell";
+import { SEED } from "../lib/data";
+import { Ic } from "../lib/icons";
 import React from "react";
 import { Field } from "./page-projetos";
 

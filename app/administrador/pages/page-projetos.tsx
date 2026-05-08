@@ -1,7 +1,7 @@
 // Projetos Futuros — listagem + upload de fotos
 import { useState, useRef } from "react";
-import { Ic } from "./lib/icons";
-import { PageContainer } from "./lib/shell";
+import { Ic } from "../lib/icons";
+import { PageContainer } from "../lib/shell";
 import React from "react";
 
 type TipoStatus = "Em projeto" | "Aprovação" | "Pré-projeto";

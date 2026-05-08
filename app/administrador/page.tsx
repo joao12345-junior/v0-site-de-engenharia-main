@@ -21,11 +21,11 @@ import {
 } from "./lib/tweaks-panel";
 import { SEED } from "./lib/data";
 import { Sidebar, Topbar } from "./lib/shell";
-import { PageDashboard } from "./page-dashboard";
-import { PageProjetos } from "./page-projetos";
-import { PageProdutos } from "./page-produtos";
-import { PageEmails } from "./page-emails";
-import { PagePropostas } from "./page-propostas";
+import { PageDashboard } from "./pages/page-dashboard";
+import { PageProjetos } from "./pages/page-projetos";
+import { PageProdutos } from "./pages/page-produtos";
+import { PageEmails } from "./pages/page-emails";
+import { PagePropostas } from "./pages/page-propostas";
 import {
 	PageConteudo,
 	PageClientes,
@@ -33,11 +33,11 @@ import {
 	PageLogs,
 	PageConfig,
 	PageAtividade,
-} from "./page-outras";
+} from "./pages/page-outras";
 import type { Pagina } from "./lib/types";
-import type { Projeto } from "./page-projetos";
-import type { Produto } from "./page-produtos";
-import type { Proposta } from "./page-propostas";
+import type { Projeto } from "./pages/page-projetos";
+import type { Produto } from "./pages/page-produtos";
+import type { Proposta } from "./pages/page-propostas";
 
 // ─── Tipos TypeScript ──────────────────────────────────────────────────────
 // CONCEITO: Union Types

@@ -11,10 +11,10 @@
 //   ✅ window.PageDashboard = PageDashboard → REMOVIDO
 
 import { useMemo } from "react";
-import { Ic, type IconComponente } from "./lib/icons";
-import { SEED } from "./lib/data";
-import { PageContainer } from "./lib/shell";
-import type { Pagina } from "./lib/types";
+import { Ic, type IconComponente } from "../lib/icons";
+import { SEED } from "../lib/data";
+import { PageContainer } from "../lib/shell";
+import type { Pagina } from "../lib/types";
 // ─── Função utilitária: formatar moeda BRL ────────────────────────────────
 // CONCEITO: Intl.NumberFormat
 // A API Intl (Internationalisation) do JavaScript formata números, datas e
