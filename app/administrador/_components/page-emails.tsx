@@ -1,5 +1,5 @@
-import { Ic, type IconComponente } from "./lib/icons";
-import React from "react";
+import { Ic } from "./lib/icons";
+import { useState, useEffect } from "react";
 
 interface DadosEmail {
 	id: string;
@@ -31,10 +31,10 @@ interface ComposerProps {
 export function PageEmails({ accent, emails, setEmails }: PageEmailsProps) {
 	type EstadoComposing = false | { reply?: DadosEmail };
 
-	const [folder, setFolder] = React.useState("inbox");
-	const [selected, setSelected] = React.useState<string | null>(null);
-	const [composing, setComposing] = React.useState<EstadoComposing>(false);
-	const [search, setSearch] = React.useState("");
+	const [folder, setFolder] = useState("inbox");
+	const [selected, setSelected] = useState<string | null>(null);
+	const [composing, setComposing] = useState<EstadoComposing>(false);
+	const [search, setSearch] = useState("");
 
 	const folders = [
 		{
@@ -78,7 +78,7 @@ export function PageEmails({ accent, emails, setEmails }: PageEmailsProps) {
 		);
 
 	const sel = emails.find((e) => e.id === selected);
-	React.useEffect(() => {
+	useEffect(() => {
 		if (sel && !sel.read) {
 			setEmails((prev) =>
 				prev.map((e) => (e.id === sel.id ? { ...e, read: true } : e)),
@@ -509,9 +509,9 @@ export function PageEmails({ accent, emails, setEmails }: PageEmailsProps) {
 }
 
 export function Composer({ onClose, reply }: ComposerProps) {
-	const [to, setTo] = React.useState(reply ? reply.email : "");
-	const [subj, setSubj] = React.useState(reply ? "Re: " + reply.subject : "");
-	const [body, setBody] = React.useState(
+	const [to, setTo] = useState(reply ? reply.email : "");
+	const [subj, setSubj] = useState(reply ? "Re: " + reply.subject : "");
+	const [body, setBody] = useState(
 		reply
 			? `\n\n--- Em ${reply.dateFull}, ${reply.from} escreveu:\n${(
 					reply.body || ""

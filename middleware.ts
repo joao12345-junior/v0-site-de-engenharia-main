@@ -4,13 +4,15 @@ import { jwtVerify } from "jose";
 
 // Converte a string do secret para o formato que a Web Crypto API entende
 // Feito fora do handler para não recriar a cada requisição
+if (!process.env.JWT_SECRET_ACCESS)
+	throw new Error(
+		"\n[/middleware.ts] JWT_SECRET_ACCESS não configurado nas variáveis de ambiente",
+	);
 const secret = new TextEncoder().encode(process.env.JWT_SECRET_ACCESS!);
 
 export async function middleware(req: NextRequest) {
 	const token = req.cookies.get("access_token")?.value;
-	console.log(
-		`\n[/middleware.ts] Token (access) recebido no middleware:, ${token}\n`,
-	);
+	console.log(`\n[/middleware.ts] Token presente: ${!!token}\n`);
 
 	if (!token)
 		return NextResponse.redirect(new URL("/administrador_login", req.url));

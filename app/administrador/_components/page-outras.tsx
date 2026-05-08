@@ -1,8 +1,8 @@
 import { PageContainer } from "./lib/shell";
 import { SEED } from "./lib/data";
 import { Ic } from "./lib/icons";
-import React from "react";
-import { Field } from "./page-projetos";
+import { Field } from "./components/field";
+import { useState } from "react";
 
 interface PageConteudoProps {
 	accent: string;
@@ -534,7 +534,7 @@ export function ConfigRow({
 	desc,
 	enabled: initEnabled,
 }: ConfigRowProps) {
-	const [on, setOn] = React.useState(initEnabled);
+	const [on, setOn] = useState(initEnabled);
 	return (
 		<div
 			style={{

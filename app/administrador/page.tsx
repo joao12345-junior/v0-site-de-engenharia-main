@@ -34,10 +34,11 @@ import {
 	PageConfig,
 	PageAtividade,
 } from "./_components/page-outras";
+
 import type { Pagina } from "./_components/lib/types";
-import type { Projeto } from "./_components/page-projetos";
-import type { Produto } from "./_components/page-produtos";
-import type { Proposta } from "./_components/page-propostas";
+import type { Projeto } from "./_components/lib/types";
+import type { Produto } from "./_components/lib/types";
+import type { Proposta } from "./_components/lib/types";
 
 // ─── Tipos TypeScript ──────────────────────────────────────────────────────
 // CONCEITO: Union Types

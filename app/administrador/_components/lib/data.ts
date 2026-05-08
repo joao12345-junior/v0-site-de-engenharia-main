@@ -1,6 +1,6 @@
-import type { Proposta } from "../page-propostas";
-import type { Produto } from "../page-produtos";
-import type { Projeto } from "../page-projetos";
+import { Proposta } from "./types";
+import { Projeto } from "./types";
+import { Produto } from "./types";
 
 // Mock data — Optare admin
 export const SEED = (() => {
@@ -236,6 +236,7 @@ export const SEED = (() => {
 			data: "2026-04-20",
 			vencimento: "2026-05-20",
 			responsavel: "Marcelo Berny",
+			itens: [],
 		},
 		{
 			id: "p2312",
@@ -247,6 +248,7 @@ export const SEED = (() => {
 			data: "2026-04-28",
 			vencimento: "2026-05-28",
 			responsavel: "Márcio Trolli",
+			itens: [],
 		},
 		{
 			id: "p2315",
@@ -258,6 +260,7 @@ export const SEED = (() => {
 			data: "2026-05-02",
 			vencimento: "2026-06-02",
 			responsavel: "Marcelo Berny",
+			itens: [],
 		},
 		{
 			id: "p2316",
@@ -269,6 +272,7 @@ export const SEED = (() => {
 			data: "2026-05-04",
 			vencimento: "—",
 			responsavel: "Márcio Trolli",
+			itens: [],
 		},
 		{
 			id: "p2298",
@@ -280,6 +284,7 @@ export const SEED = (() => {
 			data: "2026-03-15",
 			vencimento: "2026-04-15",
 			responsavel: "Marcelo Berny",
+			itens: [],
 		},
 		{
 			id: "p2301",
@@ -291,6 +296,7 @@ export const SEED = (() => {
 			data: "2026-03-22",
 			vencimento: "2026-04-22",
 			responsavel: "Márcio Trolli",
+			itens: [],
 		},
 	] satisfies Proposta[];
 	const clientes = [

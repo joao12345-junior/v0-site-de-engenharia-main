@@ -15,6 +15,7 @@ import { Ic, type IconComponente } from "./lib/icons";
 import { SEED } from "./lib/data";
 import { PageContainer } from "./lib/shell";
 import type { Pagina } from "./lib/types";
+import { fmtBRL } from "./lib/utils";
 // ─── Função utilitária: formatar moeda BRL ────────────────────────────────
 // CONCEITO: Intl.NumberFormat
 // A API Intl (Internationalisation) do JavaScript formata números, datas e
@@ -25,14 +26,6 @@ import type { Pagina } from "./lib/types";
 // Exemplos:
 //   fmtBRL(1234.5)  → "R$ 1.234,50"
 //   fmtBRL(0)       → "R$ 0,00"
-const formatadorBRL = new Intl.NumberFormat("pt-BR", {
-	style: "currency",
-	currency: "BRL",
-});
-
-// Criamos o formatador UMA VEZ fora da função para não recriar a cada chamada.
-// Isso é uma micro-otimização de performance — padrão comum no mercado.
-export const fmtBRL = (valor: number): string => formatadorBRL.format(valor);
 
 // ─── Tipos e Interfaces ───────────────────────────────────────────────────
 
@@ -84,6 +77,31 @@ interface AcaoRapida {
 	icon: IconComponente;
 }
 
+// Ações rápidas tipadas
+const acoesRapidas: AcaoRapida[] = [
+	{ id: "projetos", label: "Subir foto", icon: Ic.Upload },
+	{ id: "emails", label: "Novo e-mail", icon: Ic.Send },
+	{ id: "propostas", label: "Nova proposta", icon: Ic.Doc },
+	{ id: "produtos", label: "Novo produto", icon: Ic.Box },
+	{ id: "conteudo", label: "Editar site", icon: Ic.Globe },
+	{ id: "usuarios", label: "Convidar", icon: Ic.User },
+];
+
+// Mapa de cores por tipo de log
+// CONCEITO: Record para lookup rápido
+// Em vez de um if/else ou switch, usamos um objeto como "dicionário".
+// Isso é O(1) — acesso instantâneo independente do tamanho.
+// Preferível a arrays para lookups. Lembre-se: HashSet/HashMap em vez de arrays!
+const corPorTipoLog: Record<string, string> = {
+	email: "var(--muted)",
+	upload: "var(--info)",
+	proposta: "var(--primary)",
+	sistema: "var(--muted)",
+	produto: "var(--warn)",
+	conteudo: "var(--success)",
+	auth: "var(--muted-2)",
+};
+
 // ─── Componente: Stat ─────────────────────────────────────────────────────
 // CORREÇÃO 1: Parâmetros posicionais → objeto de props desestruturado
 //
@@ -100,7 +118,7 @@ interface AcaoRapida {
 // comecem com MAIÚSCULA. "I" funciona tecnicamente, mas "Icon" é mais legível.
 // A sintaxe "icon: Icon" na desestruturação significa:
 //   "pegue a prop 'icon' e chame-a de 'Icon' localmente nesta função"
-function Stat({ label, value, sub, accent, icon: Icon }: StatProps) {
+export function Stat({ label, value, sub, accent, icon: Icon }: StatProps) {
 	return (
 		<div
 			className="card-pop"
@@ -140,7 +158,7 @@ function Stat({ label, value, sub, accent, icon: Icon }: StatProps) {
 }
 
 // ─── Componente: MiniSpark ────────────────────────────────────────────────
-function MiniSpark({ data, accent }: MiniSparkProps) {
+export function MiniSpark({ data, accent }: MiniSparkProps) {
 	const max = Math.max(...data);
 	const w = 200,
 		h = 50;
@@ -178,7 +196,7 @@ function MiniSpark({ data, accent }: MiniSparkProps) {
 }
 
 // ─── Componente: ActivityChart ────────────────────────────────────────────
-function ActivityChart({ data, accent }: ActivityChartProps) {
+export function ActivityChart({ data, accent }: ActivityChartProps) {
 	const w = 760,
 		h = 220,
 		pad = { l: 32, r: 12, t: 12, b: 28 };
@@ -296,7 +314,7 @@ function ActivityChart({ data, accent }: ActivityChartProps) {
 				{data.map((d: DadoAtividade, i: number) =>
 					series.map((s) => (
 						<circle
-							key={s + i}
+							key={`${s}-${i}`}
 							cx={pad.l + i * step}
 							cy={pad.t + ch - (d[s] / max) * ch}
 							r="2"
@@ -350,31 +368,6 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 		return { inboxNovos, propostasPendentes, receitaAprovada };
 	}, [tot.emails, tot.propostas]);
 
-	// Ações rápidas tipadas
-	const acoesRapidas: AcaoRapida[] = [
-		{ id: "projetos", label: "Subir foto", icon: Ic.Upload },
-		{ id: "emails", label: "Novo e-mail", icon: Ic.Send },
-		{ id: "propostas", label: "Nova proposta", icon: Ic.Doc },
-		{ id: "produtos", label: "Novo produto", icon: Ic.Box },
-		{ id: "conteudo", label: "Editar site", icon: Ic.Globe },
-		{ id: "usuarios", label: "Convidar", icon: Ic.User },
-	];
-
-	// Mapa de cores por tipo de log
-	// CONCEITO: Record para lookup rápido
-	// Em vez de um if/else ou switch, usamos um objeto como "dicionário".
-	// Isso é O(1) — acesso instantâneo independente do tamanho.
-	// Preferível a arrays para lookups. Lembre-se: HashSet/HashMap em vez de arrays!
-	const corPorTipoLog: Record<string, string> = {
-		email: "var(--muted)",
-		upload: "var(--info)",
-		proposta: "var(--primary)",
-		sistema: "var(--muted)",
-		produto: "var(--warn)",
-		conteudo: "var(--success)",
-		auth: "var(--muted-2)",
-	};
-
 	return (
 		<PageContainer>
 			{/* Grade de estatísticas */}
@@ -410,7 +403,7 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 				/>
 				<Stat
 					label="Receita Aprovada"
-					value={"R$ " + (estatisticas.receitaAprovada / 1000).toFixed(0) + "k"}
+					value={fmtBRL(estatisticas.receitaAprovada)}
 					sub="propostas aprovadas · 90d"
 					accent={accent}
 					icon={Ic.Activity}
