@@ -1,4 +1,4 @@
-import { Ic, type IconComponente } from "../lib/icons";
+import { Ic, type IconComponente } from "./lib/icons";
 import React from "react";
 
 interface DadosEmail {

@@ -18,14 +18,14 @@ import {
 	TweakSection,
 	TweakRadio,
 	TweakColor,
-} from "./lib/tweaks-panel";
-import { SEED } from "./lib/data";
-import { Sidebar, Topbar } from "./lib/shell";
-import { PageDashboard } from "./pages/page-dashboard";
-import { PageProjetos } from "./pages/page-projetos";
-import { PageProdutos } from "./pages/page-produtos";
-import { PageEmails } from "./pages/page-emails";
-import { PagePropostas } from "./pages/page-propostas";
+} from "./_components/lib/tweaks-panel";
+import { SEED } from "./_components/lib/data";
+import { Sidebar, Topbar } from "./_components/lib/shell";
+import { PageDashboard } from "./_components/page-dashboard";
+import { PageProjetos } from "./_components/page-projetos";
+import { PageProdutos } from "./_components/page-produtos";
+import { PageEmails } from "./_components/page-emails";
+import { PagePropostas } from "./_components/page-propostas";
 import {
 	PageConteudo,
 	PageClientes,
@@ -33,11 +33,11 @@ import {
 	PageLogs,
 	PageConfig,
 	PageAtividade,
-} from "./pages/page-outras";
-import type { Pagina } from "./lib/types";
-import type { Projeto } from "./pages/page-projetos";
-import type { Produto } from "./pages/page-produtos";
-import type { Proposta } from "./pages/page-propostas";
+} from "./_components/page-outras";
+import type { Pagina } from "./_components/lib/types";
+import type { Projeto } from "./_components/page-projetos";
+import type { Produto } from "./_components/page-produtos";
+import type { Proposta } from "./_components/page-propostas";
 
 // ─── Tipos TypeScript ──────────────────────────────────────────────────────
 // CONCEITO: Union Types
