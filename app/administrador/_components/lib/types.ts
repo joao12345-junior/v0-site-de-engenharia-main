@@ -49,6 +49,7 @@ export interface Projeto extends ItemEditavel {
 	prazo: string; // agora obrigatório
 	area: string; // agora obrigatório
 	status: TipoStatusProjetos; // mais específico que string
+	visible: boolean;
 }
 
 // Produtos
@@ -95,4 +96,5 @@ export interface ItemEditavel {
 	cliente?: string;
 	prazo?: string;
 	area?: string;
+	visible: boolean;
 }

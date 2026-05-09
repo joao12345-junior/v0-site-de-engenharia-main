@@ -34,8 +34,8 @@ export function ProjectCard({ p, onOpen, accent }: ProjectCardProps) {
 				position: "relative",
 				borderBottom: "1px solid var(--border)",
 			});
-			setIsLoaded(true);
 		};
+		setIsLoaded(true);
 	}, [p.capa]);
 
 	return (
@@ -59,60 +59,62 @@ export function ProjectCard({ p, onOpen, accent }: ProjectCardProps) {
 				e.currentTarget.style.boxShadow = "";
 			}}
 		>
-			<div
-				style={{
-					...backgroundStyle,
-				}}
-			>
-				{!p.capa && (
-					<div
+			{isLoaded && (
+				<div
+					style={{
+						...backgroundStyle,
+					}}
+				>
+					{!p.capa && (
+						<div
+							style={{
+								position: "absolute",
+								inset: 0,
+								display: "grid",
+								placeItems: "center",
+								color: "var(--muted-2)",
+								flexDirection: "column",
+								gap: 6,
+							}}
+						>
+							<Ic.Image size={28} stroke={1.4} />
+							<span style={{ fontSize: 10, letterSpacing: "0.1em" }}>
+								SEM CAPA · CLIQUE PARA ENVIAR
+							</span>
+						</div>
+					)}
+					<span
 						style={{
 							position: "absolute",
-							inset: 0,
-							display: "grid",
-							placeItems: "center",
-							color: "var(--muted-2)",
-							flexDirection: "column",
-							gap: 6,
+							top: 8,
+							left: 8,
+							fontSize: 10,
+							fontWeight: 600,
+							background: "var(--primary)",
+							color: "#fff",
+							padding: "3px 8px",
 						}}
 					>
-						<Ic.Image size={28} stroke={1.4} />
-						<span style={{ fontSize: 10, letterSpacing: "0.1em" }}>
-							SEM CAPA · CLIQUE PARA ENVIAR
-						</span>
-					</div>
-				)}
-				<span
-					style={{
-						position: "absolute",
-						top: 8,
-						left: 8,
-						fontSize: 10,
-						fontWeight: 600,
-						background: "var(--primary)",
-						color: "#fff",
-						padding: "3px 8px",
-					}}
-				>
-					{p.categoria.toUpperCase()}
-				</span>
-				<span
-					style={{
-						position: "absolute",
-						top: 8,
-						right: 8,
-						fontSize: 10,
-						background: "rgba(0,0,0,0.7)",
-						color: "#fff",
-						padding: "3px 8px",
-						display: "flex",
-						alignItems: "center",
-						gap: 4,
-					}}
-				>
-					<Ic.Image size={10} /> {p.fotos}
-				</span>
-			</div>
+						{p.categoria.toUpperCase()}
+					</span>
+					<span
+						style={{
+							position: "absolute",
+							top: 8,
+							right: 8,
+							fontSize: 10,
+							background: "rgba(0,0,0,0.7)",
+							color: "#fff",
+							padding: "3px 8px",
+							display: "flex",
+							alignItems: "center",
+							gap: 4,
+						}}
+					>
+						<Ic.Image size={10} /> {p.fotos}
+					</span>
+				</div>
+			)}
 			<div style={{ padding: 14 }}>
 				<div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>
 					{p.nome}

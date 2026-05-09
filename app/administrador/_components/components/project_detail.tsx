@@ -3,6 +3,7 @@ import { ItemEditavel, Projeto } from "../lib/types";
 import { PhotoSlot } from "./photo_slot";
 import { Ic } from "../lib/icons";
 import { Field } from "./field";
+import { ConfigRow } from "./config_role";
 
 const maxSize = 10 * 1024 * 1024;
 
@@ -218,7 +219,11 @@ export function ProjectDetail<T extends ItemEditavel>({
 					>
 						{isProd ? (
 							<>
-								<Field label="Nome do produto" value={project.nome} />
+								<Field
+									label="Nome do produto"
+									value={project.nome}
+									onChange={setP(p)}
+								/>
 								<Field label="SKU" value={project.sku} />
 								<Field label="Tipo" value={project.tipo} />
 								<Field label="Lançamento" value={project.lancamento} />
@@ -232,6 +237,11 @@ export function ProjectDetail<T extends ItemEditavel>({
 								<Field label="Cidade / UF" value={project.cidade} />
 								<Field label="Categoria" value={project.categoria} />
 								<Field label="Status" value={project.status} />
+								<ConfigRow
+									label="Mostrar no site"
+									desc="Visibilidade dentro do site"
+									enabled={project.visible}
+								/>
 							</>
 						)}
 					</div>

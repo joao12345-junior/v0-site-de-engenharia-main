@@ -1,9 +1,10 @@
 interface FieldProps {
 	label: string;
 	value?: string | number;
+	onChange?: () => void;
 }
 
-export function Field({ label, value }: FieldProps) {
+export function Field({ label, value, onChange }: FieldProps) {
 	return (
 		<div>
 			<div
@@ -17,7 +18,7 @@ export function Field({ label, value }: FieldProps) {
 			>
 				{label}
 			</div>
-			<input className="input" defaultValue={value} />
+			<input className="input" defaultValue={value} onChange={onChange} />
 		</div>
 	);
 }
