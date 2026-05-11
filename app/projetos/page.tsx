@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, MapPin } from "lucide-react";
 import { useState, useMemo } from "react";
-import { ImageCarousel } from "@/components/ui/image-carousel";
 import {
-	findImagesByTitle,
-	findLocationByTitle,
-} from "@/lib/repositories/images-repository";
+	motion,
+	AnimatePresence,
+	LayoutGroup,
+	type Variants,
+} from "framer-motion";
+import { ImageCarousel } from "@/components/ui/image-carousel";
+import { findImagesByTitle } from "@/lib/repositories/images-repository";
 
 const categories = {
 	Main: "Todos",
@@ -27,51 +30,27 @@ const json_projects = [
 		category: categories.Comercial,
 		location: "",
 	},
-	{
-		title: "Rodin",
-		category: categories.Residencial,
-		location: "",
-	},
-	{
-		title: "BIG Torres",
-		category: categories.Comercial,
-		location: "",
-	},
+	{ title: "Rodin", category: categories.Residencial, location: "" },
+	{ title: "BIG Torres", category: categories.Comercial, location: "" },
 	{
 		title: "Botanique Residences",
 		category: categories.Residencial,
 		location: "",
 	},
-	{
-		title: "Petz Taguatinga",
-		category: categories.Comercial,
-		location: "",
-	},
-	{
-		title: "MedPlex Eixo Norte",
-		category: categories.Saúde,
-		location: "",
-	},
+	{ title: "Petz Taguatinga", category: categories.Comercial, location: "" },
+	{ title: "MedPlex Eixo Norte", category: categories.Saúde, location: "" },
 	{
 		title: "Complexo Hospitalar Moinhos de Vento",
 		category: categories.Saúde,
 		location: "",
 	},
-	{
-		title: "Barra Shopping Sul",
-		category: categories.Comercial,
-		location: "",
-	},
+	{ title: "Barra Shopping Sul", category: categories.Comercial, location: "" },
 	{
 		title: "Atlântida Lagos Park",
 		category: categories.Residencial,
 		location: "",
 	},
-	{
-		title: "Anita Residences",
-		category: categories.Residencial,
-		location: "",
-	},
+	{ title: "Anita Residences", category: categories.Residencial, location: "" },
 	{
 		title: "Magno Três Figueiras",
 		category: categories.Residencial,
@@ -82,11 +61,7 @@ const json_projects = [
 		category: categories.Residencial,
 		location: "",
 	},
-	{
-		title: "Studio CB",
-		category: categories.Residencial,
-		location: "",
-	},
+	{ title: "Studio CB", category: categories.Residencial, location: "" },
 	{
 		title: "Master Hotel Holiday Inn",
 		category: categories.Residencial,
@@ -99,32 +74,41 @@ const json_projects = [
 	},
 ];
 
-//Define as categorias únicas dos projetos para os filtros
 function setCategory(projects: typeof json_projects): Set<string> {
 	const SetCategory = new Set<string>();
 	SetCategory.add(categories.Main);
 	for (const project of projects) {
-		if (project.category) {
-			SetCategory.add(project.category);
-		}
+		if (project.category) SetCategory.add(project.category);
 	}
 	return SetCategory;
 }
+
+const cardVariants: Variants = {
+	initial: { opacity: 0, y: 16, scale: 0.97 },
+	animate: (index: number) => ({
+		opacity: 1,
+		y: 0,
+		scale: 1,
+		transition: {
+			duration: 0.3,
+			delay: Math.min(index, 8) * 0.04,
+			ease: "easeOut" as const,
+		},
+	}),
+	exit: {
+		opacity: 0,
+		scale: 0.95,
+		transition: { duration: 0.15, ease: "easeIn" as const },
+	},
+};
 
 export default function ProjetosPage() {
 	const [activeCategory, setActiveCategory] = useState("Todos");
 
 	const filteredProjects = useMemo(() => {
-		const lista =
-			activeCategory === "Todos"
-				? json_projects
-				: json_projects.filter((p) => p.category === activeCategory);
-
-		return lista.map((project) => ({
-			...project,
-			location:
-				findLocationByTitle(project.title) || "Localização Desconhecida",
-		}));
+		return activeCategory === "Todos"
+			? json_projects
+			: json_projects.filter((p) => p.category === activeCategory);
 	}, [activeCategory]);
 
 	return (
@@ -137,49 +121,32 @@ export default function ProjetosPage() {
 						<div className="mx-auto max-w-3xl text-center">
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
-								Nossos Projetos
+								Projetos
 								<span className="h-px w-8 bg-primary" />
 							</div>
 							<h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-								Projetos que Transformam
+								Nossos Projetos
 							</h1>
-							<p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-								Desde edifícios icônicos até infraestruturas essenciais, nossos
-								projetos refletem nosso compromisso com a excelência e a
-								inovação. Explore nossa coleção de projetos e veja como estamos
-								moldando o futuro da construção.
-							</p>
-						</div>
-
-						{/* Stats */}
-						<div className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-12">
-							{[
-								{ value: "500+", label: "Projetos Concluídos" },
-								{ value: "20+", label: "Cidades Atendidas" },
-								{ value: "100%", label: "Entrega no Prazo" },
-							].map((stat) => (
-								<div key={stat.label} className="text-center">
-									<p className="text-3xl font-bold text-primary sm:text-4xl">
-										{stat.value}
-									</p>
-									<p className="mt-2 text-sm text-muted-foreground">
-										{stat.label}
-									</p>
-								</div>
-							))}
 						</div>
 					</div>
 				</section>
 
 				{/* Filtros */}
 				<section className="py-8 border-b border-border">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="flex flex-wrap gap-2 justify-center">
+					<div className="mx-auto max-w-7xl lg:px-8">
+						{/*
+						 * Mobile: grid de 2 colunas — layout previsível e uniforme.
+						 * Desktop: flex centralizado — comportamento original.
+						 *
+						 * `w-full` no botão: necessário para ocupar a célula inteira do grid.
+						 * `md:w-auto`: reverte em desktop, tamanho baseado no conteúdo.
+						 */}
+						<div className="grid grid-cols-2 gap-2 px-6 md:flex md:flex-wrap md:justify-center md:px-0">
 							{Array.from(setCategory(json_projects)).map((category) => (
 								<button
 									key={category}
 									onClick={() => setActiveCategory(category)}
-									className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+									className={`w-full md:w-auto px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
 										activeCategory === category
 											? "bg-primary text-primary-foreground scale-105"
 											: "bg-muted text-muted-foreground hover:bg-muted/80"
@@ -195,38 +162,56 @@ export default function ProjetosPage() {
 				{/* Lista de Projetos */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-							{filteredProjects.map((project) => (
-								<div
-									key={project.title}
-									className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
-									id={project.title}
-								>
-									<div className="relative">
-										<ImageCarousel
-											title={project.title}
-											images={findImagesByTitle(project.title)}
-										/>
-										<div className="absolute top-4 left-4">
-											<span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-												{project.category}
-											</span>
-										</div>
-									</div>
-									<div className="p-6">
-										<h3 className="text-lg font-semibold text-foreground">
-											{project.title}
-										</h3>
-										<div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-											<span className="flex items-center gap-1">
-												<MapPin className="h-4 w-4" />
-												{project.location}
-											</span>
-										</div>
-									</div>
-								</div>
-							))}
-						</div>
+						<LayoutGroup>
+							<motion.div
+								layout
+								className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+							>
+								<AnimatePresence mode="popLayout">
+									{filteredProjects.map((project, index) => (
+										<motion.div
+											key={project.title}
+											custom={index}
+											variants={cardVariants}
+											initial="initial"
+											animate="animate"
+											exit="exit"
+											layout="position"
+											className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
+										>
+											<div className="relative">
+												<ImageCarousel
+													title={project.title}
+													images={findImagesByTitle(project.title)}
+													// [ESTRATÉGIA DE CARREGAMENTO]
+													// index 0        → priority: candidato ao LCP, preload máximo
+													// index 1 a 5    → loading eager: visíveis, sem preload desnecessário
+													// index 6+       → loading lazy: abaixo da dobra, carrega ao rolar
+													priority={index === 0}
+													loading={index > 0 && index < 6 ? "eager" : "lazy"}
+												/>
+												<div className="absolute top-4 left-4">
+													<span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
+														{project.category}
+													</span>
+												</div>
+											</div>
+											<div className="p-6">
+												<h3 className="text-lg font-semibold text-foreground">
+													{project.title}
+												</h3>
+												<div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+													<span className="flex items-center gap-1">
+														<MapPin className="h-4 w-4" />
+														{project.location}
+													</span>
+												</div>
+											</div>
+										</motion.div>
+									))}
+								</AnimatePresence>
+							</motion.div>
+						</LayoutGroup>
 					</div>
 				</section>
 
@@ -239,9 +224,7 @@ export default function ProjetosPage() {
 							</h2>
 							<p className="mt-4 text-lg text-muted-foreground">
 								Entre em contato conosco para discutir como podemos transformar
-								sua visão em realidade. Nossa equipe de especialistas está
-								pronta para ajudar a criar soluções de engenharia inovadoras e
-								eficientes para o seu próximo projeto.
+								sua visão em realidade.
 							</p>
 							<Button size="lg" className="mt-8" asChild>
 								<Link href="/contato">

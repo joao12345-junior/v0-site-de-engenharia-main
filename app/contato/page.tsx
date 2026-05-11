@@ -282,47 +282,52 @@ export default function ContatoPage() {
 				</section>
 
 				{/* FAQ */}
-				<section className="py-24">
+				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="text-center mb-16">
 							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 								Perguntas Frequentes
 							</h2>
 							<p className="mt-4 text-muted-foreground">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Tire suas principais dúvidas sobre nossos serviços, prazos e
+								processo de trabalho.
 							</p>
 						</div>
 						<div className="max-w-3xl mx-auto space-y-4">
 							{[
 								{
-									question: "Lorem ipsum dolor sit amet consectetur?",
+									question: "Quanto tempo leva para desenvolver um projeto?",
 									answer:
-										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+										"O prazo varia conforme a complexidade e o porte da edificação. Projetos residenciais de médio porte têm prazo médio de 15 a 30 dias corridos após o recebimento completo da documentação. Empreendimentos maiores ou com múltiplas disciplinas são orçados individualmente com cronograma detalhado.",
 								},
 								{
-									question: "Sed do eiusmod tempor incididunt ut labore?",
+									question:
+										"Quais documentos são necessários para iniciar um projeto?",
 									answer:
-										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+										"Em geral, precisamos do projeto arquitetônico atualizado (planta baixa, cortes e fachadas) e do memorial descritivo da edificação. Para cada disciplina pode haver requisitos adicionais — como levantamento de cargas para projetos elétricos ou definição de equipamentos para projetos hidrossanitários — que informamos durante o orçamento.",
 								},
 								{
-									question: "Ut enim ad minim veniam quis nostrud?",
+									question: "A Optare atua fora de Porto Alegre?",
 									answer:
-										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+										"Sim. Embora nossa base seja em Porto Alegre, atendemos projetos em todo o Rio Grande do Sul. Os projetos são desenvolvidos de forma remota, com reuniões de alinhamento por videoconferência e visitas técnicas programadas quando necessário.",
 								},
 								{
-									question: "Duis aute irure dolor in reprehenderit?",
+									question:
+										"Os projetos são compatibilizados entre as disciplinas?",
 									answer:
-										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+										"Sim. A compatibilização entre disciplinas é parte do nosso processo padrão. Identificamos e resolvemos interferências entre os sistemas hidrossanitários, elétricos, de incêndio e gás antes da emissão final dos projetos, reduzindo imprevistos e retrabalhos em obra.",
 								},
 							].map((faq, index) => (
 								<div
 									key={index}
-									className="bg-card p-6 rounded-lg border border-border"
+									className="bg-background rounded-lg border border-border border-l-4 border-l-primary p-6 hover:border-l-primary transition-colors"
 								>
-									<h3 className="font-semibold text-foreground">
+									<h3 className="font-semibold text-foreground text-base">
 										{faq.question}
 									</h3>
-									<p className="mt-2 text-muted-foreground">{faq.answer}</p>
+									<p className="mt-3 text-muted-foreground leading-relaxed text-sm">
+										{faq.answer}
+									</p>
 								</div>
 							))}
 						</div>

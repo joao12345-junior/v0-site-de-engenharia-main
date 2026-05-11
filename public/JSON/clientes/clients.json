@@ -1,161 +1,161 @@
 [
 	{
-		"CLIENTE": "ABC EMPREENDIMENTOS",
+		"CLIENTE": "ABC Empreendimentos",
 		"Site": "https://abcembralot.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "ABF DEVELOPMENTS",
+		"CLIENTE": "ABF Developments",
 		"Site": "https://www.abfdevelopments.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "AMBIDESTRO",
+		"CLIENTE": "Ambidestro",
 		"Site": "https://www.ambidestro.arq.br/",
 		"categoria": "Arquitetura"
 	},
 	{
-		"CLIENTE": "ARQ CASSIANO",
+		"CLIENTE": "ARQ Cassiano",
 		"Site": "http://www.cassiano.arq.br/",
 		"categoria": "Arquitetura"
 	},
 	{
-		"CLIENTE": "ASTIR Incorporadora",
+		"CLIENTE": "Astir Incorporadora",
 		"Site": "https://grupoisdra.com.br/empresas/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "AVIVA",
+		"CLIENTE": "Aviva",
 		"Site": "https://avivaurbanismo.com.br/#empreendimentos",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "BELMONDO",
+		"CLIENTE": "Belmondo",
 		"Site": "https://www.belmondo.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "BG ARQUITETURA",
+		"CLIENTE": "BG Arquitetura",
 		"Site": "https://www.bgarquitetura.com.br/",
 		"categoria": "Arquitetura"
 	},
 	{
-		"CLIENTE": "CFL EMPREEND",
+		"CLIENTE": "CFL Empreendimentos",
 		"Site": "https://www.cfl.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "CIA ZAFFARI",
+		"CLIENTE": "Cia Zaffari",
 		"Site": "https://www.zaffari.com.br/",
 		"categoria": "Varejo"
 	},
 	{
-		"CLIENTE": "CONSTR TEDESCO",
+		"CLIENTE": "Construtora Tedesco",
 		"Site": "https://www.tedesco.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "CONSTR VASCO",
+		"CLIENTE": "Construtora Vasco",
 		"Site": "https://construtoravasco.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "CYRELA",
+		"CLIENTE": "Cyrela",
 		"Site": "https://www.cyrela.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "DALLASANTA",
+		"CLIENTE": "Dallasanta",
 		"Site": "https://www.dallasanta.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "ELCO ENGENHARIA",
+		"CLIENTE": "Elco Engenharia",
 		"Site": "https://elco.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "ENGENHOSUL",
+		"CLIENTE": "Engenhosul",
 		"Site": "https://engenhosulobras.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "EVO2B",
+		"CLIENTE": "Evo2b",
 		"Site": "https://evo2b.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "GRUPO CARREFOUR",
+		"CLIENTE": "Grupo Carrefour",
 		"Site": "https://grupocarrefourbrasil.com.br/",
 		"categoria": "Varejo"
 	},
 	{
-		"CLIENTE": "GRUPO FLEURY",
+		"CLIENTE": "Grupo Fleury",
 		"Site": "https://www.grupofleury.com.br/",
 		"categoria": "Saúde"
 	},
 	{
-		"CLIENTE": "GRUPO PEREIRA",
+		"CLIENTE": "Grupo Pereira",
 		"Site": "https://www.grpereira.com.br/",
 		"categoria": "Varejo"
 	},
 	{
-		"CLIENTE": "HOSP BLANC",
+		"CLIENTE": "Hospital Blanc",
 		"Site": "https://www.blanchospital.com.br/",
 		"categoria": "Saúde"
 	},
 	{
-		"CLIENTE": "HOSP MOINHOS",
+		"CLIENTE": "Hospital Moinhos de Vento",
 		"Site": "https://www.hospitalmoinhos.org.br/institucional",
 		"categoria": "Saúde"
 	},
 	{
-		"CLIENTE": "LAMB",
+		"CLIENTE": "Lamb",
 		"Site": "https://lamb.eng.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "LIBEL CONSTR",
+		"CLIENTE": "Libel Construtora",
 		"Site": "https://www.libelconstrutora.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "LOJAS RENNER S.A",
+		"CLIENTE": "Lojas Renner",
 		"Site": "https://www.lojasrenner.com.br/",
 		"categoria": "Varejo"
 	},
 	{
-		"CLIENTE": "MAIOJAMA",
+		"CLIENTE": "Maiojama",
 		"Site": "https://www.maiojama.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "MELNICK",
+		"CLIENTE": "Melnick",
 		"Site": "https://www.melnick.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "MULTIPLAN",
+		"CLIENTE": "Multiplan",
 		"Site": "https://www.multiplan.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "NEXGROUP",
+		"CLIENTE": "Nexgroup",
 		"Site": "https://www.nexgroup.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "OWNERINC",
+		"CLIENTE": "Ownerinc",
 		"Site": "https://ownerinc.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "PETZ",
+		"CLIENTE": "Petz",
 		"Site": "https://www.petz.com.br/",
 		"categoria": "Varejo"
 	},
 	{
-		"CLIENTE": "PLAENGE",
+		"CLIENTE": "Plaenge",
 		"Site": "https://www.plaenge.com.br/",
 		"categoria": "Construção"
 	},
@@ -170,27 +170,27 @@
 		"categoria": "Arquitetura"
 	},
 	{
-		"CLIENTE": "ROGGA",
+		"CLIENTE": "Rogga",
 		"Site": "https://www.rogga.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "RONALDO REZENDE",
+		"CLIENTE": "Ronaldo Rezende",
 		"Site": "https://ronaldorezende.com.br/",
 		"categoria": "Arquitetura"
 	},
 	{
-		"CLIENTE": "ROQUE CHIES",
+		"CLIENTE": "Roque Chies",
 		"Site": "https://roquechies.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "SANTA CASA PORTO ALEGRE",
+		"CLIENTE": "Santa Casa Porto Alegre",
 		"Site": "https://www.santacasa.org.br/",
 		"categoria": "Saúde"
 	},
 	{
-		"CLIENTE": "SEFERIN ARQUITETOS",
+		"CLIENTE": "Seferin Arquitetos",
 		"Site": "https://seferin.com.br/",
 		"categoria": "Arquitetura"
 	},
@@ -200,27 +200,27 @@
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "UNIMED CANOAS",
+		"CLIENTE": "Unimed Canoas",
 		"Site": "https://www.unimed.coop.br/site/web/centralrs",
 		"categoria": "Saúde"
 	},
 	{
-		"CLIENTE": "VOILE",
+		"CLIENTE": "Voile",
 		"Site": "https://www.voileprojetos.com/",
 		"categoria": "Arquitetura"
 	},
 	{
-		"CLIENTE": "WAGNERPAR",
+		"CLIENTE": "Wagnerpar",
 		"Site": "https://wagnerpar.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "WIKIHAUS",
+		"CLIENTE": "Wikihaus",
 		"Site": "https://wikihaus.com.br/",
 		"categoria": "Construção"
 	},
 	{
-		"CLIENTE": "ZUCKHAN",
+		"CLIENTE": "Zuckhan",
 		"Site": "https://zuckhan.com.br/",
 		"categoria": "Construção"
 	}

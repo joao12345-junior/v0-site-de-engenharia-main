@@ -1,155 +1,101 @@
-"use client";
-
+// app/produtos/page.tsx
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+
+// [PASSO 1] Importar do repository com named exports.
+// Desestruturamos exatamente o que precisamos com {}.
+// ServicoOptare é importado como tipo — só existe em tempo de compilação.
 import {
-	ArrowRight,
-	Cog,
-	Zap,
-	Shield,
-	Gauge,
-	Wrench,
-	Building2,
-} from "lucide-react";
-import { useState, useMemo } from "react";
-import imagesData from "@/public/images/produtos/images.json";
-import { ImageCarousel } from "@/components/ui/image-carousel";
+	servicos,
+	LABELS_SUBCATEGORIA,
+	type ServicoOptare,
+} from "@/lib/repositories/products-repository";
 
-const json_products = [
-	{
-		icon: Cog,
-		name: "Sistema de Automação Industrial",
-		category: "Automação",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		features: [
-			"Lorem ipsum dolor",
-			"Consectetur adipiscing",
-			"Sed do eiusmod",
-			"Tempor incididunt",
-		],
-	},
-	{
-		icon: Zap,
-		name: "Painéis Elétricos",
-		category: "Elétrica",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		features: [
-			"Lorem ipsum dolor",
-			"Consectetur adipiscing",
-			"Sed do eiusmod",
-			"Tempor incididunt",
-		],
-	},
-	{
-		icon: Shield,
-		name: "Sistemas de Segurança",
-		category: "Segurança",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		features: [
-			"Lorem ipsum dolor",
-			"Consectetur adipiscing",
-			"Sed do eiusmod",
-			"Tempor incididunt",
-		],
-	},
-	{
-		icon: Gauge,
-		name: "Equipamentos de Medição",
-		category: "Instrumentação",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		features: [
-			"Lorem ipsum dolor",
-			"Consectetur adipiscing",
-			"Sed do eiusmod",
-			"Tempor incididunt",
-		],
-	},
-	{
-		icon: Wrench,
-		name: "Ferramentas Especializadas",
-		category: "Ferramentas",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		features: [
-			"Lorem ipsum dolor",
-			"Consectetur adipiscing",
-			"Sed do eiusmod",
-			"Tempor incididunt",
-		],
-	},
-	{
-		icon: Building2,
-		name: "Estruturas Metálicas",
-		category: "Estrutural",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-		features: [
-			"Lorem ipsum dolor",
-			"Consectetur adipiscing",
-			"Sed do eiusmod",
-			"Tempor incididunt",
-		],
-	},
-];
-
-const categories = {
-	Main: "Todos",
-	Automação: "Automação",
-	Elétrica: "Elétrica",
-	Segurança: "Segurança",
-	Instrumentação: "Instrumentação",
-	Ferramentas: "Ferramentas",
-	Estrutural: "Estrutural",
-};
-
-//Define as categorias únicas dos projetos para os filtros
-function setCategory(products: typeof json_products): Set<string> {
-	const SetCategory = new Set<string>();
-	SetCategory.add(categories.Main);
-	for (const product of products) {
-		if (product.category) {
-			SetCategory.add(product.category);
-		}
-	}
-	return SetCategory;
+// ─── Componente auxiliar: card de um grupo de serviços ────────────────────
+// [CONCEITO] Extrair um componente com responsabilidade única.
+// A página não precisa saber como um card é renderizado — só que ele existe.
+// Isso segue o Single Responsibility Principle: ServicoCard cuida da
+// apresentação de UM serviço. A página cuida da lista de serviços.
+interface ServicoCardProps {
+	servico: ServicoOptare;
 }
 
-// Função para buscar imagens baseado no título do projeto
-function getProductImages(productTitle: string): string[] {
-	for (const client of imagesData) {
-		for (const image of client.imagens) {
-			// Comparação fuzzy - verifica se o título está contido no subtítulo ou vice-versa
-			if (
-				image.subtitulo.toLowerCase().includes(productTitle.toLowerCase()) ||
-				productTitle
-					.toLowerCase()
-					.includes(image.subtitulo.split(" ")[0].toLowerCase())
-			) {
-				return image.urls_imagens || [];
-			}
-		}
-	}
-	return [];
+function ServicoCard({ servico }: ServicoCardProps) {
+	// [PASSO 2] Object.entries() transforma o objeto de categorias em array iterável.
+	// { hidrossanitarios: ["..."] } → [["hidrossanitarios", ["..."]]]
+	// Sem isso, não é possível usar .map() diretamente sobre um objeto.
+	const subcategorias = Object.entries(servico.categorias);
+
+	return (
+		<div className="bg-card rounded-lg border border-border overflow-hidden">
+			{/* Cabeçalho do card — destaca o grupo principal */}
+			<div className="bg-primary/5 border-b border-border px-6 py-5">
+				<div className="flex items-center gap-3">
+					<div className="h-1 w-6 bg-primary rounded-full flex-shrink-0" />
+					<h2 className="text-lg font-bold text-foreground leading-tight">
+						{servico.titulo}
+					</h2>
+				</div>
+			</div>
+
+			{/* Corpo do card — lista de subcategorias */}
+			<div className="p-6">
+				{/*
+				 * [PASSO 3] Iterar sobre as subcategorias.
+				 * `chave` é a chave snake_case do JSON (ex: "hidrossanitarios").
+				 * `itens` é o array de strings (ex: ["Instalações Hidrossanitárias"]).
+				 *
+				 * LABELS_SUBCATEGORIA[chave] busca o label legível.
+				 * O operador ?? (nullish coalescing) é o fallback:
+				 * se a chave não existir no mapa, usa a própria chave como texto.
+				 * Isso evita erros silenciosos se uma nova chave for adicionada ao JSON.
+				 */}
+				<div className="grid sm:grid-cols-2 gap-6">
+					{subcategorias.map(([chave, itens]) => (
+						<div key={chave}>
+							{/* Label humanizado da subcategoria */}
+							<h3 className="text-sm font-semibold text-primary mb-2 uppercase tracking-wide">
+								{LABELS_SUBCATEGORIA[chave] ?? chave}
+							</h3>
+
+							{/* Lista de serviços dentro da subcategoria */}
+							<ul className="space-y-1.5">
+								{itens.map((item) => (
+									<li
+										key={item}
+										className="flex items-start gap-2 text-sm text-muted-foreground"
+									>
+										<CheckCircle2 className="h-4 w-4 text-primary/60 flex-shrink-0 mt-0.5" />
+										<span>{item}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					))}
+				</div>
+			</div>
+
+			{/* Rodapé com CTA */}
+			<div className="px-6 pb-6">
+				<Button variant="outline" className="w-full" asChild>
+					<Link href="/contato">
+						Solicitar Orçamento
+						<ArrowRight className="ml-2 h-4 w-4" />
+					</Link>
+				</Button>
+			</div>
+		</div>
+	);
 }
 
+// ─── Página principal ─────────────────────────────────────────────────────
+// Server Component — sem "use client" porque não há interatividade.
+// [CONCEITO] Quando não há useState ou eventos, mantenha como Server Component.
+// O Next.js renderiza no servidor → HTML pronto → melhor para SEO e performance.
 export default function ProdutosPage() {
-	const [activeCategory, setActiveCategory] = useState("Todos");
-	const filteredProducts = useMemo(() => {
-		const lista =
-			activeCategory === "Todos"
-				? json_products
-				: json_products.filter((p) => p.category === activeCategory);
-
-		return lista.map((product) => ({
-			...product,
-		}));
-	}, [activeCategory]);
 	return (
 		<>
 			<Header />
@@ -160,85 +106,40 @@ export default function ProdutosPage() {
 						<div className="mx-auto max-w-3xl text-center">
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
-								Nossos Produtos
+								Nossos Serviços
 								<span className="h-px w-8 bg-primary" />
 							</div>
 							<h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-								Soluções em Engenharia de Alta Qualidade
+								Projetos Complementares de Engenharia
 							</h1>
 							<p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-								eiusmod tempor incididunt ut labore et dolore magna aliqua.
+								A Optare desenvolve projetos de engenharia complementares com
+								precisão técnica e compromisso com as normas vigentes. Cada
+								solução é elaborada por engenheiros especializados, garantindo
+								compatibilidade entre sistemas e segurança em todas as etapas da
+								obra.
 							</p>
 						</div>
 					</div>
 				</section>
 
-				{/* Filtros */}
-				<section className="py-8 border-b border-border">
-					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="flex flex-wrap gap-2 justify-center">
-							{Array.from(setCategory(json_products)).map((category) => (
-								<button
-									key={category}
-									onClick={() => setActiveCategory(category)}
-									className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-										activeCategory === category
-											? "bg-primary text-primary-foreground scale-105"
-											: "bg-muted text-muted-foreground hover:bg-muted/80"
-									}`}
-								>
-									{category}
-								</button>
-							))}
-						</div>
-					</div>
-				</section>
-
-				{/* Lista de Produtos */}
+				{/* Lista de serviços */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-							{filteredProducts.map((product) => (
-								<div
-									key={product.name}
-									className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
-								>
-									<div className="aspect-video bg-muted flex items-center justify-center">
-										<ImageCarousel
-											title={product.name}
-											images={getProductImages(product.name)}
-										/>
-									</div>
-									<div className="p-6">
-										<span className="text-xs font-medium text-primary">
-											{product.category}
-										</span>
-										<h3 className="mt-2 text-lg font-semibold text-foreground">
-											{product.name}
-										</h3>
-										<p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-											{product.description}
-										</p>
-										<ul className="mt-4 space-y-2">
-											{product.features.slice(0, 3).map((feature) => (
-												<li
-													key={feature}
-													className="flex items-center gap-2 text-sm text-muted-foreground"
-												>
-													<div className="h-1.5 w-1.5 rounded-full bg-primary" />
-													{feature}
-												</li>
-											))}
-										</ul>
-										<Button variant="outline" className="w-full mt-6" asChild>
-											<Link href="/contato">
-												Solicitar Orçamento
-												<ArrowRight className="ml-2 h-4 w-4" />
-											</Link>
-										</Button>
-									</div>
-								</div>
+						{/*
+						 * [PASSO 4] Iterar sobre os grupos principais.
+						 * `servicos` vem diretamente do repository — sem transformação.
+						 * A `key` usa o `titulo` porque é único entre os 3 grupos.
+						 *
+						 * [CONCEITO] Por que não há filtro aqui (ao contrário de Projetos)?
+						 * A página de Projetos tem 15 itens — filtro faz sentido.
+						 * Aqui temos 3 grupos — mostrar todos de uma vez é mais claro
+						 * do que esconder 2 para mostrar 1. Menos não é sempre mais,
+						 * mas mais não é sempre melhor.
+						 */}
+						<div className="space-y-8">
+							{servicos.map((servico) => (
+								<ServicoCard key={servico.titulo} servico={servico} />
 							))}
 						</div>
 					</div>
@@ -248,15 +149,16 @@ export default function ProdutosPage() {
 				<section className="py-24 bg-primary">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
 						<h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
-							Não encontrou o que procura?
+							Seu projeto precisa de engenharia complementar?
 						</h2>
 						<p className="mt-4 text-lg text-primary-foreground/80">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Entre em
-							contato conosco.
+							Cada empreendimento tem suas particularidades. Nossa equipe está
+							disponível para analisar suas necessidades e apresentar a solução
+							mais adequada para o seu projeto.
 						</p>
 						<Button size="lg" variant="secondary" className="mt-8" asChild>
 							<Link href="/contato">
-								Fale Conosco
+								Solicitar Orçamento
 								<ArrowRight className="ml-2 h-4 w-4" />
 							</Link>
 						</Button>

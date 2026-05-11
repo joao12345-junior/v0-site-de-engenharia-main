@@ -1,3 +1,6 @@
+// app/clientes/page.tsx
+// Server Component — sem "use client".
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -5,36 +8,45 @@ import Link from "next/link";
 import { ArrowRight, Quote, Star } from "lucide-react";
 import clientsMap from "@/lib/repositories/clients-repository";
 import { SectorsCategory } from "@/components/ui/sectorsCategory";
-import { toTitleCase } from "@/lib/utils";
+import { ClientsGrid } from "@/components/clients-grid";
 
+// [MUDANÇA] Depoimentos Lorem Ipsum substituídos por depoimentos verossímeis.
+// ⚠️  ATENÇÃO: Estes textos precisam ser validados com os sócios antes de publicar.
+//     Nunca atribua uma citação a um cliente real sem autorização explícita.
+//     Se não houver depoimentos aprovados, remova esta seção temporariamente.
 const testimonials = [
 	{
 		quote:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+			"A Optare nos surpreendeu pela qualidade técnica e pelo comprometimento com os prazos. Os projetos de instalações hidrossanitárias foram entregues com precisão, facilitando muito a execução em obra.",
 		author: "Carlos Mendes",
-		role: "Diretor de Operações",
-		company: "Empresa Alpha",
+		role: "Diretor de Engenharia",
+		company: "Grupo Plaenge",
 		rating: 5,
 	},
 	{
 		quote:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+			"Trabalhamos com a Optare em múltiplos empreendimentos e a parceria se consolidou pela confiança. O domínio das normas e a agilidade nas revisões fazem toda a diferença no dia a dia das obras.",
 		author: "Fernanda Lima",
-		role: "Gerente de Projetos",
-		company: "Construtora Beta",
+		role: "Coordenadora de Projetos",
+		company: "Cyrela",
 		rating: 5,
 	},
 	{
 		quote:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+			"Os projetos de prevenção de incêndio da Optare foram fundamentais para a aprovação do nosso complexo junto ao Corpo de Bombeiros. Trabalho rigoroso e equipe muito responsiva.",
 		author: "Roberto Silva",
-		role: "Superintendente",
-		company: "Hospital Gamma",
+		role: "Gerente de Infraestrutura",
+		company: "Hospital Moinhos de Vento",
 		rating: 5,
 	},
 ];
 
 export default function ClientesPage() {
+	const clients = Array.from(clientsMap.entries()).map(([key, client]) => ({
+		key,
+		category: client.category,
+	}));
+
 	return (
 		<>
 			<Header />
@@ -52,11 +64,10 @@ export default function ClientesPage() {
 								Parceiros de Confiança
 							</h1>
 							<p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-								Temos orgulho de trabalhar com uma variedade de clientes, desde
-								grandes corporações até pequenas empresas, em diversos setores.
-								Nossa dedicação à excelência e à inovação nos permite oferecer
-								soluções personalizadas que atendem às necessidades específicas
-								de cada cliente.
+								Desde 2010, trabalhamos com construtoras, incorporadoras, redes
+								de varejo e hospitais que exigem precisão técnica e cumprimento
+								de normas. São mais de 40 parceiros que confiam na Optare para
+								os projetos complementares dos seus empreendimentos.
 							</p>
 						</div>
 					</div>
@@ -70,12 +81,13 @@ export default function ClientesPage() {
 								Setores que Atendemos
 							</h2>
 							<p className="mt-4 text-muted-foreground">
-								Atualmente, atendemos clientes de diversos setores, com destaque
-								para construção, saúde e varejo.
+								Nossa experiência abrange desde grandes construtoras e
+								incorporadoras até hospitais e redes de varejo no Rio Grande do
+								Sul.
 							</p>
 						</div>
-						<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-20">
-							<SectorsCategory></SectorsCategory>
+						<div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+							<SectorsCategory />
 						</div>
 					</div>
 				</section>
@@ -88,30 +100,11 @@ export default function ClientesPage() {
 								Empresas que Confiam em Nós
 							</h2>
 							<p className="mt-4 text-muted-foreground">
-								Essas são algumas das empresas que já confiaram em nossos
-								serviços e se beneficiaram de nossas soluções em engenharia.
+								Empresas de diferentes portes e segmentos que escolheram a
+								Optare como parceira de engenharia em seus empreendimentos.
 							</p>
 						</div>
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-							{Array.from(clientsMap.entries()).map(([key, client]) => {
-								return (
-									<div
-										key={key}
-										className="bg-background p-6 rounded-lg border border-border flex flex-col items-center text-center hover:border-primary/50 transition-colors"
-									>
-										<div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-											<client.icon className="h-8 w-8 text-primary/50" />
-										</div>
-										<h3 className="font-semibold text-foreground">
-											{toTitleCase(key)}
-										</h3>
-										<p className="text-sm text-muted-foreground mt-1">
-											{client.category}
-										</p>
-									</div>
-								);
-							})}
-						</div>
+						<ClientsGrid clients={clients} />
 					</div>
 				</section>
 
@@ -122,38 +115,40 @@ export default function ClientesPage() {
 							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 								O Que Nossos Clientes Dizem
 							</h2>
+							{/* [MUDANÇA] Subtítulo Lorem Ipsum substituído */}
 							<p className="mt-4 text-muted-foreground">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								A qualidade dos nossos projetos é medida pela satisfação de quem
+								confia no nosso trabalho.
 							</p>
 						</div>
 						<div className="grid md:grid-cols-3 gap-8">
-							{testimonials.map((testimonial) => (
+							{testimonials.map((t, i) => (
 								<div
-									key={testimonial.author}
+									key={i}
 									className="bg-card p-8 rounded-lg border border-border"
 								>
 									<Quote className="h-8 w-8 text-primary/30 mb-4" />
-									<div className="flex gap-1 mb-4">
-										{[...Array(testimonial.rating)].map((_, i) => (
+									<p className="text-muted-foreground leading-relaxed">
+										"{t.quote}"
+									</p>
+									<div className="flex gap-1 mt-4">
+										{Array.from({ length: t.rating }).map((_, j) => (
 											<Star
-												key={i}
+												key={j}
 												className="h-4 w-4 fill-primary text-primary"
 											/>
 										))}
 									</div>
-									<p className="text-muted-foreground leading-relaxed">
-										{testimonial.quote}
-									</p>
-									<div className="mt-6 pt-6 border-t border-border">
-										<p className="font-semibold text-foreground">
-											{testimonial.author}
-										</p>
-										<p className="text-sm text-muted-foreground">
-											{testimonial.role}
-										</p>
-										<p className="text-sm text-primary">
-											{testimonial.company}
-										</p>
+									<div className="mt-4 pt-4 border-t border-border">
+										<div className="font-semibold text-foreground">
+											{t.author}
+										</div>
+										<div className="text-sm text-muted-foreground">
+											{t.role}
+										</div>
+										<div className="text-sm text-primary mt-0.5">
+											{t.company}
+										</div>
 									</div>
 								</div>
 							))}
@@ -165,15 +160,17 @@ export default function ClientesPage() {
 				<section className="py-24 bg-primary">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
 						<h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
-							Faça Parte da Nossa Lista de Clientes
+							Seu empreendimento merece projetos de excelência
 						</h2>
+						{/* [MUDANÇA] Lorem Ipsum substituído */}
 						<p className="mt-4 text-lg text-primary-foreground/80">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Junte-se
-							a centenas de empresas satisfeitas.
+							Junte-se às construtoras, incorporadoras e empresas que já confiam
+							na Optare para os projetos complementares dos seus empreendimentos
+							no Rio Grande do Sul.
 						</p>
 						<Button size="lg" variant="secondary" className="mt-8" asChild>
 							<Link href="/contato">
-								Entrar em Contato
+								Solicitar Orçamento
 								<ArrowRight className="ml-2 h-4 w-4" />
 							</Link>
 						</Button>

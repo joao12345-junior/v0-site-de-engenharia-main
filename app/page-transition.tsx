@@ -1,5 +1,6 @@
 "use client";
 
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, ReactNode } from "react";
 
@@ -7,39 +8,50 @@ interface PageTransitionProps {
 	children: ReactNode;
 }
 
+// Fade simples — sem movimento Y, sem scale.
+// Apenas opacidade: a página some suavemente ao sair e aparece ao entrar.
+const pageVariants: Variants = {
+	initial: { opacity: 0 },
+	animate: {
+		opacity: 1,
+		transition: { duration: 0.25, ease: "easeOut" as const },
+	},
+	exit: {
+		opacity: 0,
+		transition: { duration: 0.15, ease: "easeIn" as const },
+	},
+};
+
 export function PageTransition({ children }: PageTransitionProps) {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		// [PROBLEMA RESOLVIDO] O Next.js App Router reseta o scroll para top:0
-		// automaticamente como parte do ciclo de navegação — de forma instantânea.
-		// Quando o useEffect roda, o scroll já está em zero. Não há distância
-		// para animar, então behavior:'smooth' parece não fazer nada.
-		//
-		// [SOLUÇÃO] requestAnimationFrame agenda a execução para APÓS o browser
-		// terminar de pintar o frame atual — ou seja, depois que o Next.js
-		// já finalizou seu reset de scroll. Nesse ponto, o scroll ainda está
-		// em zero, mas o conteúdo novo já está renderizado e visível.
-		//
-		// O efeito visual: o browser renderiza a nova página já posicionada
-		// no topo, e o scroll-behavior: smooth do CSS garante que qualquer
-		// scroll subsequente (âncoras, programático) seja suave.
-		//
-		// [CONCEITO] requestAnimationFrame vs setTimeout(fn, 0):
-		// setTimeout(fn, 0) é impreciso — o browser decide quando executar.
-		// requestAnimationFrame é garantido para rodar após a pintura do frame,
-		// tornando-o ideal para qualquer operação visual ou de layout.
-		//
-		// [CONCEITO] O retorno da função de cleanup:
-		// Se o usuário navegar muito rápido (antes do frame pintar),
-		// cancelAnimationFrame cancela o scroll anterior para evitar
-		// comportamento inesperado com múltiplos scrolls em fila.
 		const raf = requestAnimationFrame(() => {
 			window.scrollTo({ top: 0, behavior: "smooth" });
 		});
-
 		return () => cancelAnimationFrame(raf);
 	}, [pathname]);
 
-	return <div>{children}</div>;
+	return (
+		// [CONCEITO] AnimatePresence intercepta a desmontagem do componente.
+		// Sem ele, quando o React remove um componente do DOM (ao trocar de página),
+		// a remoção é instantânea — não há tempo para animar a saída.
+		// Com AnimatePresence, o componente fica no DOM até a animação `exit`
+		// terminar, e só então é removido.
+		//
+		// mode="wait" garante que a página antiga termine de sair ANTES
+		// da nova começar a entrar. Isso evita que as duas páginas apareçam
+		// sobrepostas durante a transição.
+		<AnimatePresence mode="wait">
+			<motion.div
+				key={pathname}
+				variants={pageVariants}
+				initial="initial"
+				animate="animate"
+				exit="exit"
+			>
+				{children}
+			</motion.div>
+		</AnimatePresence>
+	);
 }

@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+// components/ui/image-carousel.tsx
+import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Building2 } from "lucide-react";
 
@@ -7,6 +8,14 @@ interface ImageCarouselProps {
 	images: string[];
 	fallbackIcon?: React.ReactNode;
 	sizes?: string;
+	// [ADICIONADO] O pai decide se esta instância é prioritária.
+	// Use true apenas para o card mais importante acima da dobra (LCP).
+	// Padrão: false — sem preload desnecessário.
+	priority?: boolean;
+	// [ADICIONADO] Estratégia de carregamento quando priority=false.
+	// "eager" → carrega com a página, sem lazy. Bom para imagens visíveis.
+	// "lazy"  → carrega só ao rolar. Ideal para imagens abaixo da dobra.
+	loading?: "eager" | "lazy";
 }
 
 export function ImageCarousel({
@@ -14,6 +23,8 @@ export function ImageCarousel({
 	images,
 	fallbackIcon,
 	sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+	priority = false,
+	loading = "lazy",
 }: ImageCarouselProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -38,7 +49,17 @@ export function ImageCarousel({
 				alt={`${title} - Imagem ${currentIndex + 1}`}
 				fill
 				className="object-cover"
-				priority={currentIndex === 0}
+				// [MUDANÇA] Antes: priority={currentIndex === 0}
+				// → Marcava a primeira imagem de TODOS os carrosséis como prioritária.
+				// → 15 cards = 15 preloads no <head> = congestionamento de rede.
+				//
+				// Agora: só é prioritária se o pai passar priority=true E for a
+				// primeira imagem do carrossel. Controle granular no ponto certo.
+				//
+				// Next.js ignora a prop `loading` quando `priority=true`, então
+				// passamos undefined para evitar conflito entre as duas props.
+				priority={priority && currentIndex === 0}
+				loading={priority ? undefined : loading}
 				sizes={sizes}
 			/>
 			{images.length > 1 && (
