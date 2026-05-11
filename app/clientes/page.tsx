@@ -94,7 +94,6 @@ export default function ClientesPage() {
 						</div>
 						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 							{Array.from(clientsMap.entries()).map(([key, client]) => {
-								console.log(key);
 								return (
 									<div
 										key={key}
