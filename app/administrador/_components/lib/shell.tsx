@@ -25,7 +25,6 @@ interface ContagensBadge {
 	projetos: number;
 	produtos: number;
 	emails: number;
-	propostas: number;
 }
 
 interface SidebarProps {
@@ -94,12 +93,6 @@ const GRUPOS_NAV: { title: string; items: ItemNavegacao[] }[] = [
 				label: "E-mails",
 				icon: Ic.Mail,
 				badge: "emails" as keyof ContagensBadge,
-			},
-			{
-				id: "propostas",
-				label: "Propostas",
-				icon: Ic.Doc,
-				badge: "propostas" as keyof ContagensBadge,
 			},
 		],
 	},

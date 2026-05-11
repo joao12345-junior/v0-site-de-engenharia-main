@@ -25,7 +25,6 @@ import { PageDashboard } from "./_components/page-dashboard";
 import { PageProjetos } from "./_components/page-projetos";
 import { PageProdutos } from "./_components/page-produtos";
 import { PageEmails } from "./_components/page-emails";
-import { PagePropostas } from "./_components/page-propostas";
 import { PageClientes } from "./_components/page-clients";
 import { PageAtividade } from "./_components/page-atividade";
 import { PageConfig } from "./_components/page-config";
@@ -36,7 +35,6 @@ import { PageUsuarios } from "./_components/page-users";
 import type { Pagina } from "./_components/lib/types";
 import type { Projeto } from "./_components/lib/types";
 import type { Produto } from "./_components/lib/types";
-import type { Proposta } from "./_components/lib/types";
 
 // ─── Tipos TypeScript ──────────────────────────────────────────────────────
 // CONCEITO: Union Types
@@ -64,7 +62,6 @@ interface ContagensBadge {
 	projetos: number;
 	produtos: number;
 	emails: number;
-	propostas: number;
 }
 
 interface Toast {
@@ -112,11 +109,6 @@ const META_PAGINAS: Record<Pagina, MetaPagina> = {
 		title: "E-mails",
 		subtitle: "Caixa de entrada da Optare · administrativo@optare.com.br",
 		breadcrumb: "Gestão › E-mails",
-	},
-	propostas: {
-		title: "Propostas",
-		subtitle: "Crie, edite e acompanhe propostas comerciais",
-		breadcrumb: "Gestão › Propostas",
 	},
 	conteudo: {
 		title: "Conteúdo do Site",
@@ -192,7 +184,6 @@ export default function PaginaAdministrador() {
 	const [emails, setEmails] = useState(SEED.emails);
 	const [projetos, setProjetos] = useState<Projeto[]>(SEED.projetosFuturos);
 	const [produtos, setProdutos] = useState<Produto[]>(SEED.produtosFuturos);
-	const [propostas, setPropostas] = useState<Proposta[]>(SEED.propostas);
 
 	// ── Efeito: sincronizar hash da URL ───────────────────────────────────
 	// useEffect roda APENAS no cliente, então é 100% seguro usar location aqui.
@@ -272,9 +263,6 @@ export default function PaginaAdministrador() {
 		projetos: projetos.length,
 		produtos: produtos.length,
 		emails: emails.filter((e) => e.folder === "inbox" && !e.read).length,
-		propostas: propostas.filter(
-			(p) => p.status === "Em análise" || p.status === "Rascunho",
-		).length,
 	};
 
 	// ── Renderização da página ativa ───────────────────────────────────────
@@ -309,14 +297,6 @@ export default function PaginaAdministrador() {
 						accent={accentAtual}
 						emails={emails}
 						setEmails={setEmails}
-					/>
-				);
-			case "propostas":
-				return (
-					<PagePropostas
-						accent={accentAtual}
-						propostas={propostas}
-						setPropostas={setPropostas}
 					/>
 				);
 			case "conteudo":

@@ -1,9 +1,9 @@
-import React from "react";
 import { Ic } from "./lib/icons";
 import { PageContainer } from "./lib/shell";
 import { ProjectDetail } from "./components/project_detail";
 import type { Produto } from "./lib/types";
 import { ProductCard } from "./components/product_card";
+import { useState } from "react";
 interface PageProdutosProps {
 	accent: string;
 	produtos: Produto[];
@@ -15,7 +15,8 @@ export function PageProdutos({
 	produtos,
 	setProdutos,
 }: PageProdutosProps) {
-	const [open, setOpen] = React.useState<string | null>(null);
+	const [open, setOpen] = useState<string | null>(null);
+	// const [edit, setEdit] = useState<Produto | null>(null);
 	const updateOpen = (updater: (p: Produto) => Produto) =>
 		setProdutos((prev) => prev.map((p) => (p.id === open ? updater(p) : p)));
 	const openProd = produtos.find((p) => p.id === open);
@@ -60,6 +61,20 @@ export function PageProdutos({
 					onUpdate={updateOpen}
 					accent={accent}
 					isProd={true}
+					onSave={(p) => {
+						if (p.id === "new") {
+							setProdutos((prev) => [
+								...prev,
+								{
+									...p,
+									id: "p" + Date.now(),
+								},
+							]);
+						} else {
+							setProdutos((prev) => prev.map((x) => (x.id === p.id ? p : x)));
+						}
+						setOpen(null);
+					}}
 				/>
 			)}
 		</PageContainer>

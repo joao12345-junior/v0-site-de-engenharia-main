@@ -1,17 +1,18 @@
+// types.ts
+// ─── Páginas disponíveis no painel ────────────────────────────────────────
 export type Pagina =
 	| "dashboard"
 	| "atividade"
 	| "projetos"
 	| "produtos"
 	| "emails"
-	| "propostas"
 	| "conteudo"
 	| "clientes"
 	| "usuarios"
 	| "logs"
 	| "config";
 
-// Proposta
+// ─── Proposta ─────────────────────────────────────────────────────────────
 export type TipoStatusProposta =
 	| "Rascunho"
 	| "Em análise"
@@ -19,14 +20,20 @@ export type TipoStatusProposta =
 	| "Recusada";
 
 export interface ItemProposta {
-	id: string; // identificador único (para o .map() com key)
-	desc: string; // descrição do serviço
-	un: string; // unidade (ex: "projeto", "m²", "un")
-	q: number; // quantidade
-	val: number; // valor unitário em reais
+	id: string;
+	desc: string;
+	un: string;
+	q: number;
+	val: number;
 }
+
 export interface Proposta {
-	id: string | number;
+	// [MUDANÇA] id era `string | number` sem necessidade real.
+	// Todos os dados do SEED usam string ("p2308", "p2312"...).
+	// Union types sem necessidade real propagam ambiguidade:
+	// em toda comparação `p.id === open` você teria que lidar com os dois casos.
+	// Regra: use o tipo mais restrito que ainda representa todos os seus dados.
+	id: string;
 	numero: string;
 	cliente: string;
 	projeto: string;
@@ -38,63 +45,61 @@ export interface Proposta {
 	itens: ItemProposta[];
 }
 
-// Projetos
+// ─── Base compartilhada: ItemEditavel ─────────────────────────────────────
+// [MUDANÇA] Interface separada em camadas — ISP aplicado.
+//
+// ANTES: ItemEditavel tinha sku?, tipo?, lancamento? (campos de Produto)
+//        Isso significa que todo Projeto "conhecia" a existência de sku,
+//        o TypeScript não reclamava se você escrevesse umProjeto.sku = "algo".
+//
+// DEPOIS: ItemEditavel só contém o que É VERDADE para qualquer item editável,
+//         independente de ser Projeto ou Produto.
+//
+// Analogia: uma interface é um contrato. O contrato "ser editável" não inclui
+// ter SKU — isso é o contrato específico "ser um produto".
+export interface ItemEditavel {
+	id: string; // [MUDANÇA] era `string | number` — Projeto sempre usou string
+	nome: string;
+	photos?: string[]; // URLs ou base64 das imagens
+	fotos: number; // contador para exibição nos cards
+	capa?: string; // primeira imagem, usada como thumbnail
+	status: string; // string aqui; cada subtipo especializa com union type
+	visible: boolean;
+}
+
+// ─── Projetos ─────────────────────────────────────────────────────────────
 export type TipoStatusProjetos = "Em projeto" | "Aprovação" | "Pré-projeto";
 export type TipoCategoria = "Comercial" | "Residencial" | "Saúde";
+
 export interface Projeto extends ItemEditavel {
-	id: string; // mais específico que string | number
-	categoria: TipoCategoria; // agora obrigatório e com union type
-	cidade: string; // agora obrigatório
-	cliente: string; // agora obrigatório
-	prazo: string; // agora obrigatório
-	area: string; // agora obrigatório
-	status: TipoStatusProjetos; // mais específico que string
-	visible: boolean;
+	// [MUDANÇA] Campos de Projeto ficam APENAS em Projeto, não mais na base.
+	// `extends ItemEditavel` significa: "Projeto tem tudo que ItemEditavel tem,
+	// MAIS os campos abaixo". É herança de interface.
+	categoria: TipoCategoria;
+	cidade: string;
+	cliente: string;
+	prazo: string;
+	area: string;
+	status: TipoStatusProjetos; // especializa o `status: string` da base
 }
 
-// Produtos
-// Tipos auxiliares — extraídos da interface para reutilização
-type TipoProduto = "Kit" | "Sistema" | "Equipamento" | "Componente";
-type StatusProduto = "Aprovado" | "Protótipo" | "Desenvolvimento" | "Pesquisa";
+// ─── Produtos ─────────────────────────────────────────────────────────────
+export type TipoProduto = "Kit" | "Sistema" | "Equipamento" | "Componente";
+export type StatusProduto =
+	| "Aprovado"
+	| "Protótipo"
+	| "Desenvolvimento"
+	| "Pesquisa";
 
+// [MUDANÇA] TipoProduto e StatusProduto eram `type` privados (sem export).
+// Como data.ts importa Produto e precisa dos tipos para `satisfies`,
+// exportar aqui evita que data.ts precise redefinir os mesmos tipos.
 export interface Produto extends ItemEditavel {
-	id: string; // mais específico que string | number
-	tipo: TipoProduto; // agora obrigatório e com union type
-	sku: string; // agora obrigatório
-	lancamento: string; // agora obrigatório
-	preco: string; // agora obrigatório
-	status: StatusProduto; // mais específico que string
-}
-
-export interface ItemEditavel {
-	// ── Identidade ─────────────────────────────────────────────────────────
-	// id é string em Projeto ("PRJ-001") e number em Produto (42)
-	// O union type aceita ambos sem forçar um padrão único
-	id: string | number;
-	nome: string;
-
-	// ── Galeria de fotos ────────────────────────────────────────────────────
-	// Ambos os tipos têm upload de fotos — campos obrigatórios
-	photos?: string[]; // array de URLs/base64
-	fotos: number; // contador exibido no card
-	capa?: string; // opcional: pode não ter foto de capa ainda
-
-	// ── Status ──────────────────────────────────────────────────────────────
-	// Ambos têm status, mas com valores diferentes (TipoStatus vs StatusProduto)
-	// Usamos string aqui na base — cada tipo especializa com union type próprio
-	status: string;
-
-	// ── Campos de PRODUTO (isProd = true) ───────────────────────────────────
-	sku?: string | number;
-	tipo?: string;
-	lancamento?: string;
-	preco?: string;
-
-	// ── Campos de PROJETO (isProd = false) ──────────────────────────────────
-	categoria?: string;
-	cidade?: string;
-	cliente?: string;
-	prazo?: string;
-	area?: string;
-	visible: boolean;
+	// [MUDANÇA] sku, tipo, lancamento, preco saíram da base e vieram para cá.
+	// Agora um Projeto não tem esses campos — como deve ser.
+	tipo: TipoProduto;
+	sku: string;
+	lancamento: string;
+	preco: string;
+	status: StatusProduto; // especializa o `status: string` da base
 }
