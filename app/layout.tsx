@@ -25,7 +25,6 @@ export default function RootLayout({
 		<html
 			lang="pt-BR"
 			className={jetbrainsMono.variable}
-			data-scroll-behavior="smooth"
 			suppressHydrationWarning
 		>
 			<body className="font-sans antialiased">

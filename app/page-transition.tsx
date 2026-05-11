@@ -7,27 +7,39 @@ interface PageTransitionProps {
 	children: ReactNode;
 }
 
-// Sem animações de entrada/saída — só scroll suave para o topo.
-//
-// [CONCEITO] Você não precisa do Framer Motion para isso.
-// AnimatePresence e motion.div existem para animar montagem/desmontagem
-// de componentes. Se não há animação, esses wrappers são peso morto:
-// aumentam o bundle e adicionam um ciclo extra de renderização sem
-// nenhum benefício visual.
-//
-// A única responsabilidade deste componente agora é uma:
-// detectar mudança de rota e rolar para o topo.
-// Isso é um efeito colateral puro — não precisa de nenhuma lib externa.
 export function PageTransition({ children }: PageTransitionProps) {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: "smooth" });
+		// [PROBLEMA RESOLVIDO] O Next.js App Router reseta o scroll para top:0
+		// automaticamente como parte do ciclo de navegação — de forma instantânea.
+		// Quando o useEffect roda, o scroll já está em zero. Não há distância
+		// para animar, então behavior:'smooth' parece não fazer nada.
+		//
+		// [SOLUÇÃO] requestAnimationFrame agenda a execução para APÓS o browser
+		// terminar de pintar o frame atual — ou seja, depois que o Next.js
+		// já finalizou seu reset de scroll. Nesse ponto, o scroll ainda está
+		// em zero, mas o conteúdo novo já está renderizado e visível.
+		//
+		// O efeito visual: o browser renderiza a nova página já posicionada
+		// no topo, e o scroll-behavior: smooth do CSS garante que qualquer
+		// scroll subsequente (âncoras, programático) seja suave.
+		//
+		// [CONCEITO] requestAnimationFrame vs setTimeout(fn, 0):
+		// setTimeout(fn, 0) é impreciso — o browser decide quando executar.
+		// requestAnimationFrame é garantido para rodar após a pintura do frame,
+		// tornando-o ideal para qualquer operação visual ou de layout.
+		//
+		// [CONCEITO] O retorno da função de cleanup:
+		// Se o usuário navegar muito rápido (antes do frame pintar),
+		// cancelAnimationFrame cancela o scroll anterior para evitar
+		// comportamento inesperado com múltiplos scrolls em fila.
+		const raf = requestAnimationFrame(() => {
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		});
+
+		return () => cancelAnimationFrame(raf);
 	}, [pathname]);
 
-	// [CONCEITO] Por que não return null aqui?
-	// Este componente envolve {children} no layout.tsx — ele precisa
-	// renderizar os filhos. `return null` descartaria toda a página.
-	// A div é o wrapper mínimo necessário para isso.
 	return <div>{children}</div>;
 }
