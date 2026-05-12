@@ -1,26 +1,23 @@
 "use client";
 
-import { motion, AnimatePresence, type Variants } from "framer-motion";
+// [MUDANÇA ARQUITETURAL] AnimatePresence removido completamente.
+//
+// O problema raiz: AnimatePresence com mode="wait" em produção (SSR)
+// entrava em estado indefinido na primeira carga — esperava uma saída
+// que não existia, travando o motion.div em opacity: 0 indefinidamente.
+//
+// A solução: usar motion.div com key={pathname} diretamente.
+// Quando pathname muda → React monta novo motion.div → animação dispara.
+// Não há "espera" — a entrada acontece imediatamente.
+//
+// Resultado: sem tela preta, sem travamento, funciona igual em dev e prod.
+import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useEffect, ReactNode } from "react";
 
 interface PageTransitionProps {
 	children: ReactNode;
 }
-
-// Fade simples — sem movimento Y, sem scale.
-// Apenas opacidade: a página some suavemente ao sair e aparece ao entrar.
-const pageVariants: Variants = {
-	initial: { opacity: 0 },
-	animate: {
-		opacity: 1,
-		transition: { duration: 0.25, ease: "easeOut" as const },
-	},
-	exit: {
-		opacity: 0.5,
-		transition: { duration: 0.15, ease: "easeIn" as const },
-	},
-};
 
 export function PageTransition({ children }: PageTransitionProps) {
 	const pathname = usePathname();
@@ -33,25 +30,17 @@ export function PageTransition({ children }: PageTransitionProps) {
 	}, [pathname]);
 
 	return (
-		// [CONCEITO] AnimatePresence intercepta a desmontagem do componente.
-		// Sem ele, quando o React remove um componente do DOM (ao trocar de página),
-		// a remoção é instantânea — não há tempo para animar a saída.
-		// Com AnimatePresence, o componente fica no DOM até a animação `exit`
-		// terminar, e só então é removido.
-		//
-		// mode="wait" garante que a página antiga termine de sair ANTES
-		// da nova começar a entrar. Isso evita que as duas páginas apareçam
-		// sobrepostas durante a transição.
-		<AnimatePresence mode="wait">
-			<motion.div
-				key={pathname}
-				variants={pageVariants}
-				initial="initial"
-				animate="animate"
-				exit="exit"
-			>
-				{children}
-			</motion.div>
-		</AnimatePresence>
+		<motion.div
+			key={pathname}
+			// [MUDANÇA] opacity inicial era 0 — causava tela completamente preta.
+			// Agora é 0.5: mesmo se a animação travar por qualquer motivo,
+			// o conteúdo continua visível (50% opacidade).
+			// Em funcionamento normal, anima de 0.5 → 1 em 0.3s.
+			initial={{ opacity: 0.5 }}
+			animate={{ opacity: 1 }}
+			transition={{ duration: 0.3, ease: "easeOut" }}
+		>
+			{children}
+		</motion.div>
 	);
 }
