@@ -33,7 +33,6 @@ import { fmtBRL } from "./lib/utils";
 interface DadoAtividade {
 	semana: string;
 	emails: number;
-	propostas: number;
 	projetos: number;
 }
 
@@ -81,7 +80,6 @@ interface AcaoRapida {
 const acoesRapidas: AcaoRapida[] = [
 	{ id: "projetos", label: "Subir foto", icon: Ic.Upload },
 	{ id: "emails", label: "Novo e-mail", icon: Ic.Send },
-	{ id: "propostas", label: "Nova proposta", icon: Ic.Doc },
 	{ id: "produtos", label: "Novo produto", icon: Ic.Box },
 	{ id: "conteudo", label: "Editar site", icon: Ic.Globe },
 	{ id: "usuarios", label: "Convidar", icon: Ic.User },
@@ -95,7 +93,6 @@ const acoesRapidas: AcaoRapida[] = [
 const corPorTipoLog: Record<string, string> = {
 	email: "var(--muted)",
 	upload: "var(--info)",
-	proposta: "var(--primary)",
 	sistema: "var(--muted)",
 	produto: "var(--warn)",
 	conteudo: "var(--success)",
@@ -215,7 +212,7 @@ export function ActivityChart({ data, accent }: ActivityChartProps) {
 	//               TypeScript infere: readonly ['emails', 'propostas', 'projetos']
 	//               Agora s só pode ser 'emails' | 'propostas' | 'projetos'
 	//               e TypeScript sabe que todos existem em colors. ✅
-	const series = ["emails", "propostas", "projetos"] as const;
+	const series = ["emails", "projetos"] as const;
 
 	// CONCEITO: typeof + keyof para criar tipos derivados
 	// Serie = 'emails' | 'propostas' | 'projetos'
@@ -228,7 +225,6 @@ export function ActivityChart({ data, accent }: ActivityChartProps) {
 	// TypeScript verifica se você colocou todas as chaves — segurança total.
 	const colors: Record<Serie, string> = {
 		emails: "var(--muted)",
-		propostas: accent,
 		projetos: "var(--info)",
 	};
 
@@ -358,24 +354,21 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 		const inboxNovos = tot.emails.filter(
 			(e) => e.folder === "inbox" && !e.read,
 		).length;
-		const propostasPendentes = tot.propostas.filter(
-			(p) => p.status === "Em análise",
-		).length;
 		const receitaAprovada = tot.propostas
 			.filter((p) => p.status === "Aprovada")
 			.reduce((soma, p) => soma + p.valor, 0);
 
-		return { inboxNovos, propostasPendentes, receitaAprovada };
+		return { inboxNovos, receitaAprovada };
 	}, [tot.emails, tot.propostas]);
 
 	return (
 		<PageContainer>
 			{/* Grade de estatísticas */}
 			<div
-				className="grid-stat-4"
+				className="grid-stat-3"
 				style={{
 					display: "grid",
-					gridTemplateColumns: "repeat(4, 1fr)",
+					gridTemplateColumns: "repeat(3, 1fr)",
 					gap: 16,
 					marginBottom: 20,
 				}}
@@ -386,13 +379,6 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 					sub={`+2 este mês · ${tot.projetosFuturos.filter((p) => p.status === "Aprovação").length} em aprovação`}
 					accent={accent}
 					icon={Ic.Folder}
-				/>
-				<Stat
-					label="Propostas Pendentes"
-					value={estatisticas.propostasPendentes}
-					sub={`${tot.propostas.filter((p) => p.status === "Aprovada").length} aprovadas no trimestre`}
-					accent={accent}
-					icon={Ic.Doc}
 				/>
 				<Stat
 					label="Inbox"
@@ -469,8 +455,8 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 
 			{/* Últimas ações + propostas pendentes */}
 			<div
-				className="grid-2-1"
-				style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 16 }}
+				className="grid-1-1"
+				style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16 }}
 			>
 				{/* Últimas atividades */}
 				<div className="card-pop">
@@ -545,70 +531,6 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 								</div>
 							);
 						})}
-					</div>
-				</div>
-
-				{/* Propostas pendentes */}
-				<div className="card-pop">
-					<div
-						style={{
-							padding: "16px 20px",
-							borderBottom: "1px solid var(--border)",
-						}}
-					>
-						<div className="label-eyebrow">— Demandam atenção</div>
-						<h3 style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>
-							Propostas pendentes
-						</h3>
-					</div>
-					<div>
-						{tot.propostas
-							.filter(
-								(p) => p.status === "Em análise" || p.status === "Rascunho",
-							)
-							.map((p, i, arr) => (
-								<div
-									key={p.id}
-									style={{
-										padding: "12px 20px",
-										display: "flex",
-										alignItems: "center",
-										gap: 12,
-										borderBottom:
-											i < arr.length - 1 ? "1px solid var(--border)" : "none",
-									}}
-								>
-									<div style={{ flex: 1, minWidth: 0 }}>
-										<div
-											style={{ fontSize: 12, fontWeight: 600, marginBottom: 2 }}
-										>
-											{p.numero} · {p.cliente}
-										</div>
-										<div style={{ fontSize: 10, color: "var(--muted)" }}>
-											{p.projeto} · vence {p.vencimento}
-										</div>
-									</div>
-									<div style={{ textAlign: "right" }}>
-										<div
-											style={{
-												fontSize: 12,
-												fontWeight: 600,
-												fontVariantNumeric: "tabular-nums",
-											}}
-										>
-											{fmtBRL(p.valor)}
-										</div>
-										<span
-											className={
-												"chip " + (p.status === "Em análise" ? "warn" : "")
-											}
-											style={{ fontSize: 9, marginTop: 2 }}
-										>
-											{p.status}
-										</span>
-									</div>
-								</div>
-							))}
 					</div>
 				</div>
 			</div>

@@ -1,17 +1,25 @@
+// app/administrador/_components/components/config_role.tsx
 import { useState } from "react";
 
 interface ConfigRowProps {
 	label: string;
 	desc: string;
 	enabled: boolean;
+	// [ADICIONADO] Callback opcional — chamado quando o toggle muda.
+	// O `?` torna a prop opcional: componentes que não precisam
+	// saber sobre mudanças (como page-config) continuam funcionando
+	// sem alteração. É uma adição não-breaking.
+	onToggle?: (value: boolean) => void;
 }
 
 export function ConfigRow({
 	label,
 	desc,
 	enabled: initEnabled,
+	onToggle,
 }: ConfigRowProps) {
 	const [on, setOn] = useState(initEnabled);
+
 	return (
 		<div
 			style={{
@@ -28,7 +36,19 @@ export function ConfigRow({
 				<div style={{ fontSize: 11, color: "var(--muted)" }}>{desc}</div>
 			</div>
 			<button
-				onClick={() => setOn(!on)}
+				onClick={() => {
+					// [MUDANÇA] Antes: só atualizava o estado interno.
+					// Agora: calcula o novo valor, atualiza o estado,
+					// E notifica o pai via onToggle (se fornecido).
+					//
+					// [CONCEITO] `onToggle?.(newValue)` — optional chaining em chamada:
+					// O `?.` verifica se onToggle existe antes de chamá-lo.
+					// Sem isso, chamar uma função undefined causaria erro em runtime.
+					// É equivalente a: if (onToggle) onToggle(newValue)
+					const newValue = !on;
+					setOn(newValue);
+					onToggle?.(newValue);
+				}}
 				style={{
 					width: 38,
 					height: 22,
@@ -51,7 +71,7 @@ export function ConfigRow({
 						background: "#fff",
 						transition: "left .15s",
 					}}
-				></span>
+				/>
 			</button>
 		</div>
 	);

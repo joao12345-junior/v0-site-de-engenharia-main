@@ -17,7 +17,7 @@ const pageVariants: Variants = {
 		transition: { duration: 0.25, ease: "easeOut" as const },
 	},
 	exit: {
-		opacity: 0,
+		opacity: 0.5,
 		transition: { duration: 0.15, ease: "easeIn" as const },
 	},
 };
