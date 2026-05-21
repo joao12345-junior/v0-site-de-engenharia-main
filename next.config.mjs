@@ -1,8 +1,12 @@
 // next.config.mjs
 const nextConfig = {
+	output: "standalone",
 	trailingSlash: true,
 	typescript: {
 		ignoreBuildErrors: false,
+	},
+	outputFileTracingIncludes: {
+		"/*": ["./package-lock.json"],
 	},
 	images: {
 		// Sem unoptimized: true — deixa o Next.js otimizar
