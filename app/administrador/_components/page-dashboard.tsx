@@ -365,10 +365,10 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 		<PageContainer>
 			{/* Grade de estatísticas */}
 			<div
-				className="grid-stat-3"
+				className="grid-stat-2"
 				style={{
 					display: "grid",
-					gridTemplateColumns: "repeat(3, 1fr)",
+					gridTemplateColumns: "repeat(2, 1fr)",
 					gap: 16,
 					marginBottom: 20,
 				}}
@@ -387,70 +387,19 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 					accent={accent}
 					icon={Ic.Mail}
 				/>
-				<Stat
-					label="Receita Aprovada"
-					value={fmtBRL(estatisticas.receitaAprovada)}
-					sub="propostas aprovadas · 90d"
-					accent={accent}
-					icon={Ic.Activity}
-				/>
 			</div>
 
 			{/* Gráfico + ações rápidas */}
 			<div
-				className="grid-2-1"
+				className="grid-1"
 				style={{
 					display: "grid",
-					gridTemplateColumns: "2fr 1fr",
+					gridTemplateColumns: "1fr",
 					gap: 16,
 					marginBottom: 20,
 				}}
 			>
 				<ActivityChart data={tot.atividade} accent={accent} />
-
-				<div className="card-pop" style={{ padding: 20 }}>
-					<div className="label-eyebrow">— Acessos rápidos</div>
-					<h3
-						style={{
-							fontSize: 16,
-							fontWeight: 700,
-							marginTop: 6,
-							marginBottom: 14,
-						}}
-					>
-						Ações
-					</h3>
-					<div
-						style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}
-					>
-						{acoesRapidas.map((acao) => {
-							// CORREÇÃO: Antes era "const I = a.icon" e usava <I size={16}/>
-							// que causava "Cannot find name 'I'" quando a tipagem mudava.
-							// Agora: "const Icon = acao.icon" — nome descritivo e em maiúscula.
-							// Em TSX, componentes DEVEM começar com maiúscula.
-							const Icon = acao.icon;
-							return (
-								<button
-									key={acao.label}
-									onClick={() => onNav(acao.id)}
-									className="btn-ghost"
-									style={{
-										padding: 14,
-										display: "flex",
-										flexDirection: "column",
-										alignItems: "flex-start",
-										gap: 8,
-										border: "1px solid var(--border)",
-										textAlign: "left",
-									}}
-								>
-									<Icon size={16} />
-									<span style={{ fontSize: 12 }}>{acao.label}</span>
-								</button>
-							);
-						})}
-					</div>
-				</div>
 			</div>
 
 			{/* Últimas ações + propostas pendentes */}
@@ -529,6 +478,49 @@ export function PageDashboard({ accent, onNav }: PageDashboardProps) {
 										{l.user}
 									</span>
 								</div>
+							);
+						})}
+					</div>
+				</div>
+				<div className="card-pop" style={{ padding: 20 }}>
+					<div className="label-eyebrow">— Acessos rápidos</div>
+					<h3
+						style={{
+							fontSize: 16,
+							fontWeight: 700,
+							marginTop: 6,
+							marginBottom: 14,
+						}}
+					>
+						Ações
+					</h3>
+					<div
+						style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}
+					>
+						{acoesRapidas.map((acao) => {
+							// CORREÇÃO: Antes era "const I = a.icon" e usava <I size={16}/>
+							// que causava "Cannot find name 'I'" quando a tipagem mudava.
+							// Agora: "const Icon = acao.icon" — nome descritivo e em maiúscula.
+							// Em TSX, componentes DEVEM começar com maiúscula.
+							const Icon = acao.icon;
+							return (
+								<button
+									key={acao.label}
+									onClick={() => onNav(acao.id)}
+									className="btn-ghost"
+									style={{
+										padding: 14,
+										display: "flex",
+										flexDirection: "column",
+										alignItems: "flex-start",
+										gap: 8,
+										border: "1px solid var(--border)",
+										textAlign: "left",
+									}}
+								>
+									<Icon size={16} />
+									<span style={{ fontSize: 12 }}>{acao.label}</span>
+								</button>
 							);
 						})}
 					</div>
