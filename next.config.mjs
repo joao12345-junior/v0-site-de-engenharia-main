@@ -1,11 +1,9 @@
 // next.config.mjs
 const nextConfig = {
 	trailingSlash: true,
+	serverExternalPackages: ["argon2"],
 	typescript: {
 		ignoreBuildErrors: false,
-	},
-	outputFileTracingIncludes: {
-		"/*": ["./package-lock.json"],
 	},
 	images: {
 		// Sem unoptimized: true — deixa o Next.js otimizar
