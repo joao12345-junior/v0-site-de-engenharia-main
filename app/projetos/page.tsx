@@ -13,7 +13,10 @@ import {
 	type Variants,
 } from "framer-motion";
 import { ImageCarousel } from "@/components/ui/image-carousel";
-import { findImagesByTitle } from "@/lib/repositories/images-repository";
+import {
+	findImagesByTitle,
+	findLocationByTitle,
+} from "@/lib/repositories/images-repository";
 
 const categories = {
 	Main: "Todos",
@@ -203,7 +206,8 @@ export default function ProjetosPage() {
 												<div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
 													<span className="flex items-center gap-1">
 														<MapPin className="h-4 w-4" />
-														{project.location}
+														{findLocationByTitle(project.title) ||
+															"Localização desconhecida"}
 													</span>
 												</div>
 											</div>
