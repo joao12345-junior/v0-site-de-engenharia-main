@@ -1,6 +1,5 @@
 // next.config.mjs
 const nextConfig = {
-	output: "standalone",
 	trailingSlash: true,
 	typescript: {
 		ignoreBuildErrors: false,
