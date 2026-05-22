@@ -9,7 +9,7 @@ const values = [
 		icon: Target,
 		title: "Missão",
 		description:
-			"Desenvolver projetos de engenharia com excelência técnica, contribuindo para a qualidade e segurança das edificações de nossos clientes.",
+			"Realizar projetos e consultorias em engenharia de instalações para quem busca confiabilidade, segurança e eficiência em suas obras.",
 	},
 	{
 		icon: Award,
@@ -151,7 +151,7 @@ export default function SobrePage() {
 								Os valores que guiam nossa atuação no mercado.
 							</p>
 						</div>
-						<div className="grid md:grid-cols-3 gap-8">
+						<div className="grid md:grid-cols-2 gap-8">
 							{values.map((value) => (
 								<div
 									key={value.title}
