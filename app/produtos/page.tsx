@@ -1,67 +1,88 @@
 // app/produtos/page.tsx
+//
+// [MUDANÇA] Adicionada faixa vermelha de credenciais após o Hero.
+//
+// [CONCEITO] Por que a faixa fica ANTES da lista de serviços e não depois?
+// É uma técnica de copywriting chamada "credibility first":
+// antes de mostrar o que você faz, você mostra POR QUE pode ser confiado.
+// O leitor chega à lista de serviços já com a âncora de confiança estabelecida.
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { CheckCircle2, ArrowRight, Shield, Cpu, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import servicesData1 from "@/public/JSON/produtos/products1.json";
+import servicesData2 from "@/public/JSON/produtos/products2.json";
 
-// [PASSO 1] Importar do repository com named exports.
-// Desestruturamos exatamente o que precisamos com {}.
-// ServicoOptare é importado como tipo — só existe em tempo de compilação.
-import {
-	servicos,
-	LABELS_SUBCATEGORIA,
-	type ServicoOptare,
-} from "@/lib/repositories/products-repository";
+// ─── Tipos ────────────────────────────────────────────────────────────────
 
-// ─── Componente auxiliar: card de um grupo de serviços ────────────────────
-// [CONCEITO] Extrair um componente com responsabilidade única.
-// A página não precisa saber como um card é renderizado — só que ele existe.
-// Isso segue o Single Responsibility Principle: ServicoCard cuida da
-// apresentação de UM serviço. A página cuida da lista de serviços.
-interface ServicoCardProps {
-	servico: ServicoOptare;
+interface ServicoGrupo1 {
+	[key: string]: string[];
 }
 
-function ServicoCard({ servico }: ServicoCardProps) {
-	// [PASSO 2] Object.entries() transforma o objeto de categorias em array iterável.
-	// { hidrossanitarios: ["..."] } → [["hidrossanitarios", ["..."]]]
-	// Sem isso, não é possível usar .map() diretamente sobre um objeto.
+interface ServicoGrupo2 {
+	titulo: string;
+	categorias: Record<string, string[]>;
+}
+
+// ─── Mapa de labels legíveis para as chaves do JSON ───────────────────────
+const LABELS_SUBCATEGORIA: Record<string, string> = {
+	hidrossanitarios: "Hidrossanitários",
+	eletricos: "Elétricos",
+	gas: "Gás",
+	seguranca_contra_incendio: "Segurança contra Incêndio",
+	personalizacao_comercial_residencial: "Personalização Comercial/Residencial",
+	aprovacoes_regularizacoes: "Aprovações e Regularizações",
+	vistorias_atendimentos: "Vistorias e Atendimentos",
+	sustentabilidade_reuso: "Sustentabilidade e Reúso",
+	extensao_redes_publicas: "Extensão de Redes Públicas",
+	automacao_protecao: "Automação e Proteção (SPDA)",
+	estudos_tecnicos: "Estudos Técnicos",
+	modelagem_bim_cad: "Modelagem BIM/CAD",
+	analises_criticas: "Análises Críticas",
+	laudos_levantamentos: "Laudos e Levantamentos",
+	hidraulica: "Infraestrutura Hidráulica",
+	eletrica: "Infraestrutura Elétrica",
+};
+
+// ─── Dados de credenciais para a faixa ───────────────────────────────────
+//
+// [CONCEITO] Dados estáticos de UI como constante fora do componente.
+// Isso evita que o array seja recriado a cada render — sem custo em React.
+const credentials = [
+	{
+		icon: Shield,
+		text: "Seguro de Responsabilidade Civil Profissional da AXA Seguros: garantindo cobertura ao cliente em caso de erros.",
+	},
+	{
+		icon: Cpu,
+		text: "Autodesk Revit: licenciado, original e atualizado.",
+	},
+	{
+		icon: Layers,
+		text: "Personalização Tecnológica: capacidade de adaptação a qualquer Plano de Execução BIM.",
+	},
+];
+
+// ─── Componente: ServicoCard ──────────────────────────────────────────────
+
+function ServicoCard({ servico }: { servico: ServicoGrupo2 }) {
 	const subcategorias = Object.entries(servico.categorias);
 
 	return (
 		<div className="bg-card rounded-lg border border-border overflow-hidden">
-			{/* Cabeçalho do card — destaca o grupo principal */}
-			<div className="bg-primary/5 border-b border-border px-6 py-5">
-				<div className="flex items-center gap-3">
-					<div className="h-1 w-6 bg-primary rounded-full flex-shrink-0" />
-					<h2 className="text-lg font-bold text-foreground leading-tight">
-						{servico.titulo}
-					</h2>
-				</div>
+			<div className="px-6 pt-6 pb-4 border-b border-border">
+				<h2 className="text-xl font-bold text-foreground">{servico.titulo}</h2>
 			</div>
 
-			{/* Corpo do card — lista de subcategorias */}
 			<div className="p-6">
-				{/*
-				 * [PASSO 3] Iterar sobre as subcategorias.
-				 * `chave` é a chave snake_case do JSON (ex: "hidrossanitarios").
-				 * `itens` é o array de strings (ex: ["Instalações Hidrossanitárias"]).
-				 *
-				 * LABELS_SUBCATEGORIA[chave] busca o label legível.
-				 * O operador ?? (nullish coalescing) é o fallback:
-				 * se a chave não existir no mapa, usa a própria chave como texto.
-				 * Isso evita erros silenciosos se uma nova chave for adicionada ao JSON.
-				 */}
 				<div className="grid sm:grid-cols-2 gap-6">
 					{subcategorias.map(([chave, itens]) => (
 						<div key={chave}>
-							{/* Label humanizado da subcategoria */}
 							<h3 className="text-sm font-semibold text-primary mb-2 uppercase tracking-wide">
 								{LABELS_SUBCATEGORIA[chave] ?? chave}
 							</h3>
-
-							{/* Lista de serviços dentro da subcategoria */}
 							<ul className="space-y-1.5">
 								{itens.map((item) => (
 									<li
@@ -78,7 +99,6 @@ function ServicoCard({ servico }: ServicoCardProps) {
 				</div>
 			</div>
 
-			{/* Rodapé com CTA */}
 			<div className="px-6 pb-6">
 				<Button variant="outline" className="w-full" asChild>
 					<Link href="/contato">
@@ -91,10 +111,50 @@ function ServicoCard({ servico }: ServicoCardProps) {
 	);
 }
 
+// ─── Componente: CredentialsBanner ───────────────────────────────────────
+//
+// [CONCEITO] Componente extraído em vez de inline no JSX principal.
+// Regra prática: se um bloco de JSX tem mais de ~15 linhas e uma
+// responsabilidade clara, vale extrair. Facilita leitura e futura manutenção.
+//
+// [DECISÃO DE DESIGN] A faixa usa bg-primary (vermelho da marca) com texto
+// branco — mesmo padrão visual da StatsSection na Home. Isso cria consistência
+// visual entre as páginas sem precisar de um novo design system.
+
+function CredentialsBanner() {
+	return (
+		<section className="py-12 bg-primary">
+			<div className="mx-auto max-w-7xl px-6 lg:px-8">
+				{/* Grid de credenciais: empilhado no mobile, 3 colunas no desktop */}
+				<div className="grid md:grid-cols-3 gap-8 md:gap-12">
+					{credentials.map((credential) => {
+						// [CONCEITO] Mesmo padrão de ícone que a página de Clientes:
+						// renomear para maiúscula antes de usar como componente JSX.
+						const Icon = credential.icon;
+						return (
+							<div
+								key={credential.text}
+								className="flex items-start gap-4 text-primary-foreground"
+							>
+								<div className="flex-shrink-0 mt-0.5">
+									<Icon className="h-6 w-6 opacity-90" />
+								</div>
+								<p className="text-sm leading-relaxed opacity-90">
+									{credential.text}
+								</p>
+							</div>
+						);
+					})}
+				</div>
+			</div>
+		</section>
+	);
+}
+
 // ─── Página principal ─────────────────────────────────────────────────────
-// Server Component — sem "use client" porque não há interatividade.
-// [CONCEITO] Quando não há useState ou eventos, mantenha como Server Component.
-// O Next.js renderiza no servidor → HTML pronto → melhor para SEO e performance.
+
+const servicos = servicesData2 as unknown as ServicoGrupo2[]; // Type assertion para o formato esperado
+
 export default function ProdutosPage() {
 	return (
 		<>
@@ -123,20 +183,12 @@ export default function ProdutosPage() {
 					</div>
 				</section>
 
+				{/* Faixa de credenciais — credibility first */}
+				<CredentialsBanner />
+
 				{/* Lista de serviços */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						{/*
-						 * [PASSO 4] Iterar sobre os grupos principais.
-						 * `servicos` vem diretamente do repository — sem transformação.
-						 * A `key` usa o `titulo` porque é único entre os 3 grupos.
-						 *
-						 * [CONCEITO] Por que não há filtro aqui (ao contrário de Projetos)?
-						 * A página de Projetos tem 15 itens — filtro faz sentido.
-						 * Aqui temos 3 grupos — mostrar todos de uma vez é mais claro
-						 * do que esconder 2 para mostrar 1. Menos não é sempre mais,
-						 * mas mais não é sempre melhor.
-						 */}
 						<div className="space-y-8">
 							{servicos.map((servico) => (
 								<ServicoCard key={servico.titulo} servico={servico} />

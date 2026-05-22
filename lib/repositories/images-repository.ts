@@ -1,46 +1,54 @@
 import imagesData from "@/public/JSON/projetos/projects.json";
 
 // Tipos explícitos (boa prática TypeScript)
-interface ImageEntry {
-	urls: string[];
+interface ProjectImage {
+	subtitulo: string;
+	query_busca: string;
+	urls_imagens: string[];
 	localization: string;
 }
 
-// ✅ O Map é construído UMA VEZ quando o módulo é carregado
-// Complexidade: O(n) na construção, O(1) na busca
-const indiceDeImagens = new Map<string, ImageEntry>();
-
-for (const client of imagesData) {
-	for (const image of client.imagens) {
-		const key = image.subtitulo.toLocaleLowerCase().trim();
-		indiceDeImagens.set(key, {
-			urls: image.urls_imagens,
-			localization: image.localization ?? "",
-		});
-	}
+export interface ProjectGroup {
+	cliente: string;
+	imagens: ProjectImage[];
 }
 
-function findByTitle(title: string): ImageEntry | undefined {
-	const cleanTitle = title.toLocaleLowerCase().trim();
-
-	// Primiero tenta match exato
-	if (indiceDeImagens.has(cleanTitle)) {
-		return indiceDeImagens.get(cleanTitle);
-	}
-
-	// Fallback: busca parcial (ainda O(n), mas só quando necessário)
-	for (const [key, value] of indiceDeImagens) {
-		if (key.includes(cleanTitle) || cleanTitle.includes(key)) {
-			return value;
+// Dado o título de um projeto, encontra as imagens correspondentes no JSON de imagens.
+export function findImagesByTitle(title: string): string[] {
+	const groups = imagesData as ProjectGroup[];
+	for (const group of groups) {
+		for (const img of group.imagens) {
+			if (img.subtitulo === title || img.subtitulo.includes(title)) {
+				return img.urls_imagens;
+			}
 		}
 	}
-	return undefined;
+	return [];
 }
 
-export function findImagesByTitle(title: string): string[] {
-	return findByTitle(title)?.urls ?? [];
+// Dado o título de um projeto, retorna a localização (cidade/estado).
+export function findLocationByTitle(title: string): string | null {
+	const groups = imagesData as ProjectGroup[];
+	for (const group of groups) {
+		for (const img of group.imagens) {
+			if (img.subtitulo === title || img.subtitulo.includes(title)) {
+				return img.localization ?? null;
+			}
+		}
+	}
+	return null;
 }
 
-export function findLocationByTitle(title: string): string {
-	return findByTitle(title)?.localization ?? "";
+// [MUDANÇA] Nova função: dado o título, retorna o nome do cliente.
+// Percorre o JSON de projetos (não o de imagens) para fazer o match.
+export function findClientByTitle(title: string): string | null {
+	const groups = imagesData as ProjectGroup[];
+	for (const group of groups) {
+		for (const img of group.imagens) {
+			if (img.subtitulo === title || img.subtitulo.includes(title)) {
+				return group.cliente;
+			}
+		}
+	}
+	return null;
 }

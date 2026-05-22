@@ -31,6 +31,7 @@ export function Footer() {
 									src="/images/optare_logo.png"
 									alt="OPTARE Logo"
 									fill
+									loading="eager"
 									className="object-contain p-1"
 									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 								/>
