@@ -6,13 +6,13 @@ import { jwtVerify } from "jose";
 // Feito fora do handler para não recriar a cada requisição
 if (!process.env.JWT_SECRET_ACCESS)
 	throw new Error(
-		"\n[/middleware.ts] JWT_SECRET_ACCESS não configurado nas variáveis de ambiente",
+		"\n[/proxy.ts] JWT_SECRET_ACCESS não configurado nas variáveis de ambiente",
 	);
 const secret = new TextEncoder().encode(process.env.JWT_SECRET_ACCESS!);
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
 	const token = req.cookies.get("access_token")?.value;
-	console.log(`\n[/middleware.ts] Token presente: ${!!token}\n`);
+	console.log(`\n[/proxy.ts] Token presente: ${!!token}\n`);
 
 	if (!token)
 		return NextResponse.redirect(new URL("/administrador_login", req.url));
@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
 		return NextResponse.next();
 	} catch (err: unknown) {
 		// Token inválido, expirado ou mal formado
-		console.error("\n[/middleware.ts] Erro ao verificar token: ", err);
+		console.error("\n[/proxy.ts] Erro ao verificar token: ", err);
 		return NextResponse.redirect(new URL("/administrador_login", req.url));
 	}
 }
