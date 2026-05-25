@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OPTARE Engenharia Em Breve</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────────
+       TOKENS — extraídos diretamente do globals.css
+       ───────────────────────────────────────────── */
+    :root {
+      --bg:        oklch(0.1157 0 0);
+      --fg:        oklch(0.9389 0 0);
+      --primary:   oklch(0.5164 0.2011 28.1378);
+      --primary-d: oklch(0.4463 0.1678 27.4784);
+      --accent:    oklch(0.3956 0.142 26.6897);
+      --muted:     oklch(0.2156 0 0);
+      --border:    oklch(0.3705 0 0);
+      --card:      oklch(0.1579 0 0);
+
+      --font-mono: "JetBrains Mono", monospace;
+      --font-display: "Bebas Neue", sans-serif;
+
+      /* sombra brutalista — mesmo padrão do globals */
+      --shadow-brutal: 5px 5px 0px 1px hsl(0 0% 0% / 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-mono);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ─── GRID DE FUNDO ─────────────────────────── */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(oklch(0.3705 0 0 / 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, oklch(0.3705 0 0 / 0.15) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── VINHETA ───────────────────────────────── */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 70% 70% at 50% 50%,
+        transparent 40%,
+        oklch(0.06 0 0 / 0.85) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ─── BRILHO PRIMÁRIO (glow central) ────────── */
+    .glow {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(
+        circle,
+        oklch(0.4463 0.1678 27.4784 / 0.12) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+      z-index: 0;
+      animation: pulse-glow 6s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.15); }
+    }
+
+    /* ─── PARTÍCULAS ────────────────────────────── */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 0;
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0%   { opacity: 0;    transform: translateY(0)    scaleX(1); }
+      10%  { opacity: 0.6; }
+      90%  { opacity: 0.3; }
+      100% { opacity: 0;    transform: translateY(-100vh) scaleX(1); }
+    }
+
+    /* ─── LINHAS DECORATIVAS ────────────────────── */
+    .deco-line {
+      position: fixed;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--primary),
+        transparent
+      );
+      height: 1px;
+      width: 100%;
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .deco-line.top    { top: 15%; animation: scan 8s ease-in-out infinite; }
+    .deco-line.bottom { bottom: 15%; animation: scan 8s ease-in-out infinite 4s; }
+
+    @keyframes scan {
+      0%, 100% { opacity: 0.1; transform: scaleX(0.3); }
+      50%       { opacity: 0.35; transform: scaleX(1); }
+    }
+
+    /* ─── CONTAINER PRINCIPAL ───────────────────── */
+    .main {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      gap: 2.5rem;
+      animation: fade-in 1.2s ease forwards;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── LOGO ──────────────────────────────────── */
+    .logo-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      animation: logo-in 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    }
+
+    @keyframes logo-in {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .logo-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border: 1px solid oklch(0.3705 0 0 / 0.6);
+      animation: border-flicker 4s ease-in-out infinite;
+    }
+
+    @keyframes border-flicker {
+      0%, 100% { border-color: oklch(0.3705 0 0 / 0.6); }
+      50%       { border-color: oklch(0.4463 0.1678 27.4784 / 0.5); }
+    }
+
+    .logo-wrap img {
+      height: 100px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 0 18px oklch(0.4463 0.1678 27.4784 / 0.5));
+    }
+
+    /* ─── DIVIDER ───────────────────────────────── */
+    .divider {
+      width: 280px;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--primary),
+        var(--accent),
+        transparent
+      );
+      animation: divider-in 1s ease 0.6s both;
+    }
+
+    @keyframes divider-in {
+      from { transform: scaleX(0); opacity: 0; }
+      to   { transform: scaleX(1); opacity: 1; }
+    }
+
+    /* ─── BADGE STATUS ──────────────────────────── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--primary);
+      animation: badge-in 0.8s ease 0.8s both;
+      box-shadow: var(--shadow-brutal);
+    }
+
+    @keyframes badge-in {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 0;
+      animation: blink 1.4s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ─── MENSAGEM PRINCIPAL ────────────────────── */
+    .message-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      animation: msg-in 1s ease 1s both;
+    }
+
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .main-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: var(--fg);
+      text-shadow: 0 0 40px oklch(0.5164 0.2011 28.1378 / 0.3);
+    }
+
+    .main-title span {
+      color: var(--primary);
+    }
+
+    .sub-text {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: oklch(0.5982 0 0);
+      max-width: 400px;
+      line-height: 1.7;
+    }
+
+    /* ─── BARRA DE PROGRESSO DECORATIVA ─────────── */
+    .progress-bar {
+      width: 280px;
+      height: 3px;
+      background: var(--muted);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-brutal);
+    }
+
+    .progress-bar::after {
+      content: "";
+      position: absolute;
+      left: -60%;
+      top: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--primary),
+        var(--accent)
+      );
+      animation: progress-sweep 2.4s ease-in-out infinite;
+    }
+
+    @keyframes progress-sweep {
+      0%   { left: -60%; }
+      100% { left: 110%; }
+    }
+
+    /* ─── SERVIÇOS (rodapé discreto) ────────────── */
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      max-width: 520px;
+      animation: svc-in 1s ease 1.3s both;
+    }
+
+    @keyframes svc-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .svc-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: oklch(0.4184 0 0);
+      padding: 0.25rem 0.6rem;
+      border: 1px solid oklch(0.3705 0 0 / 0.4);
+      transition: color 0.25s, border-color 0.25s;
+    }
+
+    .svc-tag:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* ─── RODAPÉ ────────────────────────────────── */
+    .footer {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: oklch(0.3705 0 0);
+      text-transform: uppercase;
+      z-index: 10;
+      animation: footer-in 1s ease 1.6s both;
+    }
+
+    @keyframes footer-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── RESPONSIVO ────────────────────────────── */
+    @media (max-width: 480px) {
+      .logo-wrap img { height: 72px; }
+      .divider, .progress-bar { width: 200px; }
+      .services { gap: 0.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Camadas de fundo -->
+  <div class="grid-bg"></div>
+  <div class="vignette"></div>
+  <div class="glow"></div>
+  <div class="deco-line top"></div>
+  <div class="deco-line bottom"></div>
+
+  <!-- Partículas geradas via JS -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Conteúdo central -->
+  <main class="main">
+
+    <div class="logo-wrap">
+      <img src="data:image/png;base64,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4ZwtEiCTaf1/rOwUjKS0airaWnjBDIg4OY3jngHAgLZS7W9o0nnarrR9FrG+5qg6IJkNqe0MHP523LP0x+CVW1HaDVU7oJtV3ExvBa4NcGkg94AKhqIK4ZZYX78Mj43YxlriCksssrt+WR8jsYy5xJVCIcvWOcxwcxxa4cQQeIWYLpWgY6UHv3QsJFZbEslXpqqeads0j8yMxunAGMHPUvKmomqHB0z94gYHABWkUXheiqp4oHQsfiN+d4YHHPNXLfHO+UmnlbG8DrdjPcsVEThvGR3DpWPrp2xwsIJ5AOxxxwxnktddahlTV77PNaN0Ht7/ALViIrakx4vLJgr6qFgYyU7o5AgH3ryoramoZuSybzc5xgLHROavEXvGp/FvFt/9F83A7c8/SqYJpIJOkiduu7cZVtFFXfGJvGPGN/8AS5zvYCpnlkmkMkrt5x5nCoRBe8an8W8X3/0XzcDtzzVVPW1NO3dilIb2EZwsdFeU4jL/ACjWbzj058oYIwMexWaeompyTC/dJ4HgCrSJzTiPSSSSeZV2WpnlhbC9+WNxgYHDAwrKKKyYK6qhj6NkvkjkCAcI+uq3te10ziH8HA4/kLGRXmpxBERRRERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB/9k=" alt="OPTARE Engenharia" />
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Em manutenção
+    </div>
+
+    <div class="message-block">
+      <h1 class="main-title">
+        Logo teremos<br /><span>novidades</span>
+      </h1>
+      <p class="sub-text">
+        Estamos construindo algo novo para você.<br />
+        Em breve nosso site estará no ar.
+      </p>
+    </div>
+
+    <div class="progress-bar"></div>
+
+    <div class="services">
+      <span class="svc-tag">Projetos Hidrossanitários</span>
+      <span class="svc-tag">Prevenção a Incêndios</span>
+      <span class="svc-tag">Projetos Elétricos</span>
+      <span class="svc-tag">Telefonia</span>
+      <span class="svc-tag">SPDA</span>
+      <span class="svc-tag">Projetos de Gás</span>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    © 2025 OPTARE Engenharia — Todos os direitos reservados
+  </footer>
+
+  <script>
+    // Gera partículas flutuantes dinamicamente
+    const container = document.getElementById("particles");
+    const COUNT = 28;
+
+    for (let i = 0; i < COUNT; i++) {
+      const p = document.createElement("div");
+      p.className = "particle";
+
+      // Posição horizontal aleatória
+      p.style.left = Math.random() * 100 + "vw";
+      // Tamanho ligeiramente variável
+      const size = Math.random() > 0.7 ? 3 : 2;
+      p.style.width = size + "px";
+      p.style.height = size + "px";
+      // Cada partícula começa em posição vertical aleatória
+      p.style.bottom = Math.random() * 100 + "vh";
+      // Duração e delay aleatórios para parecer orgânico
+      const duration = 8 + Math.random() * 14;
+      const delay    = Math.random() * 12;
+      p.style.animationDuration  = duration + "s";
+      p.style.animationDelay     = "-" + delay + "s"; // começa no meio do ciclo
+      // Opacidade máxima variável
+      p.style.opacity = (0.2 + Math.random() * 0.5).toString();
+
+      container.appendChild(p);
+    }
+  </script>
+
+</body>
+</html>
