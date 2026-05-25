@@ -32,19 +32,19 @@ import { MaintenancePage } from "@/components/maintenance/maintenance-page";
 // mar de HTML estático.
 
 export default function Home() {
-	return <MaintenancePage />;
-	// return (
-	// 	<>
-	// 		<Header />
-	// 		<main>
-	// 			<HeroSection />
-	// 			<ServicesSection />
-	// 			<ClientCarousel /> {/* ← adiciona aqui */}
-	// 			<AboutSection />
-	// 			<StatsSection />
-	// 			<CTASection />
-	// 		</main>
-	// 		<Footer />
-	// 	</>
-	// );
+	if (process.env.NODE_ENV === "production") return <MaintenancePage />;
+	return (
+		<>
+			<Header />
+			<main>
+				<HeroSection />
+				<ServicesSection />
+				<ClientCarousel /> {/* ← adiciona aqui */}
+				<AboutSection />
+				<StatsSection />
+				<CTASection />
+			</main>
+			<Footer />
+		</>
+	);
 }
