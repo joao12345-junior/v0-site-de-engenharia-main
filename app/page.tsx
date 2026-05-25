@@ -37,10 +37,9 @@ export default function Home() {
 			<main>
 				<HeroSection />
 				<ServicesSection />
+				<ClientCarousel /> {/* ← adiciona aqui */}
 				<AboutSection />
 				<StatsSection />
-				{/* Carrossel de logos — prova social antes do CTA */}
-				<ClientCarousel />
 				<CTASection />
 			</main>
 			<Footer />

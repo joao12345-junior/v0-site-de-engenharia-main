@@ -41,6 +41,15 @@ function getInitials(name: string): string {
 }
 
 // ─── Componente: ClientLogo ───────────────────────────────────────────────
+//
+// [CORREÇÃO] A cadeia clearbit → favicon → initials ainda depende de rede.
+// Com ERR_NAME_NOT_RESOLVED o <img> fica em "loading" por vários segundos
+// antes de acionar onError — causando o carrossel em branco que você viu.
+//
+// Solução: iniciar sempre em "initials" (instantâneo, sem rede).
+// Se quiser reativar a cadeia de logo no futuro quando o Clearbit estiver
+// estável, mude o estado inicial de volta para:
+//   useState<"clearbit" | "favicon" | "initials">(domain ? "clearbit" : "initials")
 
 interface ClientLogoProps {
 	client: ClientEntry;
@@ -49,9 +58,14 @@ interface ClientLogoProps {
 function ClientLogo({ client }: ClientLogoProps) {
 	const domain = getDomainFromUrl(client.Site);
 	const initials = getInitials(client.CLIENTE);
+
+	// [CORREÇÃO] Estado inicial: "initials" — nunca vai em branco.
+	// Para reativar logos externos no futuro, troque para:
+	//   domain ? "clearbit" : "initials"
 	const [logoState, setLogoState] = useState<
 		"clearbit" | "favicon" | "initials"
-	>(domain ? "clearbit" : "initials");
+	>("initials");
+
 	const onClearbitError = useCallback(() => setLogoState("favicon"), []);
 	const onFaviconError = useCallback(() => setLogoState("initials"), []);
 
@@ -67,6 +81,7 @@ function ClientLogo({ client }: ClientLogoProps) {
 			</div>
 		);
 	}
+
 	if (logoState === "favicon") {
 		return (
 			// eslint-disable-next-line @next/next/no-img-element
@@ -78,6 +93,7 @@ function ClientLogo({ client }: ClientLogoProps) {
 			/>
 		);
 	}
+
 	return (
 		// eslint-disable-next-line @next/next/no-img-element
 		<img
@@ -93,6 +109,7 @@ function ClientLogo({ client }: ClientLogoProps) {
 
 export function ClientCarousel() {
 	const clients = clientsData as ClientEntry[];
+
 	// Triplicamos: [cópia A | original | cópia B]
 	//
 	// [CONCEITO] Loop infinito via "teleporte silencioso":
@@ -121,12 +138,17 @@ export function ClientCarousel() {
 	const [isHovered, setIsHovered] = useState(false);
 	const [activeIndex, setActiveIndex] = useState(0);
 
+	// [CORREÇÃO] isDragging precisa ser STATE além de ref para o cursor mudar
+	// visualmente. Uma ref não causa re-render — então cursor: "grabbing" nunca
+	// aparecia no original. O state dispara o re-render para atualizar o cursor,
+	// enquanto a ref continua sendo usada no handler de mousemove (sem closure stale).
+	const [isDraggingState, setIsDraggingState] = useState(false);
+
 	// ── Refs ──────────────────────────────────────────────────────────────
 	const viewportRef = useRef<HTMLDivElement>(null);
-	const isDragging = useRef(false);
+	const isDragging = useRef(false); // ref para uso nos handlers (sem re-render)
 	const startX = useRef(0);
 	const scrollStart = useRef(0);
-	// autoScrollRef: guarda o ID do requestAnimationFrame para poder cancelar
 	const autoScrollRef = useRef<number | null>(null);
 
 	// ── Posição inicial: meio da lista triplicada ─────────────────────────
@@ -139,7 +161,6 @@ export function ClientCarousel() {
 	useEffect(() => {
 		const vp = viewportRef.current;
 		if (!vp) return;
-		// Posiciona no início do "original" (segundo terço da lista triplicada)
 		vp.scrollLeft = clients.length * ITEM_WIDTH;
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -160,16 +181,11 @@ export function ClientCarousel() {
 
 		const singleSetWidth = clients.length * ITEM_WIDTH;
 
-		// Passou do fim do "original" → vai para a cópia B → teleporta de volta
 		if (vp.scrollLeft >= singleSetWidth * 2) {
-			vp.scrollLeft -= singleSetWidth; // recua exatamente um "conjunto"
+			vp.scrollLeft -= singleSetWidth;
 		}
-		// Passou do início do "original" → foi para a cópia A → teleporta à frente
-		if (vp.scrollLeft < singleSetWidth) {
-			// Só teleporta se estiver muito próximo da borda esquerda
-			if (vp.scrollLeft < singleSetWidth * 0.5) {
-				vp.scrollLeft += singleSetWidth;
-			}
+		if (vp.scrollLeft < singleSetWidth * 0.5) {
+			vp.scrollLeft += singleSetWidth;
 		}
 	}, [clients.length]);
 
@@ -204,7 +220,7 @@ export function ClientCarousel() {
 
 		// Cleanup: cancela o loop quando o componente é desmontado.
 		// Sem isso, o loop continuaria rodando em memória mesmo após
-		// o componente sumir — memory leak + erros de "can't setState on unmounted component".
+		// o componente sumir — memory leak.
 		return () => {
 			if (autoScrollRef.current !== null) {
 				cancelAnimationFrame(autoScrollRef.current);
@@ -218,12 +234,10 @@ export function ClientCarousel() {
 		if (!vp) return;
 
 		const handleScroll = () => {
-			// Subtrai o offset do terço inicial para calcular o índice correto
 			const offset = clients.length * ITEM_WIDTH;
 			const relativeScroll = vp.scrollLeft - offset;
 			const rawIndex = Math.round(relativeScroll / ITEM_WIDTH);
-			// Mantém o índice dentro dos bounds com módulo positivo
-			// (o % padrão do JS pode retornar negativo para números negativos)
+			// Módulo positivo: o % do JS pode retornar negativo para números negativos
 			const index =
 				((rawIndex % clients.length) + clients.length) % clients.length;
 			setActiveIndex(index);
@@ -236,6 +250,7 @@ export function ClientCarousel() {
 	// ── Drag ──────────────────────────────────────────────────────────────
 	const handleMouseDown = useCallback((e: React.MouseEvent) => {
 		isDragging.current = true;
+		setIsDraggingState(true); // [CORREÇÃO] dispara re-render para mudar o cursor
 		startX.current = e.pageX;
 		scrollStart.current = viewportRef.current?.scrollLeft ?? 0;
 	}, []);
@@ -253,6 +268,7 @@ export function ClientCarousel() {
 
 	const handleMouseUp = useCallback(() => {
 		isDragging.current = false;
+		setIsDraggingState(false); // [CORREÇÃO] dispara re-render para restaurar o cursor
 	}, []);
 
 	// ── Botões ────────────────────────────────────────────────────────────
@@ -264,7 +280,6 @@ export function ClientCarousel() {
 				left: direction === "right" ? ITEM_WIDTH : -ITEM_WIDTH,
 				behavior: "smooth",
 			});
-			// Verifica loop após a animação terminar (~300ms)
 			setTimeout(checkLoop, 350);
 		},
 		[checkLoop],
@@ -274,7 +289,7 @@ export function ClientCarousel() {
 		(index: number) => {
 			const vp = viewportRef.current;
 			if (!vp) return;
-			const offset = clients.length * ITEM_WIDTH; // base do terço do meio
+			const offset = clients.length * ITEM_WIDTH;
 			vp.scrollTo({ left: offset + index * ITEM_WIDTH, behavior: "smooth" });
 		},
 		[clients.length],
@@ -339,12 +354,14 @@ export function ClientCarousel() {
 				<div
 					ref={viewportRef}
 					className="overflow-x-hidden select-none"
-					style={{ cursor: isDragging.current ? "grabbing" : "grab" }}
+					// [CORREÇÃO] isDraggingState (state) em vez de isDragging.current (ref)
+					// para que o cursor mude visualmente ao arrastar
+					style={{ cursor: isDraggingState ? "grabbing" : "grab" }}
 					onMouseDown={handleMouseDown}
 					onMouseMove={handleMouseMove}
 					onMouseUp={handleMouseUp}
 				>
-					{/* Inner: todos os cards em fila — não se move por CSS, só pelo scrollLeft do viewport */}
+					{/* Inner: todos os cards em fila */}
 					<div className="flex gap-8 px-12" style={{ width: "max-content" }}>
 						{tripled.map((client, index) => (
 							<div
