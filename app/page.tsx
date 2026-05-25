@@ -21,6 +21,7 @@ import { AboutSection } from "@/components/home/about-section";
 import { StatsSection } from "@/components/home/stats-section";
 import { CTASection } from "@/components/home/cta-section";
 import { ClientCarousel } from "@/components/home/client-carousel";
+import { MaintenancePage } from "@/components/maintenance/maintenance-page";
 
 // [CONCEITO] Server Component (sem "use client"):
 // Este arquivo não tem useState, useEffect nem eventos de UI.
@@ -31,18 +32,19 @@ import { ClientCarousel } from "@/components/home/client-carousel";
 // mar de HTML estático.
 
 export default function Home() {
-	return (
-		<>
-			<Header />
-			<main>
-				<HeroSection />
-				<ServicesSection />
-				<ClientCarousel /> {/* ← adiciona aqui */}
-				<AboutSection />
-				<StatsSection />
-				<CTASection />
-			</main>
-			<Footer />
-		</>
-	);
+	return <MaintenancePage />;
+	// return (
+	// 	<>
+	// 		<Header />
+	// 		<main>
+	// 			<HeroSection />
+	// 			<ServicesSection />
+	// 			<ClientCarousel /> {/* ← adiciona aqui */}
+	// 			<AboutSection />
+	// 			<StatsSection />
+	// 			<CTASection />
+	// 		</main>
+	// 		<Footer />
+	// 	</>
+	// );
 }

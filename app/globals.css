@@ -200,3 +200,147 @@
 		transform: translateX(-50%);
 	}
 }
+
+/* ─── ANIMAÇÕES DA PÁGINA DE MANUTENÇÃO ─── */
+@keyframes pulse-glow {
+	0%,
+	100% {
+		opacity: 0.6;
+		transform: translate(-50%, -50%) scale(1);
+	}
+	50% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1.15);
+	}
+}
+
+@keyframes float-up {
+	0% {
+		opacity: 0;
+		transform: translateY(0);
+	}
+	10% {
+		opacity: 0.6;
+	}
+	90% {
+		opacity: 0.3;
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-100vh);
+	}
+}
+
+@keyframes scan {
+	0%,
+	100% {
+		opacity: 0.1;
+		transform: scaleX(0.3);
+	}
+	50% {
+		opacity: 0.35;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes border-flicker {
+	0%,
+	100% {
+		border-color: oklch(0.3705 0 0 / 0.6);
+	}
+	50% {
+		border-color: oklch(0.4463 0.1678 27.4784 / 0.5);
+	}
+}
+
+@keyframes maintenance-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes logo-in {
+	from {
+		opacity: 0;
+		transform: scale(0.85);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes divider-in {
+	from {
+		transform: scaleX(0);
+		opacity: 0;
+	}
+	to {
+		transform: scaleX(1);
+		opacity: 1;
+	}
+}
+
+@keyframes badge-in {
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes msg-in {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes progress-sweep {
+	0% {
+		left: -60%;
+	}
+	100% {
+		left: 110%;
+	}
+}
+
+@keyframes svc-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes footer-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+}
