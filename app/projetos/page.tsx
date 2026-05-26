@@ -313,7 +313,7 @@ const json_projects = [
 				subtitulo: "Lagos São Gonçalo Pelotas, RS",
 				query_busca: "Lagos São Gonçalo Pelotas fachada",
 				urls_imagens: [
-					"https://idealizacidades.com.br//laravel/public/storage/projects/June2019/Fv6aq7TM8ejEQXWSeg7o.jpg",
+					"https://idealizacidades.com.br/laravel/public/storage/projects/June2019/Fv6aq7TM8ejEQXWSeg7o.jpg",
 				],
 				localization: "Pelotas, RS",
 			},
