@@ -83,11 +83,7 @@ const nextConfig = {
 			{ protocol: "https", hostname: "**.jetimgs.com" },
 			{ protocol: "https", hostname: "eduardobecker.com" },
 			{ protocol: "https", hostname: "**.imovelwebcdn.com" },
-
-			// ── Clearbit e Google Favicon (logos dos clientes) ─────────────────
-			// Usados pelo ClientCarousel e ClientsGrid para carregar logos
-			{ protocol: "https", hostname: "logo.clearbit.com" },
-			{ protocol: "https", hostname: "www.google.com" }, // favicon API
+			{ protocol: "https", hostname: "idealizacidades.com.br" },
 		],
 	},
 };
