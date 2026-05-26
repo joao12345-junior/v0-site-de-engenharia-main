@@ -6,9 +6,8 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, Quote, Star } from "lucide-react";
-import clientsMap from "@/lib/repositories/clients-repository";
 import { SectorsCategory } from "@/components/ui/sectorsCategory";
-import { ClientsGrid } from "@/components/clients-grid";
+import { ClientGrid } from "@/components/clients-grid-server";
 
 // [MUDANÇA] Depoimentos Lorem Ipsum substituídos por depoimentos verossímeis.
 // ⚠️  ATENÇÃO: Estes textos precisam ser validados com os sócios antes de publicar.
@@ -42,11 +41,6 @@ const testimonials = [
 ];
 
 export default function ClientesPage() {
-	const clients = Array.from(clientsMap.entries()).map(([key, client]) => ({
-		key,
-		category: client.category,
-	}));
-
 	return (
 		<>
 			<Header />
@@ -104,7 +98,7 @@ export default function ClientesPage() {
 								Optare como parceira de engenharia em seus empreendimentos.
 							</p>
 						</div>
-						<ClientsGrid clients={clients} />
+						<ClientGrid />
 					</div>
 				</section>
 
