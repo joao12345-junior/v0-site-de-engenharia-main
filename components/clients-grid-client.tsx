@@ -75,10 +75,21 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 	const { resolvedTheme } = useTheme();
 	const logoUrl = resolvedTheme === "dark" ? logo.dark : logo.light;
 
-	// Estado: iniciais (CSS puro, sempre funciona)
 	if (!client.CLIENTE || !logoUrl) {
 		return (
-			<div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+			<div
+				className={`
+                w-16 h-16
+                rounded-xl
+                flex items-center justify-center
+                transition-colors duration-200
+                ${
+									resolvedTheme === "dark"
+										? "bg-[oklch(0.22_0_0)]"
+										: "bg-[oklch(0.97_0_0)]"
+								}
+            `}
+			>
 				<span className="text-xs font-bold text-primary">
 					{getInitials(client.CLIENTE)}
 				</span>
@@ -87,13 +98,29 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 	}
 
 	return (
-		<div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden border border-border/50">
-			{/* eslint-disable-next-line @next/next/no-img-element */}
+		<div
+			className={`
+            w-16 h-16
+            rounded-xl
+            flex items-center justify-center
+            overflow-hidden
+            transition-colors duration-200
+            p-2
+            ${
+							resolvedTheme === "dark"
+								? "bg-[oklch(0.22_0_0)]"
+								: "bg-[oklch(0.97_0_0)]"
+						}
+        `}
+		>
 			<img
 				src={logoUrl}
 				alt={client.CLIENTE}
-				className={`w-10 h-10 object-contain
-                    ${resolvedTheme === "dark" ? "brightness-90" : ""}`}
+				draggable={false}
+				className={`
+                    w-full h-full object-contain
+                    ${resolvedTheme === "dark" ? "brightness-90" : ""}
+                `}
 			/>
 		</div>
 	);
