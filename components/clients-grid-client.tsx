@@ -75,22 +75,24 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 	const { resolvedTheme } = useTheme();
 	const logoUrl = resolvedTheme === "dark" ? logo.dark : logo.light;
 
+	const containerClass = `
+        w-24 h-24
+        rounded-xl
+        flex items-center justify-center
+        overflow-hidden
+        transition-colors duration-200
+        p-3
+        ${
+					resolvedTheme === "dark"
+						? "bg-[oklch(0.22_0_0)]"
+						: "bg-[oklch(0.97_0_0)]"
+				}
+    `;
+
 	if (!client.CLIENTE || !logoUrl) {
 		return (
-			<div
-				className={`
-                w-16 h-16
-                rounded-xl
-                flex items-center justify-center
-                transition-colors duration-200
-                ${
-									resolvedTheme === "dark"
-										? "bg-[oklch(0.22_0_0)]"
-										: "bg-[oklch(0.97_0_0)]"
-								}
-            `}
-			>
-				<span className="text-xs font-bold text-primary">
+			<div className={containerClass}>
+				<span className="text-sm font-bold text-primary">
 					{getInitials(client.CLIENTE)}
 				</span>
 			</div>
@@ -98,21 +100,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 	}
 
 	return (
-		<div
-			className={`
-            w-16 h-16
-            rounded-xl
-            flex items-center justify-center
-            overflow-hidden
-            transition-colors duration-200
-            p-2
-            ${
-							resolvedTheme === "dark"
-								? "bg-[oklch(0.22_0_0)]"
-								: "bg-[oklch(0.97_0_0)]"
-						}
-        `}
-		>
+		<div className={containerClass}>
 			<img
 				src={logoUrl}
 				alt={client.CLIENTE}
