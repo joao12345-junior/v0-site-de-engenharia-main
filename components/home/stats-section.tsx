@@ -26,7 +26,7 @@ const stats: StatItem[] = [
 // ─── Sub-componente: StatCounter ─────────────────────────────────────────
 
 function StatCounter({ stat }: { stat: StatItem }) {
-	const { value, ref } = useCountUp({ end: stat.value, duration: 2000 });
+	const { value, ref } = useCountUp({ end: stat.value, duration: 3000 });
 
 	return (
 		<div className="text-center">

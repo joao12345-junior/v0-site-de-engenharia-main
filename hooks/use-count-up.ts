@@ -75,7 +75,7 @@ export function useCountUp({
 					startAnimation();
 				}
 			},
-			{ threshold: 0.3 },
+			{ threshold: 0.7 },
 		);
 		observer.observe(element);
 

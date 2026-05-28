@@ -29,7 +29,7 @@ function SectorCard({ category, count, Icon }: SectorCardProps) {
 	// Cada SectorCard instancia seu próprio useCountUp.
 	// Como são componentes separados, o React rastreia os hooks de cada um
 	// individualmente — sem violar a Regra dos Hooks.
-	const { value, ref } = useCountUp({ end: count, duration: 2000 });
+	const { value, ref } = useCountUp({ end: count, duration: 6000 });
 
 	return (
 		<div className="bg-card p-4 md:p-6 rounded-lg border border-border text-center hover:border-primary/50 transition-colors">
