@@ -173,9 +173,9 @@ export function Header() {
 							// do header herdava o blur. Agora fora do header funciona
 							// corretamente. Adicionamos `isolate` como camada extra de
 							// proteção — cria contexto de empilhamento independente.
-							className="fixed top-0 right-0 bottom-0 z-50 w-72 isolate bg-background shadow-2xl border-l border-border"
+							className="fixed top-0 right-0 bottom-0 z-50 w-72 isolate bg-background shadow-2xl border-l border-border flex flex-col overflow-hidden"
 						>
-							<div className="flex justify-end p-4">
+							<div className="flex justify-end p-4 flex-shrink-0">
 								<button
 									type="button"
 									className="rounded-full p-2 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -186,7 +186,7 @@ export function Header() {
 								</button>
 							</div>
 
-							<nav className="px-6 py-4 space-y-1">
+							<nav className="px-6 py-4 space-y-1 flex-1 overflow-y-auto">
 								{navigation.map((item, index) => {
 									const isActive = pathname === item.href;
 									return (
@@ -218,7 +218,7 @@ export function Header() {
 							</nav>
 
 							{/* Botão de contato no rodapé do menu */}
-							<div className="absolute bottom-0 left-0 right-0 p-6 border-t border-border">
+							<div className="flex-shrink-0 p-6 border-t border-border">
 								<Button className="w-full" asChild>
 									<Link href="/contato">Solicitar Orçamento</Link>
 								</Button>

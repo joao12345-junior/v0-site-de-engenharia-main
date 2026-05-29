@@ -124,11 +124,13 @@ export const scaleInVariants: Variants = {
 // Uso: <motion.div whileInView="visible" viewport={defaultViewport}>
 export const defaultViewport = {
 	once: true,
-	amount: 0.15,
+	amount: 0.1,
+	margin: "0px 0px -50px 0px", // ← dispara 50px antes de entrar na viewport
 } as const;
 
 // Viewport para seções de baixa altura (ex: StatsSection, banners)
 export const shortSectionViewport = {
 	once: true,
 	amount: 0.2,
+	margin: "0px 0px -30px 0px",
 } as const;

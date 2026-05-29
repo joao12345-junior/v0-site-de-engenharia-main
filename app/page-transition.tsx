@@ -22,7 +22,7 @@ export function PageTransition({ children }: PageTransitionProps) {
 	return (
 		<motion.div
 			key={pathname}
-			initial={{ opacity: 0 }}
+			initial={{ opacity: 1 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.4, ease: "easeOut", delay: 0.05 }}
 		>

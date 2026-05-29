@@ -131,9 +131,8 @@ export default function SobrePage() {
 						<motion.div
 							className="mx-auto max-w-3xl text-center"
 							variants={fadeUpVariants}
-							initial="hidden"
-							whileInView="visible"
-							viewport={defaultViewport}
+							initial="visible" // ← mudança aqui
+							animate="visible" // ← e aqui
 						>
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
