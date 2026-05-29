@@ -25,6 +25,7 @@ import { toTitleCase } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import type { LogoEntry } from "@/lib/utils/logo-resolver";
 import { BuildingIcon } from "lucide-react";
+import { useState, useEffect } from "react";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────
 
@@ -73,7 +74,15 @@ function getInitials(name: string): string {
 
 function ClientLogo({ client, logo }: ClientLogoProps) {
 	const { resolvedTheme } = useTheme();
-	const logoUrl = resolvedTheme === "dark" ? logo.dark : logo.light;
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const isDark = mounted && resolvedTheme === "dark";
+
+	const logoUrl = isDark ? logo.dark : logo.light;
 
 	const containerClass = `
         w-24 h-24
@@ -82,11 +91,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
         overflow-hidden
         transition-colors duration-200
         p-3
-        ${
-					resolvedTheme === "dark"
-						? "bg-[oklch(0.22_0_0)]"
-						: "bg-[oklch(0.97_0_0)]"
-				}
+        ${isDark ? "bg-[oklch(0.22_0_0)]" : "bg-[oklch(0.97_0_0)]"}
     `;
 
 	if (!client.CLIENTE || !logoUrl) {
@@ -107,7 +112,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 				draggable={false}
 				className={`
                     w-full h-full object-contain
-                    ${resolvedTheme === "dark" ? "brightness-90" : ""}
+                    ${isDark ? "brightness-90" : ""}
                 `}
 			/>
 		</div>

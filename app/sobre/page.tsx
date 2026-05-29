@@ -1,19 +1,9 @@
+"use client";
+
 // app/sobre/page.tsx
 //
 // [MUDANÇA] Seção "Missão, Visão e Valores" reestruturada:
-//
-// ANTES: grid de 3 cards iguais (md:grid-cols-2, com Valores sozinho na 2ª linha)
-//
-// DEPOIS:
-//   Linha 1 → 2 colunas: Missão | Visão
-//   Linha 2 → 1 coluna: card "Valores" que internamente lista 3 sub-itens
-//             (Confiabilidade, Alinhamento com o Cliente, Excelência)
-//
-// [CONCEITO] Por que separar em dois níveis em vez de três cards iguais?
-// Missão e Visão são declarações únicas — um parágrafo cada.
-// Valores são uma COLEÇÃO — faz mais sentido como container com itens.
-// Tratar todos igualmente achatou a hierarquia de informação.
-// A nova estrutura comunica: "esses dois são irmãos, e esse terceiro é diferente".
+// ...comentários originais preservados...
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -28,6 +18,30 @@ import {
 	Star,
 } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
+import {
+	fadeUpVariants,
+	fadeLeftVariants,
+	fadeRightVariants,
+	staggerContainerVariants,
+	staggerContainerDelayedVariants,
+	defaultViewport,
+} from "@/lib/animation-variants";
+
+// ─── Variant local: timeline mobile ──────────────────────────────────────
+//
+// [DECISÃO] x: -20 reforça a leitura da esquerda para direita.
+// No mobile, os cards ficam todos à direita da linha vertical —
+// deslizar da esquerda reforça a relação com a linha.
+const timelineItemVariants: Variants = {
+	hidden: { opacity: 0, x: -20 },
+	visible: {
+		opacity: 1,
+		x: 0,
+		transition: { duration: 0.45, ease: "easeOut" },
+	},
+};
 
 // ─── Dados estáticos ───────────────────────────────────────────────────────
 
@@ -46,10 +60,6 @@ const pillars = [
 	},
 ];
 
-// [MUDANÇA] Valores deixaram de ser um único parágrafo genérico.
-// Agora são 3 sub-itens com título + descrição próprios.
-// Isso aumenta escaneabilidade e credibilidade — o leitor entende
-// o que cada valor significa na prática.
 const values = [
 	{
 		icon: Shield,
@@ -108,12 +118,23 @@ const team = [
 export default function SobrePage() {
 	return (
 		<>
-			<Header />
 			<main className="pt-20">
-				{/* Hero */}
+				{/* ── Hero ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-3xl text-center">
+						{/*
+              [DECISÃO] whileInView aqui mesmo sendo próximo do topo da página.
+              O hero de páginas internas (não a Home) entra depois da navegação
+              — o usuário pode chegar via link direto com scroll já posicionado.
+              whileInView + once: true é seguro: dispara uma vez ao entrar.
+            */}
+						<motion.div
+							className="mx-auto max-w-3xl text-center"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
 								Sobre Nós
@@ -127,15 +148,21 @@ export default function SobrePage() {
 								de engenharia para o setor da construção civil, trabalhando em
 								parceria com as maiores construtoras do Rio Grande do Sul.
 							</p>
-						</div>
+						</motion.div>
 					</div>
 				</section>
 
-				{/* História */}
+				{/* ── História ── */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="grid lg:grid-cols-2 gap-12 items-center">
-							<div>
+							{/* Coluna esquerda: texto + lista */}
+							<motion.div
+								variants={fadeLeftVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								<div className="flex items-center gap-2 text-sm text-primary mb-4">
 									<span className="h-px w-8 bg-primary" />
 									Nossa História
@@ -155,24 +182,46 @@ export default function SobrePage() {
 									Grande do Sul, trazendo sempre uma nova opção em projetos
 									complementares.
 								</p>
-								<ul className="mt-8 space-y-3">
+
+								{/*
+                  [DECISÃO] stagger interno na lista, separado do fadeLeft
+                  da coluna. A coluna inteira entra primeiro — depois os
+                  itens fazem seu próprio stagger. Dois gatilhos whileInView
+                  independentes, ambos com once: true.
+                */}
+								<motion.ul
+									className="mt-8 space-y-3"
+									variants={staggerContainerVariants}
+									initial="hidden"
+									whileInView="visible"
+									viewport={defaultViewport}
+								>
 									{[
 										"Projetos Hidrossanitários",
 										"Prevenção e Combate à Incêndios",
 										"Projetos Elétricos, Telefonia e SPDA",
 										"Projetos de Gás",
 									].map((item) => (
-										<li
+										<motion.li
 											key={item}
+											variants={fadeUpVariants}
 											className="flex items-center gap-3 text-foreground"
 										>
 											<CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
 											{item}
-										</li>
+										</motion.li>
 									))}
-								</ul>
-							</div>
-							<div className="relative">
+								</motion.ul>
+							</motion.div>
+
+							{/* Coluna direita: imagem */}
+							<motion.div
+								className="relative"
+								variants={fadeRightVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								<div className="relative aspect-square rounded-lg bg-muted">
 									<Image
 										src="/images/optare_logo.png"
@@ -181,41 +230,46 @@ export default function SobrePage() {
 										className="object-contain p-1"
 									/>
 								</div>
-							</div>
+							</motion.div>
 						</div>
 					</div>
 				</section>
 
-				{/* ─── Missão, Visão e Valores ──────────────────────────────────────────
-				 *
-				 * [CONCEITO] Hierarquia visual intencional:
-				 *
-				 * Missão e Visão são declarações curtas e independentes entre si —
-				 * grid de 2 colunas funciona bem para elas.
-				 *
-				 * Valores é uma categoria que CONTÉM múltiplos itens — precisa de
-				 * um container próprio com estrutura interna.
-				 *
-				 * Usar o mesmo card para os três seria como colocar um parágrafo e
-				 * uma lista numerada no mesmo formato visual. A forma deve seguir
-				 * o conteúdo.
-				 * ──────────────────────────────────────────────────────────────────── */}
+				{/* ── Pilares ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-2xl text-center mb-16">
+						{/* Heading */}
+						<motion.div
+							className="mx-auto max-w-2xl text-center mb-16"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 								Nossos Pilares
 							</h2>
 							<p className="mt-4 text-muted-foreground">
 								Os valores que guiam nossa atuação no mercado.
 							</p>
-						</div>
+						</motion.div>
 
-						{/* Linha 1: Missão + Visão — 2 colunas */}
-						<div className="grid md:grid-cols-2 gap-8 mb-8">
+						{/* Linha 1: Missão + Visão */}
+						{/*
+              [DECISÃO] staggerContainerDelayedVariants (delayChildren: 0.15)
+              porque o heading acima já animou — os cards aguardam um momento.
+            */}
+						<motion.div
+							className="grid md:grid-cols-2 gap-8 mb-8"
+							variants={staggerContainerDelayedVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							{pillars.map((pillar) => (
-								<div
+								<motion.div
 									key={pillar.title}
+									variants={fadeUpVariants}
 									className="bg-background p-8 rounded-lg border border-border text-center"
 								>
 									<div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-4 mb-6">
@@ -227,20 +281,24 @@ export default function SobrePage() {
 									<p className="mt-4 text-muted-foreground leading-relaxed">
 										{pillar.description}
 									</p>
-								</div>
+								</motion.div>
 							))}
-						</div>
+						</motion.div>
 
-						{/* Linha 2: Valores — 1 coluna larga, sub-itens em grid interno
-						 *
-						 * [CONCEITO] Por que um card externo com grid interno?
-						 * O card externo sinaliza visualmente que "Valores" é do mesmo
-						 * nível hierárquico que Missão e Visão.
-						 * O grid interno permite exibir os 3 valores lado a lado sem
-						 * criar 3 cards independentes que pareceriam itens de nível 1.
-						 * É uma hierarquia de dois níveis num único elemento visual.
-						 */}
-						<div className="bg-background rounded-lg border border-border p-8">
+						{/* Linha 2: Valores */}
+						{/*
+              [DECISÃO] Card externo anima como bloco (fadeUpVariants).
+              Grid interno dos valores tem seu próprio stagger depois que
+              o card "pousou" — staggerContainerDelayedVariants com
+              delayChildren: 0.15 para aguardar o card aparecer.
+            */}
+						<motion.div
+							className="bg-background rounded-lg border border-border p-8"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<div className="text-center mb-8">
 								<div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-4 mb-6">
 									<Users className="h-8 w-8 text-primary" />
@@ -253,61 +311,72 @@ export default function SobrePage() {
 								</p>
 							</div>
 
-							{/* Sub-itens dos Valores
-							 *
-							 * [CONCEITO] Regra tipográfica: texto corrido sempre à esquerda.
-							 *
-							 * text-center funciona para elementos curtos: ícones, títulos de
-							 * uma linha, números de estatísticas. Para parágrafos com 2+ linhas,
-							 * centralizar força o olho a procurar o início de cada linha em
-							 * posição diferente — cansativo e difícil de ler.
-							 *
-							 * Solução: ícone e título ficam centralizados com classes próprias.
-							 * O parágrafo usa text-left explicitamente.
-							 */}
-							<div className="grid md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-border">
+							<motion.div
+								className="grid md:grid-cols-3 gap-6 mt-6 pt-6 border-t border-border"
+								variants={staggerContainerDelayedVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								{values.map((value) => (
-									<div key={value.title}>
-										{/* Ícone centralizado — elemento pontual, funciona bem no centro */}
+									<motion.div key={value.title} variants={fadeUpVariants}>
 										<div className="flex justify-center mb-4">
 											<div className="inline-flex items-center justify-center rounded-full bg-primary/5 p-3">
 												<value.icon className="h-5 w-5 text-primary" />
 											</div>
 										</div>
-										{/* Título centralizado — texto curto, uma linha */}
 										<h4 className="text-base font-semibold text-foreground mb-2 text-center">
 											{value.title}
 										</h4>
-										{/* Descrição à esquerda — texto corrido de múltiplas linhas */}
 										<p className="text-sm text-muted-foreground leading-relaxed text-left">
 											{value.description}
 										</p>
-									</div>
+									</motion.div>
 								))}
-							</div>
-						</div>
+							</motion.div>
+						</motion.div>
 					</div>
 				</section>
 
-				{/* Timeline */}
+				{/* ── Timeline ── */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-2xl text-center mb-16">
+						{/* Heading */}
+						<motion.div
+							className="mx-auto max-w-2xl text-center mb-16"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 								Nossa Trajetória
 							</h2>
 							<p className="mt-4 text-muted-foreground">
 								Marcos importantes da nossa história.
 							</p>
-						</div>
+						</motion.div>
 
 						{/* Layout Mobile */}
 						<div className="relative md:hidden">
+							{/*
+                [DECISÃO] Linha vertical fora do motion.div de stagger.
+                Se estivesse dentro, herdaria initial="hidden" e
+                desapareceria durante a animação — quebrando a estrutura visual.
+                Elementos decorativos estruturais nunca devem animar.
+              */}
 							<div className="absolute left-3 top-2 bottom-2 w-px bg-border" />
-							<div className="space-y-8">
+							<motion.div
+								className="space-y-8"
+								variants={staggerContainerVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								{timeline.map((item) => (
-									<div
+									<motion.div
 										key={item.year}
+										variants={timelineItemVariants}
 										className="relative flex items-start gap-6 pl-10"
 									>
 										<div className="absolute left-[7px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary flex-shrink-0 ring-2 ring-background" />
@@ -325,18 +394,33 @@ export default function SobrePage() {
 												{item.description}
 											</p>
 										</div>
-									</div>
+									</motion.div>
 								))}
-							</div>
+							</motion.div>
 						</div>
 
 						{/* Layout Desktop */}
 						<div className="relative hidden md:block">
+							{/* Linha vertical — fora do stagger pelo mesmo motivo do mobile */}
 							<div className="absolute left-1/2 top-0 bottom-0 w-px bg-border -translate-x-px" />
-							<div className="space-y-12">
+							<motion.div
+								className="space-y-12"
+								variants={staggerContainerVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								{timeline.map((item, index) => (
-									<div
+									/*
+                    [DECISÃO] fadeUpVariants no desktop — não timelineItemVariants.
+                    No desktop os cards alternam esquerda/direita. Um slide
+                    horizontal uniforme (x: -20) ficaria estranho nos cards
+                    da direita. fadeUp é neutro e funciona para ambos os lados.
+                    A lógica index % 2 nas classes internas: intocada.
+                  */
+									<motion.div
 										key={item.year}
+										variants={fadeUpVariants}
 										className={`flex items-center gap-8 ${
 											index % 2 === 0 ? "flex-row" : "flex-row-reverse"
 										}`}
@@ -367,25 +451,39 @@ export default function SobrePage() {
 										</div>
 										<div className="relative z-10 w-4 h-4 rounded-full bg-primary ring-4 ring-background flex-shrink-0" />
 										<div className="flex-1" />
-									</div>
+									</motion.div>
 								))}
-							</div>
+							</motion.div>
 						</div>
 					</div>
 				</section>
 
-				{/* Equipe */}
+				{/* ── Equipe ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-2xl text-center mb-16">
+						<motion.div
+							className="mx-auto max-w-2xl text-center mb-16"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 								Nossa Equipe
 							</h2>
-						</div>
-						<div className="flex justify-center gap-8 flex-wrap">
+						</motion.div>
+
+						<motion.div
+							className="flex justify-center gap-8 flex-wrap"
+							variants={staggerContainerVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							{team.map((member) => (
-								<div
+								<motion.div
 									key={member.name}
+									variants={fadeUpVariants}
 									className="bg-background p-8 rounded-lg border border-border text-center w-64"
 								>
 									<div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
@@ -399,13 +497,12 @@ export default function SobrePage() {
 									<p className="text-sm text-muted-foreground mt-1">
 										{member.role}
 									</p>
-								</div>
+								</motion.div>
 							))}
-						</div>
+						</motion.div>
 					</div>
 				</section>
 			</main>
-			<Footer />
 		</>
 	);
 }

@@ -1,17 +1,30 @@
 "use client";
 
 import { useCountUp } from "@/hooks/use-count-up";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
+import {
+	staggerContainerVariants,
+	defaultViewport,
+} from "@/lib/animation-variants";
 
-// ─── Tipos ────────────────────────────────────────────────────────────────
+// ─── Variant local: razão visual específica desta seção ──────────────────
+//
+// [DECISÃO] y: -16 (slide de cima para baixo) — o fundo vermelho cria
+// uma âncora visual pesada na parte inferior. O conteúdo "descendo"
+// reforça esse peso. Variant aqui, não no arquivo central: contexto único.
+const statItemVariants: Variants = {
+	hidden: { opacity: 0, y: -16 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.45, ease: "easeOut" },
+	},
+};
 
 interface StatItem {
-	// Valor numérico para animar
 	value: number;
-
-	// Sufixo exibido após o número animado. Ex: "M", "+"
 	suffix: string;
-
-	// Prefixo exibido antes do número. Ex: "+"
 	prefix: string;
 	label: string;
 }
@@ -23,8 +36,7 @@ const stats: StatItem[] = [
 	{ value: 5, prefix: "+", suffix: "M", label: "Metros Quadrados Projetados" },
 ];
 
-// ─── Sub-componente: StatCounter ─────────────────────────────────────────
-
+// ─── Sub-componente: StatCounter (intocado) ───────────────────────────────
 function StatCounter({ stat }: { stat: StatItem }) {
 	const { value, ref } = useCountUp({ end: stat.value, duration: 3000 });
 
@@ -44,16 +56,36 @@ function StatCounter({ stat }: { stat: StatItem }) {
 }
 
 // ─── Componente principal ─────────────────────────────────────────────────
-
 export function StatsSection() {
 	return (
 		<section className="py-16 bg-primary">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
-				<div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+				{/*
+          [DECISÃO] motion.div envolve o grid — não o <section>.
+          Animar o <section> moveria o fundo vermelho junto, criando
+          um efeito de "fundo piscando" indesejado. Apenas o conteúdo
+          interno deve animar.
+        */}
+				<motion.div
+					className="grid grid-cols-2 gap-8 md:grid-cols-4"
+					variants={staggerContainerVariants}
+					initial="hidden"
+					whileInView="visible"
+					viewport={defaultViewport}
+				>
 					{stats.map((stat) => (
-						<StatCounter key={stat.label} stat={stat} />
+						/*
+              [DECISÃO] motion.div envolve StatCounter sem tocá-lo.
+              StatCounter é uma caixa preta — não sabemos se tem
+              efeitos colaterais internos. Envolver por fora é o
+              padrão seguro para animar componentes de terceiros
+              (ou componentes com lógica própria).
+            */
+						<motion.div key={stat.label} variants={statItemVariants}>
+							<StatCounter stat={stat} />
+						</motion.div>
 					))}
-				</div>
+				</motion.div>
 			</div>
 		</section>
 	);

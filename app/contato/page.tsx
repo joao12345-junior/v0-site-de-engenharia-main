@@ -1,3 +1,5 @@
+// contato/page.tsx
+
 "use client";
 
 import { Header } from "@/components/header";
@@ -13,6 +15,15 @@ import Link from "next/link";
 import { useRef } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
+import {
+	fadeUpVariants,
+	fadeLeftVariants,
+	fadeRightVariants,
+	staggerContainerVariants,
+	staggerContainerDelayedVariants,
+	defaultViewport,
+} from "@/lib/animation-variants";
 
 const contactInfo = [
 	{
@@ -55,14 +66,12 @@ const contactInfo = [
 ];
 
 export default function ContatoPage() {
-	// HTMLInputElement é o tipo correto - é o que a ref vai conter em runtime
 	const telRef = useRef<HTMLInputElement>(null);
 	const { register, handleSubmit, reset } = useForm();
 
 	const onSubmit = async function (data: any) {
 		const tellValue = telRef.current?.value ?? "";
 
-		// Verifica se o campo ainda tem caracteres de máscara não preenchidos
 		if (tellValue.includes("_"))
 			return toast.warning(
 				"Por favor, preencha o campo de telefone corretamente.",
@@ -74,9 +83,7 @@ export default function ContatoPage() {
 		toast.promise<{ message: string }>(
 			fetch("/api/email", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data),
 			}).then(async (res) => {
 				const result = await res.json();
@@ -95,12 +102,17 @@ export default function ContatoPage() {
 
 	return (
 		<>
-			<Header />
 			<main className="pt-20">
-				{/* Hero */}
+				{/* ── Hero ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-3xl text-center">
+						<motion.div
+							className="mx-auto max-w-3xl text-center"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
 								Contato
@@ -116,17 +128,24 @@ export default function ContatoPage() {
 								para enviar um e-mail. Estamos ansiosos para ouvir de você e
 								ajudar com suas necessidades de engenharia!
 							</p>
-						</div>
+						</motion.div>
 					</div>
 				</section>
 
-				{/* Informações de Contato */}
+				{/* ── Informações de Contato ── */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+						<motion.div
+							className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+							variants={staggerContainerVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							{contactInfo.map((info) => (
-								<div
+								<motion.div
 									key={info.title}
+									variants={fadeUpVariants}
 									className="bg-card p-6 rounded-lg border border-border text-center hover:border-primary/50 transition-colors"
 								>
 									<div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-4 mb-4">
@@ -141,18 +160,28 @@ export default function ContatoPage() {
 									<p className="text-sm text-muted-foreground mt-1">
 										{info.description}
 									</p>
-								</div>
+								</motion.div>
 							))}
-						</div>
+						</motion.div>
 					</div>
 				</section>
 
-				{/* Formulário e Mapa */}
+				{/* ── Formulário e Mapa ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="grid lg:grid-cols-2 gap-12">
-							{/* Formulário */}
-							<div>
+							{/*
+                [DECISÃO] Coluna do formulário anima como bloco com fadeLeftVariants.
+                Campos individuais NÃO animam — useForm registra os campos
+                durante a montagem. Campos invisíveis no initial="hidden"
+                poderiam interferir com o estado do hook e com acessibilidade.
+              */}
+							<motion.div
+								variants={fadeLeftVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								<h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
 									Envie sua Mensagem
 								</h2>
@@ -259,15 +288,25 @@ export default function ContatoPage() {
 										<Send className="ml-2 h-4 w-4" />
 									</Button>
 								</form>
-							</div>
+							</motion.div>
 
-							{/* Mapa Placeholder */}
-							<div>
+							{/*
+                [DECISÃO] Coluna do mapa com fadeRightVariants.
+                O iframe é passivo — não tem estado ou lógica própria.
+                delay: 0.15 já embutido no fadeRightVariants garante
+                que a coluna direita aparece depois da esquerda.
+              */}
+							<motion.div
+								variants={fadeRightVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={defaultViewport}
+							>
 								<h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
 									Nossa Localização
 								</h2>
 								<p className="mt-4 text-muted-foreground">
-									Estamos localizados no coentro de Porto Alegre, prontos para
+									Estamos localizados no centro de Porto Alegre, prontos para
 									receber sua visita ou atender suas necessidades de engenharia.
 								</p>
 								<div className="mt-8 aspect-square rounded-lg bg-muted flex items-center justify-center border border-border">
@@ -276,15 +315,21 @@ export default function ContatoPage() {
 										src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3454.3666821029556!2d-51.22483642535233!3d-30.02633643043536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95197909cbd6a5d3%3A0x44ad2c623eb01216!2sOptare%20Engenharia!5e0!3m2!1spt-BR!2sbr!4v1776107636756!5m2!1spt-BR!2sbr"
 									></iframe>
 								</div>
-							</div>
+							</motion.div>
 						</div>
 					</div>
 				</section>
 
-				{/* FAQ */}
+				{/* ── FAQ ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="text-center mb-16">
+						<motion.div
+							className="text-center mb-16"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
 								Perguntas Frequentes
 							</h2>
@@ -292,8 +337,22 @@ export default function ContatoPage() {
 								Tire suas principais dúvidas sobre nossos serviços, prazos e
 								processo de trabalho.
 							</p>
-						</div>
-						<div className="max-w-3xl mx-auto space-y-4">
+						</motion.div>
+
+						{/*
+              [DECISÃO] staggerContainerDelayedVariants — heading já animou,
+              os itens aguardam antes de entrar em cascata.
+              [CORREÇÃO] key={index} → key={faq.question}
+              Índice como key é bug latente — mesmo padrão corrigido
+              nos depoimentos da página de Clientes.
+            */}
+						<motion.div
+							className="max-w-3xl mx-auto space-y-4"
+							variants={staggerContainerDelayedVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							{[
 								{
 									question: "Quanto tempo leva para desenvolver um projeto?",
@@ -317,9 +376,10 @@ export default function ContatoPage() {
 									answer:
 										"Sim. A compatibilização entre disciplinas é parte do nosso processo padrão. Identificamos e resolvemos interferências entre os sistemas hidrossanitários, elétricos, de incêndio e gás antes da emissão final dos projetos, reduzindo imprevistos e retrabalhos em obra.",
 								},
-							].map((faq, index) => (
-								<div
-									key={index}
+							].map((faq) => (
+								<motion.div
+									key={faq.question}
+									variants={fadeUpVariants}
 									className="bg-background rounded-lg border border-border border-l-4 border-l-primary p-6 hover:border-l-primary transition-colors"
 								>
 									<h3 className="font-semibold text-foreground text-base">
@@ -328,13 +388,12 @@ export default function ContatoPage() {
 									<p className="mt-3 text-muted-foreground leading-relaxed text-sm">
 										{faq.answer}
 									</p>
-								</div>
+								</motion.div>
 							))}
-						</div>
+						</motion.div>
 					</div>
 				</section>
 			</main>
-			<Footer />
 		</>
 	);
 }

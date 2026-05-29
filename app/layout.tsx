@@ -1,7 +1,11 @@
+// app/layout.tsx
+
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "./page-transition";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -13,14 +17,12 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
 	title: "OPTARE - Projetos de Engenharia",
 	description:
-		"Empresa especializada na elaboração de projetos de engenharia para o setor da construção civil. Projetos hidrossanitários, elétricos, de incêndio e gás.",
+		"Empresa especializada na elaboração de projetos de engenharia para o setor da construção civil.",
 };
 
 export default function RootLayout({
 	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html
 			lang="pt-BR"
@@ -28,29 +30,20 @@ export default function RootLayout({
 			suppressHydrationWarning
 		>
 			<body className="font-sans antialiased">
-				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+				<ThemeProvider attribute="class" defaultTheme="light" enableSystem>
 					{/*
-					 * [ADICIONADO] PageTransition envolve {children}.
-					 *
-					 * [CONCEITO] Por que funciona aqui mesmo sendo "use client"?
-					 * layout.tsx é um Server Component — não pode usar hooks.
-					 * PageTransition é um Client Component (tem "use client").
-					 * O Next.js permite importar Client Components dentro de
-					 * Server Components. O que NÃO é permitido é o inverso:
-					 * um Server Component dentro de um Client Component
-					 * sem usar a pattern de "children como prop".
-					 *
-					 * Hierarquia resultante:
-					 *   RootLayout (Server)
-					 *     └── ThemeProvider (Client)
-					 *           └── PageTransition (Client) ← novo
-					 *                 └── {children} (cada página)
-					 *
-					 * [ATENÇÃO] O PageTransition SÓ se aplica às rotas públicas.
-					 * O painel /administrador tem seu próprio layout isolado,
-					 * então não será afetado por esta transição.
-					 */}
+            [DECISÃO] Header e Footer fora do PageTransition.
+            Elementos persistentes não devem animar na troca de rota.
+            O PageTransition afeta apenas o conteúdo de cada página.
+
+            [CONCEITO] Layout no App Router é exatamente para isso:
+            UI que persiste entre navegações — header, footer, sidebars.
+            Colocar esses elementos em cada página causava re-render
+            desnecessário e conflito com as animações de transição.
+          */}
+					<Header />
 					<PageTransition>{children}</PageTransition>
+					<Footer />
 				</ThemeProvider>
 				<Toaster />
 			</body>

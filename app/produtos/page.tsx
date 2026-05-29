@@ -1,32 +1,48 @@
+"use client";
+
 // app/produtos/page.tsx
 //
 // [MUDANÇA] Adicionada faixa vermelha de credenciais após o Hero.
-//
-// [CONCEITO] Por que a faixa fica ANTES da lista de serviços e não depois?
-// É uma técnica de copywriting chamada "credibility first":
-// antes de mostrar o que você faz, você mostra POR QUE pode ser confiado.
-// O leitor chega à lista de serviços já com a âncora de confiança estabelecida.
+// [MUDANÇA] Animações de entrada com Framer Motion adicionadas.
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CheckCircle2, ArrowRight, Shield, Cpu, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import servicesData1 from "@/public/JSON/produtos/products1.json";
 import servicesData2 from "@/public/JSON/produtos/products2.json";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
+import {
+	fadeUpVariants,
+	staggerContainerVariants,
+	staggerContainerDelayedVariants,
+	defaultViewport,
+	shortSectionViewport,
+} from "@/lib/animation-variants";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────
-
-interface ServicoGrupo1 {
-	[key: string]: string[];
-}
 
 interface ServicoGrupo2 {
 	titulo: string;
 	categorias: Record<string, string[]>;
 }
 
-// ─── Mapa de labels legíveis para as chaves do JSON ───────────────────────
+// ─── Variant local: itens do CredentialsBanner ────────────────────────────
+//
+// [DECISÃO] y: 16 em vez de y: 24 — fundo vermelho é visualmente denso,
+// deslocamento menor evita competição com o peso visual do fundo.
+// Variant aqui, não no arquivo central: contexto visual único.
+const credentialItemVariants: Variants = {
+	hidden: { opacity: 0, y: 16 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: { duration: 0.45, ease: "easeOut" },
+	},
+};
+
+// ─── Mapa de labels ───────────────────────────────────────────────────────
 const LABELS_SUBCATEGORIA: Record<string, string> = {
 	hidrossanitarios: "Hidrossanitários",
 	eletricos: "Elétricos",
@@ -46,10 +62,7 @@ const LABELS_SUBCATEGORIA: Record<string, string> = {
 	eletrica: "Infraestrutura Elétrica",
 };
 
-// ─── Dados de credenciais para a faixa ───────────────────────────────────
-//
-// [CONCEITO] Dados estáticos de UI como constante fora do componente.
-// Isso evita que o array seja recriado a cada render — sem custo em React.
+// ─── Dados de credenciais ─────────────────────────────────────────────────
 const credentials = [
 	{
 		icon: Shield,
@@ -65,8 +78,12 @@ const credentials = [
 	},
 ];
 
-// ─── Componente: ServicoCard ──────────────────────────────────────────────
-
+// ─── Componente: ServicoCard (intocado) ───────────────────────────────────
+//
+// [DECISÃO] ServicoCard não recebe animação interna.
+// A animação de entrada é responsabilidade de quem usa o componente —
+// não do componente em si. Princípio de responsabilidade única.
+// O wrapper motion.div fica no .map() da página.
 function ServicoCard({ servico }: { servico: ServicoGrupo2 }) {
 	const subcategorias = Object.entries(servico.categorias);
 
@@ -112,28 +129,28 @@ function ServicoCard({ servico }: { servico: ServicoGrupo2 }) {
 }
 
 // ─── Componente: CredentialsBanner ───────────────────────────────────────
-//
-// [CONCEITO] Componente extraído em vez de inline no JSX principal.
-// Regra prática: se um bloco de JSX tem mais de ~15 linhas e uma
-// responsabilidade clara, vale extrair. Facilita leitura e futura manutenção.
-//
-// [DECISÃO DE DESIGN] A faixa usa bg-primary (vermelho da marca) com texto
-// branco — mesmo padrão visual da StatsSection na Home. Isso cria consistência
-// visual entre as páginas sem precisar de um novo design system.
-
 function CredentialsBanner() {
 	return (
 		<section className="py-12 bg-primary">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
-				{/* Grid de credenciais: empilhado no mobile, 3 colunas no desktop */}
-				<div className="grid md:grid-cols-3 gap-8 md:gap-12">
+				{/*
+          [DECISÃO] Apenas o grid interno anima — não a <section>.
+          Animar a <section> moveria o fundo vermelho inteiro,
+          criando efeito de "fundo piscando". Mesmo padrão da StatsSection.
+        */}
+				<motion.div
+					className="grid md:grid-cols-3 gap-8 md:gap-12"
+					variants={staggerContainerVariants}
+					initial="hidden"
+					whileInView="visible"
+					viewport={defaultViewport}
+				>
 					{credentials.map((credential) => {
-						// [CONCEITO] Mesmo padrão de ícone que a página de Clientes:
-						// renomear para maiúscula antes de usar como componente JSX.
 						const Icon = credential.icon;
 						return (
-							<div
+							<motion.div
 								key={credential.text}
+								variants={credentialItemVariants}
 								className="flex items-start gap-4 text-primary-foreground"
 							>
 								<div className="flex-shrink-0 mt-0.5">
@@ -142,10 +159,10 @@ function CredentialsBanner() {
 								<p className="text-sm leading-relaxed opacity-90">
 									{credential.text}
 								</p>
-							</div>
+							</motion.div>
 						);
 					})}
-				</div>
+				</motion.div>
 			</div>
 		</section>
 	);
@@ -153,17 +170,22 @@ function CredentialsBanner() {
 
 // ─── Página principal ─────────────────────────────────────────────────────
 
-const servicos = servicesData2 as unknown as ServicoGrupo2[]; // Type assertion para o formato esperado
+const servicos = servicesData2 as unknown as ServicoGrupo2[];
 
 export default function ProdutosPage() {
 	return (
 		<>
-			<Header />
 			<main className="pt-20">
-				{/* Hero */}
+				{/* ── Hero ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-3xl text-center">
+						<motion.div
+							className="mx-auto max-w-3xl text-center"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
 								Nossos Serviços
@@ -179,45 +201,79 @@ export default function ProdutosPage() {
 								compatibilidade entre sistemas e segurança em todas as etapas da
 								obra.
 							</p>
-						</div>
+						</motion.div>
 					</div>
 				</section>
 
-				{/* Faixa de credenciais — credibility first */}
+				{/* ── Faixa de credenciais ── */}
 				<CredentialsBanner />
 
-				{/* Lista de serviços */}
+				{/* ── Lista de serviços ── */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<div className="space-y-8">
 							{servicos.map((servico) => (
-								<ServicoCard key={servico.titulo} servico={servico} />
+								/*
+                  [DECISÃO] Wrapper motion.div por fora do ServicoCard.
+                  whileInView individual — não stagger no container.
+                  Motivo: cards são grandes, apenas 1-2 visíveis por vez.
+                  Stagger num container dispararia animações de cards
+                  que o usuário ainda não viu.
+                */
+								<motion.div
+									key={servico.titulo}
+									variants={fadeUpVariants}
+									initial="hidden"
+									whileInView="visible"
+									viewport={defaultViewport}
+								>
+									<ServicoCard servico={servico} />
+								</motion.div>
 							))}
 						</div>
 					</div>
 				</section>
 
-				{/* CTA */}
+				{/* ── CTA ── */}
+				{/*
+          [DECISÃO] <section> não anima — fundo vermelho.
+          Apenas o conteúdo interno recebe stagger.
+          Mesmo padrão do CredentialsBanner e StatsSection.
+        */}
 				<section className="py-24 bg-primary">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-						<h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
-							Seu projeto precisa de engenharia complementar?
-						</h2>
-						<p className="mt-4 text-lg text-primary-foreground/80">
-							Cada empreendimento tem suas particularidades. Nossa equipe está
-							disponível para analisar suas necessidades e apresentar a solução
-							mais adequada para o seu projeto.
-						</p>
-						<Button size="lg" variant="secondary" className="mt-8" asChild>
-							<Link href="/contato">
-								Solicitar Orçamento
-								<ArrowRight className="ml-2 h-4 w-4" />
-							</Link>
-						</Button>
+						<motion.div
+							variants={staggerContainerDelayedVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={shortSectionViewport}
+						>
+							<motion.h2
+								variants={fadeUpVariants}
+								className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl"
+							>
+								Seu projeto precisa de engenharia complementar?
+							</motion.h2>
+							<motion.p
+								variants={fadeUpVariants}
+								className="mt-4 text-lg text-primary-foreground/80"
+							>
+								Cada empreendimento tem suas particularidades. Nossa equipe está
+								disponível para analisar suas necessidades e apresentar a
+								solução mais adequada para o seu projeto.
+							</motion.p>
+							<motion.div variants={fadeUpVariants} className="mt-8">
+								<Button size="lg" variant="secondary" asChild>
+									<Link href="/contato">
+										Solicitar Orçamento
+										<ArrowRight className="ml-2 h-4 w-4" />
+									</Link>
+								</Button>
+							</motion.div>
+						</motion.div>
 					</div>
 				</section>
 			</main>
-			<Footer />
 		</>
 	);
 }

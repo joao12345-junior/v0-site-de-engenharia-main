@@ -1,3 +1,5 @@
+// app/page.tsx
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { HeroSection } from "@/components/home/hero-section";

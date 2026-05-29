@@ -48,7 +48,15 @@ function getInitials(name: string): string {
 
 function ClientLogo({ client, logo }: ClientLogoProps) {
 	const { resolvedTheme } = useTheme();
-	const logoUrl = resolvedTheme === "dark" ? logo.dark : logo.light;
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const isDark = mounted && resolvedTheme === "dark";
+
+	const logoUrl = isDark ? logo.dark : logo.light;
 
 	return (
 		<div
@@ -58,11 +66,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
                 flex items-center justify-center
                 rounded-xl p-4
                 transition-colors duration-200
-                ${
-									resolvedTheme === "dark"
-										? "bg-[oklch(0.22_0_0)]"
-										: "bg-[oklch(0.97_0_0)]"
-								}
+                ${isDark ? "bg-[oklch(0.22_0_0)]" : "bg-[oklch(0.97_0_0)]"}
             `}
 		>
 			{logoUrl ? (
@@ -72,7 +76,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 					draggable={false}
 					className={`
                         w-full h-full object-contain
-                        ${resolvedTheme === "dark" ? "brightness-90" : ""}
+                        ${isDark ? "brightness-90" : ""}
                     `}
 				/>
 			) : (

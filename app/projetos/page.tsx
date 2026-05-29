@@ -17,8 +17,18 @@ import {
 	findImagesByTitle,
 	findLocationByTitle,
 	findClientByTitle,
+	ProjectGroup,
 } from "@/lib/repositories/images-repository";
-import { ProjectGroup } from "@/lib/repositories/images-repository";
+import {
+	fadeUpVariants,
+	fadeInVariants,
+	scaleInVariants,
+	staggerContainerDelayedVariants,
+	defaultViewport,
+	shortSectionViewport,
+} from "@/lib/animation-variants";
+
+// ─── Dados (intocados) ────────────────────────────────────────────────────
 
 interface FlatProject {
 	title: string;
@@ -445,10 +455,6 @@ const json_projects = [
 	},
 ];
 
-function setCategory(projects: FlatProject[]): Set<string> {
-	return new Set(["Todos", ...projects.map((p) => p.category)]);
-}
-
 const cardVariants: Variants = {
 	initial: { opacity: 0, y: 16, scale: 0.97 },
 	animate: (index: number) => ({
@@ -467,6 +473,10 @@ const cardVariants: Variants = {
 		transition: { duration: 0.15, ease: "easeIn" as const },
 	},
 };
+
+function setCategory(projects: FlatProject[]): Set<string> {
+	return new Set(["Todos", ...projects.map((p) => p.category)]);
+}
 
 export default function ProjetosPage() {
 	const [activeCategory, setActiveCategory] = useState("Todos");
@@ -493,12 +503,17 @@ export default function ProjetosPage() {
 
 	return (
 		<>
-			<Header />
 			<main className="pt-20">
-				{/* Hero */}
+				{/* ── Hero ── */}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="mx-auto max-w-3xl text-center">
+						<motion.div
+							className="mx-auto max-w-3xl text-center"
+							variants={fadeUpVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={defaultViewport}
+						>
 							<div className="flex items-center justify-center gap-2 text-sm text-primary mb-4">
 								<span className="h-px w-8 bg-primary" />
 								Projetos
@@ -507,12 +522,25 @@ export default function ProjetosPage() {
 							<h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
 								Nossos Projetos
 							</h1>
-						</div>
+						</motion.div>
 					</div>
 				</section>
 
-				{/* Filtros */}
-				<section className="py-8 border-b border-border">
+				{/* ── Filtros ── */}
+				{/*
+			  [DECISÃO] motion.section com fadeInVariants — sem slide.
+			  Filtros são controles funcionais: animação de slide chamaria
+			  atenção para o container em vez de para os botões.
+			  Fade simples mantém a presença sem distrair.
+			  shortSectionViewport: seção de baixa altura, margin menor.
+			*/}
+				<motion.section
+					className="py-8 border-b border-border"
+					variants={fadeInVariants}
+					initial="hidden"
+					whileInView="visible"
+					viewport={shortSectionViewport}
+				>
 					<div className="mx-auto max-w-7xl lg:px-8">
 						<div className="grid grid-cols-2 gap-2 px-6 md:flex md:flex-wrap md:justify-center md:px-0">
 							{Array.from(setCategory(flatProjects)).map((category) => (
@@ -530,9 +558,9 @@ export default function ProjetosPage() {
 							))}
 						</div>
 					</div>
-				</section>
+				</motion.section>
 
-				{/* Lista de Projetos */}
+				{/* ── Lista de Projetos — INTOCADA ── */}
 				<section className="py-24">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
 						<LayoutGroup>
@@ -570,25 +598,13 @@ export default function ProjetosPage() {
 												<h3 className="text-lg font-semibold text-foreground">
 													{project.title}
 												</h3>
-
-												{/* [MUDANÇA] Empresa + Localização — dois itens agora.
-												 *
-												 * [CONCEITO] Condicional com && (short-circuit evaluation):
-												 * `{valor && <Componente />}` só renderiza <Componente />
-												 * se `valor` for truthy. É a forma idiomática em React
-												 * de renderização condicional sem else.
-												 * Equivale a: if (valor) return <Componente />
-												 */}
 												<div className="flex flex-col gap-1.5 mt-2">
-													{/* Empresa — acima da localização */}
 													{findClientByTitle(project.title) && (
 														<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
 															<Building2 className="h-4 w-4 flex-shrink-0 text-primary/60" />
 															{findClientByTitle(project.title)}
 														</span>
 													)}
-
-													{/* Localização */}
 													<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
 														<MapPin className="h-4 w-4 flex-shrink-0" />
 														{findLocationByTitle(project.title) ||
@@ -604,28 +620,53 @@ export default function ProjetosPage() {
 					</div>
 				</section>
 
-				{/* CTA */}
+				{/* ── CTA ── */}
+				{/*
+			  [DECISÃO] bg-card aqui, não bg-primary — podemos animar o card.
+			  scaleInVariants no container de conteúdo, stagger no interior.
+			  Mesmo padrão da CTASection da Home.
+			*/}
 				<section className="py-24 bg-card">
 					<div className="mx-auto max-w-7xl px-6 lg:px-8">
-						<div className="text-center max-w-2xl mx-auto">
-							<h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-								Quer ver seu projeto aqui?
-							</h2>
-							<p className="mt-4 text-lg text-muted-foreground">
-								Entre em contato conosco para discutir como podemos transformar
-								sua visão em realidade.
-							</p>
-							<Button size="lg" className="mt-8" asChild>
-								<Link href="/contato">
-									Iniciar Projeto
-									<ArrowRight className="ml-2 h-4 w-4" />
-								</Link>
-							</Button>
-						</div>
+						<motion.div
+							className="text-center max-w-2xl mx-auto"
+							variants={scaleInVariants}
+							initial="hidden"
+							whileInView="visible"
+							viewport={shortSectionViewport}
+						>
+							<motion.div
+								variants={staggerContainerDelayedVariants}
+								initial="hidden"
+								whileInView="visible"
+								viewport={shortSectionViewport}
+							>
+								<motion.h2
+									variants={fadeUpVariants}
+									className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+								>
+									Quer ver seu projeto aqui?
+								</motion.h2>
+								<motion.p
+									variants={fadeUpVariants}
+									className="mt-4 text-lg text-muted-foreground"
+								>
+									Entre em contato conosco para discutir como podemos
+									transformar sua visão em realidade.
+								</motion.p>
+								<motion.div variants={fadeUpVariants} className="mt-8">
+									<Button size="lg" asChild>
+										<Link href="/contato">
+											Iniciar Projeto
+											<ArrowRight className="ml-2 h-4 w-4" />
+										</Link>
+									</Button>
+								</motion.div>
+							</motion.div>
+						</motion.div>
 					</div>
 				</section>
 			</main>
-			<Footer />
 		</>
 	);
 }
