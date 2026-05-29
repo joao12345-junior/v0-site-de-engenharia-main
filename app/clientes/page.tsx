@@ -1,8 +1,6 @@
 // app/clientes/page.tsx
 // Server Component — sem "use client".
 
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { SectorsCategory } from "@/components/ui/sectorsCategory";
 import { ClientsGridClient } from "@/components/clients-grid-client";
 import { buildLogoMap } from "@/lib/utils/logo-resolver";

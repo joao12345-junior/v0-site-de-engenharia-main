@@ -1,7 +1,5 @@
 "use client";
 
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, MapPin, Building2 } from "lucide-react";

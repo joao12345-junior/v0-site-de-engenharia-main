@@ -5,8 +5,6 @@
 // [MUDANÇA] Adicionada faixa vermelha de credenciais após o Hero.
 // [MUDANÇA] Animações de entrada com Framer Motion adicionadas.
 
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { CheckCircle2, ArrowRight, Shield, Cpu, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

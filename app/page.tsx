@@ -20,7 +20,6 @@ export default function Home() {
 
 	return (
 		<>
-			<Header />
 			<main>
 				<HeroSection />
 				<ServicesSection />
@@ -29,7 +28,6 @@ export default function Home() {
 				<ClientCarousel />
 				<CTASection />
 			</main>
-			<Footer />
 		</>
 	);
 }

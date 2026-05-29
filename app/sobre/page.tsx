@@ -5,8 +5,6 @@
 // [MUDANÇA] Seção "Missão, Visão e Valores" reestruturada:
 // ...comentários originais preservados...
 
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import {
 	CheckCircle2,
 	Users,
