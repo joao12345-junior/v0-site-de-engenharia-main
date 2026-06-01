@@ -179,6 +179,7 @@
 	body {
 		@apply bg-background text-foreground;
 		letter-spacing: var(--tracking-normal);
+		overflow-x: hidden; /* [FIX] Impede scroll lateral causado por elementos transformados */
 	}
 
 	/* Transições suaves para tema */

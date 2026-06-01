@@ -174,6 +174,7 @@ export function Header() {
 							// corretamente. Adicionamos `isolate` como camada extra de
 							// proteção — cria contexto de empilhamento independente.
 							className="fixed top-0 right-0 bottom-0 z-50 w-72 isolate bg-background shadow-2xl border-l border-border flex flex-col overflow-hidden"
+							style={{ willChange: "transform" }}
 						>
 							<div className="flex justify-end p-4 flex-shrink-0">
 								<button

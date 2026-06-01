@@ -75,27 +75,33 @@ export const staggerContainerDelayedVariants: Variants = {
 	},
 };
 
-// ─── Fade + slide horizontal — da esquerda ────────────────────────────────
+// ─── Fade + slide — coluna "esquerda" de layout 2 colunas ────────────────
 //
-// Para colunas à esquerda em layouts de 2 colunas (convergência).
+// [MUDANÇA] x: -40 → y: 20
+// Razão: translateX em elementos no fluxo normal expande o scrollWidth
+// do documento durante o estado initial (SSR injeta o style inline).
+// Isso causava scroll lateral no mobile mesmo com overflow-x: hidden no body.
+// translateY não afeta a largura do documento — é seguro em qualquer contexto.
+// O efeito de "convergência" é preservado pelo delay da coluna direita.
 export const fadeLeftVariants: Variants = {
-	hidden: { opacity: 0, x: -40 },
+	hidden: { opacity: 0, y: 20 },
 	visible: {
 		opacity: 1,
-		x: 0,
+		y: 0,
 		transition: { duration: 0.6, ease: "easeOut" },
 	},
 };
 
-// ─── Fade + slide horizontal — da direita ────────────────────────────────
+// ─── Fade + slide — coluna "direita" de layout 2 colunas ─────────────────
 //
-// Para colunas à direita em layouts de 2 colunas (convergência).
-// delay: 0.15 garante que a coluna direita aparece DEPOIS da esquerda.
+// [MUDANÇA] x: 40 → y: 20
+// Mesma razão acima. O delay: 0.15 já cria a assimetria temporal que
+// comunica "a direita vem depois da esquerda" — o eixo X não é necessário.
 export const fadeRightVariants: Variants = {
-	hidden: { opacity: 0, x: 40 },
+	hidden: { opacity: 0, y: 20 },
 	visible: {
 		opacity: 1,
-		x: 0,
+		y: 0,
 		transition: { duration: 0.6, ease: "easeOut", delay: 0.15 },
 	},
 };
