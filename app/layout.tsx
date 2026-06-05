@@ -1,10 +1,20 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "./page-transition";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
+// [FONTE 1] Inter — fonte principal do site (font-sans)
+// subsets: ["latin"] baixa apenas os caracteres latinos — menor bundle
+// variable: cria a CSS var --font-inter que o globals.css vai consumir via --font-sans
+const inter = Inter({
+	subsets: ["latin"],
+	variable: "--font-inter",
+});
+
+// [FONTE 2] JetBrains Mono — fonte mono (font-mono)
+// Mantida para: elementos <code>, painel admin, classes font-mono no Tailwind
 const jetbrainsMono = JetBrains_Mono({
 	subsets: ["latin"],
 	variable: "--font-jetbrains",
@@ -24,7 +34,10 @@ export default function RootLayout({
 	return (
 		<html
 			lang="pt-BR"
-			className={jetbrainsMono.variable}
+			// [MUDANÇA] Ambas as variáveis de fonte aplicadas no <html>
+			// Concatenar com template string garante que as duas CSS vars
+			// fiquem disponíveis em toda a árvore do documento
+			className={`${inter.variable} ${jetbrainsMono.variable}`}
 			suppressHydrationWarning
 		>
 			<body className="font-sans antialiased">
