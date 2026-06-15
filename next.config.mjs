@@ -25,6 +25,8 @@
 //   - Protocolos: só https, nunca http
 //   - Caminhos: restringir a `/uploads/**` se quiser mais segurança
 
+import { withSentryConfig } from "@sentry/nextjs";
+
 const nextConfig = {
 	trailingSlash: true,
 	serverExternalPackages: ["argon2"],
@@ -88,4 +90,19 @@ const nextConfig = {
 	},
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+	org: "optare",
+	project: "javascript-nextjs",
+
+	// Upload de source maps para stack traces legíveis em produção
+	authToken: process.env.SENTRY_AUTH_TOKEN,
+
+	// Faz upload de mais arquivos client-side para melhor resolução de stack traces
+	widenClientFileUpload: true,
+
+	// Cria uma rota proxy /monitoring para contornar ad-blockers
+	tunnelRoute: "/monitoring",
+
+	// Suprime output desnecessário fora do CI
+	silent: !process.env.CI,
+});

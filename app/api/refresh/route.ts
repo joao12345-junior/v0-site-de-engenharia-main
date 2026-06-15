@@ -5,6 +5,7 @@ import { createTokenAccess } from "@/lib/token";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { createHashToken } from "@/lib/hash";
+import * as Sentry from "@sentry/nextjs";
 
 const secretRefresh = new TextEncoder().encode(process.env.JWT_SECRET_REFRESH!);
 
@@ -67,8 +68,18 @@ export async function POST() {
 
 		return response;
 	} catch (err: unknown) {
+		// Token expirado é esperado — não reporta ao Sentry
+		// Outros erros são inesperados — reporta
+		const isExpiredToken =
+			err instanceof Error &&
+			(err.message.includes("Token Expirado") ||
+				err.message.includes("expired"));
+
+		if (!isExpiredToken) {
+			Sentry.captureException(err);
+		}
+
 		console.error("\n [/refresh/router] Erro no refresh: ", err);
-		// Token expirado ou mal formado - limpa a sessão
 		await pool.query(
 			`DELETE FROM site_optare_user.user WHERE refresh_token = $1`,
 			[hashed_refresh_token],

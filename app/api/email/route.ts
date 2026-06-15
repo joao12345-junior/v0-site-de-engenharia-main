@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { pool } from "../../../lib/db";
 import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 
 // [CONCEITO] Lazy initialization — o cliente Resend é criado apenas
 // quando a rota POST é chamada, não em tempo de build.
@@ -103,6 +104,7 @@ export async function POST(req: Request) {
 		}
 		await InsertEmailAttempt(body.email, ip_address);
 	} catch (err: unknown) {
+		Sentry.captureException(err);
 		console.error("[/api/email] Erro ao verificar tentativas:", err);
 		return NextResponse.json(
 			{ message: "Erro interno", success: false },
@@ -133,6 +135,7 @@ export async function POST(req: Request) {
 		});
 
 		if (error) {
+			Sentry.captureException(new Error(`Resend error: ${error.message}`));
 			console.error("[/api/email] Erro Resend:", error);
 			await InsertEmailAttempt(body.email, ip_address);
 			return NextResponse.json(
@@ -147,6 +150,7 @@ export async function POST(req: Request) {
 			{ status: 200 },
 		);
 	} catch (err: unknown) {
+		Sentry.captureException(err);
 		console.error("[/api/email] Erro geral:", err);
 		return NextResponse.json(
 			{ message: "Erro interno", success: false },
