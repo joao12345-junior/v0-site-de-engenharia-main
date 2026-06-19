@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { pool } from "../../../lib/db";
+import { pool } from "../../../lib/db/db";
 import { cookies } from "next/headers";
 import { createTokenAccess, createTokenRefresh } from "@/lib/token";
 import { createHashToken, verifyHash } from "@/lib/hash";

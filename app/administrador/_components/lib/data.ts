@@ -36,15 +36,17 @@ function mapearProjetosDoJson(): Projeto[] {
 				id: `proj-${clienteBruto.cliente.toLowerCase().replace(/\s+/g, "-")}-${indice}`,
 				nome: imagem.subtitulo,
 				cliente: clienteBruto.cliente,
+				clienteId: "", // [TEMPORÁRIO] JSON de origem só tem nome, não tem UUID real.
+				// mapearProjetosDoJson() inteiro é mock — candidato a ser
+				// removido quando page-projetos.tsx consumir a API real.
 				cidade: "",
 				categoria: CategoriasPorCliente[clienteBruto.cliente] ?? "Comercial",
 				status: "Em projeto" as const,
 				prazo: "",
 				area: "",
-				fotos: imagem.urls_imagens?.length ?? 0,
 				capa: imagem.urls_imagens?.[0] ?? "",
 				photos: imagem.urls_imagens ?? [],
-				visible: true, // ← adicionar esta linha
+				visible: true,
 			};
 		}),
 	);
@@ -62,7 +64,6 @@ export const SEED = (() => {
 			status: "Protótipo",
 			preco: "sob consulta",
 			sku: "OPT-HID-02",
-			fotos: 0,
 			visible: true,
 		},
 		{
@@ -73,7 +74,6 @@ export const SEED = (() => {
 			status: "Aprovado",
 			preco: "R$ 12.900",
 			sku: "OPT-SPDA-PRO",
-			fotos: 0,
 			visible: true,
 		},
 		{
@@ -84,7 +84,6 @@ export const SEED = (() => {
 			status: "Pesquisa",
 			preco: "—",
 			sku: "OPT-GAS-S",
-			fotos: 0,
 			visible: true,
 		},
 		{
@@ -95,7 +94,6 @@ export const SEED = (() => {
 			status: "Protótipo",
 			preco: "R$ 480",
 			sku: "OPT-INC-SP",
-			fotos: 0,
 			visible: true,
 		},
 	] satisfies Produto[];

@@ -61,14 +61,17 @@ export interface ItemEditavel {
 	id: string; // [MUDANÇA] era `string | number` — Projeto sempre usou string
 	nome: string;
 	photos?: string[]; // URLs ou base64 das imagens
-	fotos: number; // contador para exibição nos cards
 	capa?: string; // primeira imagem, usada como thumbnail
 	status: string; // string aqui; cada subtipo especializa com union type
 	visible: boolean;
 }
 
 // ─── Projetos ─────────────────────────────────────────────────────────────
-export type TipoStatusProjetos = "Em projeto" | "Aprovação" | "Pré-projeto";
+export type TipoStatusProjetos =
+	| "Pré-projeto"
+	| "Em projeto"
+	| "Aprovação"
+	| "Aprovado";
 export type TipoCategoria = "Comercial" | "Residencial" | "Saúde";
 
 export interface Projeto extends ItemEditavel {
@@ -78,6 +81,7 @@ export interface Projeto extends ItemEditavel {
 	categoria: TipoCategoria;
 	cidade: string;
 	cliente: string;
+	clienteId: string;
 	prazo: string;
 	area: string;
 	status: TipoStatusProjetos; // especializa o `status: string` da base

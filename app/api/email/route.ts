@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { pool } from "../../../lib/db";
+import { pool } from "../../../lib/db/db";
 import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 

@@ -8,14 +8,19 @@ if (!process.env.JWT_SECRET_ACCESS)
 	throw new Error(
 		"\n[/proxy.ts] JWT_SECRET_ACCESS não configurado nas variáveis de ambiente",
 	);
+
 const secret = new TextEncoder().encode(process.env.JWT_SECRET_ACCESS!);
 
 export async function proxy(req: NextRequest) {
 	const token = req.cookies.get("access_token")?.value;
-	console.log(`\n[/proxy.ts] Token presente: ${!!token}\n`);
 
-	if (!token)
+	const isApiRoute = req.nextUrl.pathname.startsWith("/api/admin");
+
+	if (!token) {
+		if (isApiRoute)
+			return NextResponse.json({ message: "Não autenticado" }, { status: 401 });
 		return NextResponse.redirect(new URL("/administrador_login", req.url));
+	}
 
 	try {
 		// jwtVerify é genuinamente assíncrona — usa Web Crypto API
@@ -29,5 +34,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-	matcher: ["/administrador/:path*"],
+	matcher: ["/administrador/:path*", "/api/admin/:path*"],
 };

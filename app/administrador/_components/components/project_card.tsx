@@ -13,7 +13,12 @@ interface StatusChipProps {
 }
 
 function StatusChip({ s }: StatusChipProps) {
-	const map = { "Em projeto": "red", Aprovação: "warn", "Pré-projeto": "" };
+	const map = {
+		"Pré-projeto": "",
+		"Em projeto": "red",
+		Aprovação: "warn",
+		Aprovado: "green", // mesma convenção já usada em product_card.tsx e page-propostas.tsx
+	};
 	return <span className={"chip " + (map[s] || "")}>{s}</span>;
 }
 
@@ -111,7 +116,7 @@ export function ProjectCard({ p, onOpen, accent }: ProjectCardProps) {
 							gap: 4,
 						}}
 					>
-						<Ic.Image size={10} /> {p.fotos}
+						<Ic.Image size={10} /> {p.photos?.length ?? 0}
 					</span>
 				</div>
 			)}

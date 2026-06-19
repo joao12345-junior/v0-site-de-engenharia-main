@@ -44,6 +44,7 @@
     "@radix-ui/react-tooltip": "1.2.8",
     "@react-email/render": "^2.0.7",
     "@sentry/nextjs": "^10.58.0",
+    "@vercel/blob": "^2.4.1",
     "argon2": "^0.44.0",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",

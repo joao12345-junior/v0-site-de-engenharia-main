@@ -1,6 +1,6 @@
 // app/api/refresh/route.ts
 import { NextResponse } from "next/server";
-import { pool } from "@/lib/db";
+import { pool } from "@/lib/db/db";
 import { createTokenAccess } from "@/lib/token";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
