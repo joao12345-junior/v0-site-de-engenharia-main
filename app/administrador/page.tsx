@@ -33,8 +33,6 @@ import { PageLogs } from "./_components/page-logs";
 import { PageUsuarios } from "./_components/page-users";
 
 import type { Pagina } from "./_components/lib/types";
-import type { Projeto } from "./_components/lib/types";
-import type { Produto } from "./_components/lib/types";
 
 // ─── Tipos TypeScript ──────────────────────────────────────────────────────
 // CONCEITO: Union Types
@@ -182,8 +180,6 @@ export default function PaginaAdministrador() {
 
 	// ── Estado da aplicação (dados) ────────────────────────────────────────
 	const [emails, setEmails] = useState(SEED.emails);
-	const [projetos, setProjetos] = useState<Projeto[]>(SEED.projetosFuturos);
-	const [produtos, setProdutos] = useState<Produto[]>(SEED.produtosFuturos);
 
 	// ── Efeito: sincronizar hash da URL ───────────────────────────────────
 	// useEffect roda APENAS no cliente, então é 100% seguro usar location aqui.
@@ -260,8 +256,8 @@ export default function PaginaAdministrador() {
 	const accentAtual = tweaks.accent || "#D40C24";
 
 	const badges: ContagensBadge = {
-		projetos: projetos.length,
-		produtos: produtos.length,
+		projetos: 0,
+		produtos: 0,
 		emails: emails.filter((e) => e.folder === "inbox" && !e.read).length,
 	};
 
@@ -276,21 +272,9 @@ export default function PaginaAdministrador() {
 			case "atividade":
 				return <PageAtividade accent={accentAtual} />;
 			case "projetos":
-				return (
-					<PageProjetos
-						accent={accentAtual}
-						projetos={projetos}
-						setProjetos={setProjetos}
-					/>
-				);
+				return <PageProjetos accent={accentAtual} />;
 			case "produtos":
-				return (
-					<PageProdutos
-						accent={accentAtual}
-						produtos={produtos}
-						setProdutos={setProdutos}
-					/>
-				);
+				return <PageProdutos accent={accentAtual} />;
 			case "emails":
 				return (
 					<PageEmails

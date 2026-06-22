@@ -1,4 +1,4 @@
-// icons.tsx
+// /lib/icons.tsx
 // CONVERSÃO de icons.jsx para TypeScript
 //
 // PROBLEMA ORIGINAL: O padrão antigo era:

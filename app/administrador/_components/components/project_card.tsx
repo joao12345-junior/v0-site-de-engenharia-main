@@ -29,7 +29,7 @@ export function ProjectCard({ p, onOpen, accent }: ProjectCardProps) {
 	useEffect(() => {
 		// 1. Cria uma nova imagem na memória
 		const img = new Image();
-		img.src = p.capa as string;
+		if (p.capa) img.src = p.capa;
 
 		// 2. Espera o carregamento da URL
 		img.onload = () => {

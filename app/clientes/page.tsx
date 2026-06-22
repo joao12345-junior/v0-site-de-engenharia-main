@@ -2,21 +2,15 @@
 // Server Component — sem "use client".
 
 import { SectorsCategory } from "@/components/ui/sectorsCategory";
-import { ClientsGridClient } from "@/components/clients-grid-client";
+import { ClientsGrid } from "@/components/clients-grid";
 import { buildLogoMap } from "@/lib/utils/logo-resolver";
-import clientsData from "@/public/JSON/clientes/clients.json";
+import { getPublicClients } from "@/lib/repositories/public-clients-repository";
 import {
 	HeroAnimated,
 	SectionHeadingAnimated,
 	TestimonialsAnimated,
 	CTAAnimated,
 } from "@/components/clientes-animated-sections";
-
-interface ClientEntry {
-	CLIENTE: string;
-	Site: string;
-	categoria: string;
-}
 
 const testimonials = [
 	{
@@ -45,12 +39,12 @@ const testimonials = [
 	},
 ];
 
-export default function ClientesPage() {
+export default async function ClientesPage() {
 	// [DECISÃO] Dados resolvidos aqui, no servidor garantido.
 	// buildLogoMap usa fs — só pode rodar neste contexto.
 	// O resultado (JSON serializável) é passado como prop para o cliente.
-	const clients = clientsData as ClientEntry[];
-	const logoMap = buildLogoMap(clients.map((c) => c.CLIENTE));
+	const { clients, counts } = await getPublicClients();
+	const logoMap = buildLogoMap(clients.map((c) => c.nome));
 
 	return (
 		<>
@@ -68,7 +62,7 @@ export default function ClientesPage() {
 							subtitle="Nossa experiência abrange desde grandes construtoras e incorporadoras até hospitais e redes de varejo no Rio Grande do Sul."
 						/>
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-							<SectorsCategory />
+							<SectorsCategory counts={counts} />
 						</div>
 					</div>
 				</section>
@@ -84,7 +78,7 @@ export default function ClientesPage() {
               Sem imports de fs aqui — apenas JSON serializável.
               A fronteira servidor/cliente fica limpa.
             */}
-						<ClientsGridClient clients={clients} logoMap={logoMap} />
+						<ClientsGrid clients={clients} logoMap={logoMap} />
 					</div>
 				</section>
 

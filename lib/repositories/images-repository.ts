@@ -15,7 +15,7 @@ export interface ProjectGroup {
 
 // Dado o título de um projeto, encontra as imagens correspondentes no JSON de imagens.
 export function findImagesByTitle(title: string): string[] {
-	const groups = imagesData as ProjectGroup[];
+	const groups = imagesData as unknown as ProjectGroup[];
 	for (const group of groups) {
 		for (const img of group.imagens) {
 			if (img.subtitulo === title || img.subtitulo.includes(title)) {
@@ -28,7 +28,7 @@ export function findImagesByTitle(title: string): string[] {
 
 // Dado o título de um projeto, retorna a localização (cidade/estado).
 export function findLocationByTitle(title: string): string | null {
-	const groups = imagesData as ProjectGroup[];
+	const groups = imagesData as unknown as ProjectGroup[];
 	for (const group of groups) {
 		for (const img of group.imagens) {
 			if (img.subtitulo === title || img.subtitulo.includes(title)) {
@@ -42,7 +42,7 @@ export function findLocationByTitle(title: string): string | null {
 // [MUDANÇA] Nova função: dado o título, retorna o nome do cliente.
 // Percorre o JSON de projetos (não o de imagens) para fazer o match.
 export function findClientByTitle(title: string): string | null {
-	const groups = imagesData as ProjectGroup[];
+	const groups = imagesData as unknown as ProjectGroup[];
 	for (const group of groups) {
 		for (const img of group.imagens) {
 			if (img.subtitulo === title || img.subtitulo.includes(title)) {

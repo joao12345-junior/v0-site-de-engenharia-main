@@ -23,7 +23,8 @@ const CategoriasPorCliente: Record<string, TipoCategoria> = {
 };
 
 function mapearProjetosDoJson(): Projeto[] {
-	return (rawProjects as ClienteBruto[]).flatMap((clienteBruto) =>
+	return [];
+	return (rawProjects as unknown as ClienteBruto[]).flatMap((clienteBruto) =>
 		clienteBruto.imagens.map((imagem, indice): Projeto => {
 			// Extraímos a cidade do campo localization (ex: "Porto Alegre, RS")
 			const cidade = imagem.localization ?? "-";
