@@ -9,9 +9,20 @@
 
 import { getPublicProjects } from "@/lib/repositories/public-projects-repository";
 import { ProjectsClient } from "@/components/projects-client";
+import { getPhotos, Photo } from "@/lib/repositories/admin/photos-repository";
 
 export default async function ProjetosPage() {
 	const projects = await getPublicProjects();
+	const projectsWithPhotos = await Promise.all(
+		projects.map(async (project, index) => {
+			const photos = await getPhotos("project", project.id);
+
+			return {
+				...project,
+				photos,
+			};
+		}),
+	);
 
 	return (
 		<main className="pt-20">
@@ -22,7 +33,7 @@ export default async function ProjetosPage() {
 			 * null, arrays e objetos planos. Funções, classes e Promises
 			 * não podem — o compilador avisa se tentar.
 			 */}
-			<ProjectsClient projects={projects} />
+			<ProjectsClient projects={projectsWithPhotos} />
 		</main>
 	);
 }

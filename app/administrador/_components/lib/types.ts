@@ -1,4 +1,7 @@
 // types.ts
+
+import { Photo } from "@/lib/repositories/admin/photos-repository";
+
 // ─── Páginas disponíveis no painel ────────────────────────────────────────
 export type Pagina =
 	| "dashboard"
@@ -60,8 +63,8 @@ export interface Proposta {
 export interface ItemEditavel {
 	id: string; // [MUDANÇA] era `string | number` — Projeto sempre usou string
 	nome: string;
-	photos?: string[]; // URLs ou base64 das imagens
-	capa?: string; // primeira imagem, usada como thumbnail
+	photos?: Photo[] | null; // URLs ou base64 das imagens
+	capa?: string | null; // primeira imagem, usada como thumbnail
 	status: string; // string aqui; cada subtipo especializa com union type
 	visible: boolean;
 }

@@ -35,6 +35,8 @@ const nextConfig = {
 	},
 	images: {
 		remotePatterns: [
+			{ protocol: "https", hostname: "**.public.blob.vercel-storage.com" },
+
 			// ── Brasil (.com.br / .org.br / .net.br) ──────────────────────────
 			// Cobre: plaenge.com.br, cyrela.com.br, hospitalmoinhos.org.br, etc.
 			{ protocol: "https", hostname: "**.com.br" },

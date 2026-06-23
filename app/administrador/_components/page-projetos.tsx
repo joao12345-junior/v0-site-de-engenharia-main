@@ -44,8 +44,6 @@ const FORM_VAZIO = {
 	categoria: "Comercial" as TipoCategoria,
 	cidade: "",
 	clienteId: "",
-	prazo: "",
-	area: "",
 };
 
 export function PageProjetos({ accent }: PageProjetosProps) {
@@ -143,8 +141,6 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 					categoria: form.categoria,
 					cidade: form.cidade.trim(),
 					clienteId: form.clienteId,
-					prazo: form.prazo.trim() || undefined,
-					area: form.area.trim() || undefined,
 				}),
 			});
 			const data = await res.json();
@@ -179,6 +175,7 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 					prazo: projetoEditado.prazo,
 					area: projetoEditado.area,
 					status: projetoEditado.status,
+					capa: projetoEditado.capa,
 				}),
 			});
 			const data = await res.json();
@@ -634,58 +631,6 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 											setForm((f) => ({ ...f, cidade: e.target.value }))
 										}
 										placeholder="Ex: Porto Alegre"
-										style={{ width: "100%", boxSizing: "border-box" }}
-									/>
-								</div>
-							</div>
-
-							{/* Prazo + Área */}
-							<div
-								style={{
-									display: "grid",
-									gridTemplateColumns: "1fr 1fr",
-									gap: 12,
-								}}
-							>
-								<div>
-									<label
-										style={{
-											fontSize: 11,
-											color: "var(--muted)",
-											display: "block",
-											marginBottom: 4,
-										}}
-									>
-										Prazo
-									</label>
-									<input
-										className="input"
-										value={form.prazo}
-										onChange={(e) =>
-											setForm((f) => ({ ...f, prazo: e.target.value }))
-										}
-										placeholder="Ex: 2026-12"
-										style={{ width: "100%", boxSizing: "border-box" }}
-									/>
-								</div>
-								<div>
-									<label
-										style={{
-											fontSize: 11,
-											color: "var(--muted)",
-											display: "block",
-											marginBottom: 4,
-										}}
-									>
-										Área
-									</label>
-									<input
-										className="input"
-										value={form.area}
-										onChange={(e) =>
-											setForm((f) => ({ ...f, area: e.target.value }))
-										}
-										placeholder="Ex: 4.200 m²"
 										style={{ width: "100%", boxSizing: "border-box" }}
 									/>
 								</div>

@@ -6,6 +6,7 @@
 
 import { pool } from "@/lib/db/db";
 import { TABLES } from "@/lib/db/tables";
+import { Photo } from "./admin/photos-repository";
 
 export type CategoriaPublica = "Comercial" | "Residencial" | "Saúde";
 
@@ -16,6 +17,7 @@ export interface PublicProject {
 	cidade: string;
 	cliente: string; // nome resolvido via LEFT JOIN com clients
 	capa: string | null; // URL do Vercel Blob — null se ainda não tiver foto
+	photos: Photo[] | null;
 }
 
 /**
@@ -55,5 +57,6 @@ export async function getPublicProjects(): Promise<PublicProject[]> {
 		cidade: row.city as string,
 		cliente: row.client_name as string,
 		capa: (row.cover_url as string | null) ?? null,
+		photos: null,
 	}));
 }

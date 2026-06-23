@@ -34,6 +34,7 @@ import type {
 	PublicProject,
 	CategoriaPublica,
 } from "@/lib/repositories/public-projects-repository";
+import type { Photo } from "@/lib/repositories/admin/photos-repository";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────
 
@@ -80,7 +81,6 @@ const cardVariants: Variants = {
 const CATEGORIAS: CategoriaPublica[] = ["Comercial", "Residencial", "Saúde"];
 
 // ─── Componente principal ─────────────────────────────────────────────────
-
 export function ProjectsClient({ projects }: ProjectsClientProps) {
 	const [activeCategory, setActiveCategory] = useState<
 		"Todos" | CategoriaPublica
@@ -182,59 +182,67 @@ export function ProjectsClient({ projects }: ProjectsClientProps) {
 								className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
 							>
 								<AnimatePresence mode="popLayout">
-									{filteredProjects.map((project, index) => (
-										<motion.div
-											key={project.id}
-											custom={index}
-											variants={cardVariants}
-											initial="initial"
-											animate="animate"
-											exit="exit"
-											layout="position"
-											className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
-										>
-											<div className="relative">
-												{/*
-												 * [CONCEITO — TODO galeria]
-												 * Hoje passamos [project.capa] — um array de uma imagem só.
-												 * Quando a galeria (project_photos) for implementada, substituir por:
-												 *   images={[project.capa, ...project.photos].filter(Boolean)}
-												 * O ImageCarousel já aceita múltiplas imagens, sem precisar mudar sua API.
-												 */}
-												<ImageCarousel
-													title={project.nome}
-													images={project.capa ? [project.capa] : []}
-													priority={index === 0}
-													loading={index > 0 && index < 6 ? "eager" : "lazy"}
-												/>
-												<div className="absolute top-4 left-4">
-													<span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
-														{project.categoria}
-													</span>
+									{filteredProjects.map((project, index) => {
+										const images = [
+											project.capa,
+											...(project.photos
+												?.filter((photo) => photo.url !== project.capa)
+												.map((photo) => photo.url) ?? []),
+										].filter(Boolean) as string[];
+										return (
+											<motion.div
+												key={project.id}
+												custom={index}
+												variants={cardVariants}
+												initial="initial"
+												animate="animate"
+												exit="exit"
+												layout="position"
+												className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
+											>
+												<div className="relative">
+													{/*
+													 * [CONCEITO — TODO galeria]
+													 * Hoje passamos [project.capa] — um array de uma imagem só.
+													 * Quando a galeria (project_photos) for implementada, substituir por:
+													 *   images={[project.capa, ...project.photos].filter(Boolean)}
+													 * O ImageCarousel já aceita múltiplas imagens, sem precisar mudar sua API.
+													 */}
+													<ImageCarousel
+														title={project.nome}
+														images={images}
+														priority={index === 0}
+														loading={index > 0 && index < 6 ? "eager" : "lazy"}
+													/>
+													<div className="absolute top-4 left-4">
+														<span className="px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
+															{project.categoria}
+														</span>
+													</div>
 												</div>
-											</div>
 
-											<div className="p-6">
-												<h3 className="text-lg font-semibold text-foreground">
-													{project.nome}
-												</h3>
-												<div className="flex flex-col gap-1.5 mt-2">
-													{project.cliente && (
-														<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-															<Building2 className="h-4 w-4 flex-shrink-0 text-primary/60" />
-															{project.cliente}
-														</span>
-													)}
-													{project.cidade && (
-														<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-															<MapPin className="h-4 w-4 flex-shrink-0" />
-															{project.cidade}
-														</span>
-													)}
+												<div className="p-6">
+													<h3 className="text-lg font-semibold text-foreground">
+														{project.nome}
+													</h3>
+													<div className="flex flex-col gap-1.5 mt-2">
+														{project.cliente && (
+															<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+																<Building2 className="h-4 w-4 flex-shrink-0 text-primary/60" />
+																{project.cliente}
+															</span>
+														)}
+														{project.cidade && (
+															<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+																<MapPin className="h-4 w-4 flex-shrink-0" />
+																{project.cidade}
+															</span>
+														)}
+													</div>
 												</div>
-											</div>
-										</motion.div>
-									))}
+											</motion.div>
+										);
+									})}
 								</AnimatePresence>
 							</motion.div>
 						</LayoutGroup>

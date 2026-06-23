@@ -1,23 +1,45 @@
-// project_detail.tsx
-import { useRef, useState } from "react";
+// components/project_detail.tsx
+import { useRef, useState, useEffect, useCallback } from "react";
 import type { ItemEditavel, Projeto, Produto } from "../lib/types";
 import { PhotoSlot } from "./photo_slot";
 import { Ic } from "../lib/icons";
 import { ConfigRow } from "./config_role";
+import type { Photo } from "@/lib/repositories/admin/photos-repository";
+import { toast } from "sonner";
+import type { Cliente } from "@/lib/repositories/admin/admin-clients-repository";
+import { CitySelect } from "./city_select";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB em bytes
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-// [MUDANÇA] onSave era `(p: Projeto) => void`.
-// O componente é genérico (T extends ItemEditavel), então quando isProd=true
-// ele recebe e devolve um Produto. Salvar um Produto com tipo Projeto é
-// incorreto e TypeScript deveria pegar isso — agora pega.
 interface ProjectDetailProps<T extends ItemEditavel> {
 	project: T;
 	onClose: () => void;
 	onUpdate: (updater: (p: T) => T) => void;
-	onSave: (p: T) => void; // [MUDANÇA] era `(p: Projeto)` — agora genérico
+	onSave: (p: T) => Promise<void>;
 	accent: string;
 	isProd?: boolean;
+}
+
+// ─── Type guards ───────────────────────────────────────────────────────────
+//
+// [CONCEITO] Type guard em vez de `as unknown as X`.
+//
+// O duplo cast (as unknown as Projeto) silencia o TypeScript mas NÃO garante
+// que o objeto seja realmente um Projeto em runtime — você está apenas
+// convencendo o compilador a desistir de verificar. Se o tipo estiver errado,
+// o erro aparece tarde, como "Cannot read property 'cidade' of undefined".
+//
+// Type guards com `in` fazem verificação real em runtime:
+//   "cidade" in p → true se o objeto TEM a propriedade "cidade"
+// O TypeScript usa isso como prova de que `p` é `Projeto` dentro do bloco.
+// Erro de tipo vira erro de compilação, não de runtime.
+
+function isProjeto(p: ItemEditavel): p is Projeto {
+	return "cidade" in p;
+}
+
+function isProduto(p: ItemEditavel): p is Produto {
+	return "sku" in p;
 }
 
 export function ProjectDetail<T extends ItemEditavel>({
@@ -30,84 +52,225 @@ export function ProjectDetail<T extends ItemEditavel>({
 }: ProjectDetailProps<T>) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [drag, setDrag] = useState(false);
-
-	// [MUDANÇA] `p` foi renomeado para `draft` (rascunho em edição) e
-	// a lógica foi corrigida para que ele seja a fonte da verdade dos campos editáveis.
-	//
-	// ANTES: `const [p, setP] = useState(project)` — declarado mas nunca atualizado.
-	//        O botão "Salvar" chamava `onSave(p)` enviando sempre o estado INICIAL.
-	//
-	// DEPOIS: `draft` começa com os valores de `project` e é atualizado pelos
-	//         inputs via onChange. Quando o usuário clica "Salvar", `draft` contém
-	//         todas as edições.
-	//
-	// [CONCEITO] Por que `project as T`?
-	// useState<T> precisa do tipo explícito porque TypeScript não consegue
-	// inferir T apenas do valor inicial — o genérico vem de fora do componente.
 	const [draft, setDraft] = useState<T>(project as T);
-	console.log(draft);
 
-	// [CONCEITO] Função auxiliar para atualizar um campo do draft.
-	// O spread `{ ...prev, ...fields }` copia todos os campos de `prev`
-	// e sobrescreve apenas os campos presentes em `fields`.
-	// Sem o spread, setDraft({ nome: "novo" }) apagaria todos os outros campos.
+	// ─── Estado de fotos: carregado do banco, não do estado React ──────────
+	//
+	// [MUDANÇA CENTRAL] Antes: `photos` vinha de `draft.photos` — um array de
+	// strings base64 gigantes no estado React.
+	// Depois: fotos vivem no banco (project_photos/product_photos). O estado
+	// local é apenas um cache temporário para exibição — a fonte da verdade é
+	// o banco de dados.
+	const [photos, setPhotos] = useState<Photo[]>([]);
+	const [loadingPhotos, setLoadingPhotos] = useState(true);
+	const [uploading, setUploading] = useState(false);
+
 	const updateDraft = (fields: Partial<T>) =>
 		setDraft((prev) => ({ ...prev, ...fields }));
 
+	// ─── Carregar fotos ao abrir o painel ─────────────────────────────────
+	//
+	// [CONCEITO] useEffect com array de dependências [project.id, isProd]:
+	// Executa APÓS o primeiro render e novamente SE project.id ou isProd mudar.
+	// Sem o array, executaria a cada render (loop infinito de fetch).
+	// Com [] vazio, executaria só uma vez — mas aí não recarregaria se o
+	// usuário fechar e abrir um projeto diferente sem desmontar o componente.
+	useEffect(() => {
+		const entityType = isProd ? "products" : "projects";
+		setLoadingPhotos(true);
+		fetch(`/api/admin/${entityType}/${project.id}/photos/`)
+			.then((r) => r.json())
+			.then((data) => setPhotos(data.photos ?? []))
+			.catch(() => setPhotos([]))
+			.finally(() => setLoadingPhotos(false));
+	}, [project.id, isProd]);
+
+	// ─── Upload em dois passos ────────────────────────────────────────────
+	//
+	// [CONCEITO] Por que dois passos separados?
+	// 1. POST /api/admin/upload-photo → Vercel Blob (armazenamento do arquivo)
+	// 2. POST /api/admin/.../photos   → Postgres (registro da URL)
+	//
+	// São operações diferentes com backends diferentes (Blob vs banco).
+	// Separar permite retry independente: se o banco cair, o arquivo já
+	// está no Blob e pode ser registrado depois. Se fossem um passo só,
+	// qualquer falha no banco exigiria re-upload do arquivo inteiro.
+	//
+	// [MUDANÇA] async/await em vez de FileReader + callback.
+	// FileReader usa o padrão evento/callback (mais antigo). fetch é
+	// Promise-based — com async/await o código é linear e fácil de ler,
+	// sem callbacks aninhados ("callback hell").
 	const handleFiles = (files: FileList | null) => {
 		if (!files) return;
 
-		// [MUDANÇA — Bug 1] `arr.filter(...)` retornava um novo array mas o
-		// resultado era jogado fora. O `forEach` abaixo iterava sobre `arr`
-		// original, sem filtro. PDFs e outros arquivos passavam sem verificação.
-		// Agora o resultado do filter é capturado em `images`.
-		const images = Array.from(files).filter((f) => f.type.startsWith("image/"));
+		const promise = (async () => {
+			const images = Array.from(files).filter((f) =>
+				f.type.startsWith("image/"),
+			);
 
-		images.forEach((f) => {
-			if (f.size > MAX_FILE_SIZE) {
-				alert("Arquivo muito grande. O tamanho máximo é 10MB.");
-				// [CONCEITO] `return` dentro de forEach sai apenas desta iteração
-				// (equivale a `continue` num for). Não sai da função inteira.
-				return;
+			if (images.length === 0) return;
+
+			setUploading(true);
+
+			const entityType = isProd ? "products" : "projects";
+
+			for (const file of images) {
+				if (file.size > MAX_FILE_SIZE) {
+					throw new Error(`${file.name} é muito grande. Máx: 10MB.`);
+				}
+
+				// 1. upload blob
+				const formData = new FormData();
+				formData.append("file", file);
+
+				const uploadRes = await fetch("/api/admin/upload-photo/", {
+					method: "POST",
+					body: formData,
+				});
+
+				if (!uploadRes.ok) {
+					const err = await uploadRes.json();
+					throw new Error(err.error ?? `Falha ao subir ${file.name}`);
+				}
+
+				const { url } = await uploadRes.json();
+
+				// 2. salvar no banco
+				const position = photos.length;
+
+				const saveRes = await fetch(
+					`/api/admin/${entityType}/${project.id}/photos/`,
+					{
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ url, position }),
+					},
+				);
+
+				if (!saveRes.ok) {
+					const err = await saveRes.json();
+					throw new Error(err.error ?? `Falha ao salvar ${file.name}`);
+				}
+
+				const { photo } = await saveRes.json();
+
+				setPhotos((prev) => {
+					const newPhotos = [...prev, photo];
+
+					// capa automática se for primeira foto REAL
+					if (prev.length === 0) {
+						onUpdate((p) => ({ ...p, capa: url }));
+						updateDraft({ capa: url } as Partial<T>);
+
+						fetch(`/api/admin/${entityType}/${project.id}/`, {
+							method: "PATCH",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ capa: url }),
+						}).catch(console.error);
+					}
+
+					return newPhotos;
+				});
 			}
 
-			const reader = new FileReader();
-			reader.onload = () => {
-				if (typeof reader.result !== "string") return;
-				const newPhoto = reader.result;
+			setUploading(false);
+		})();
 
-				// onUpdate atualiza o estado no componente pai (PageProjetos/PageProdutos)
-				// para que os cards reflitam as fotos adicionadas.
-				onUpdate((prev) => {
-					const photos = [...(prev.photos || []), newPhoto];
-					return {
-						...prev,
-						photos,
-						fotos: photos.length,
-						capa: prev.capa || newPhoto,
-					};
-				});
-
-				// Também atualiza o draft local para manter consistência visual
-				// no painel aberto sem precisar fechar e reabrir.
-				setDraft((prev) => {
-					const photos = [...(prev.photos || []), newPhoto];
-					return {
-						...prev,
-						photos,
-						fotos: photos.length,
-						capa: prev.capa || newPhoto,
-					};
-				});
-			};
-			reader.readAsDataURL(f);
+		toast.promise(promise, {
+			position: "top-center",
+			loading: "Enviando imagens...",
+			success: "Imagens enviadas com sucesso!",
+			error: (err) => err.message,
 		});
 	};
 
-	// [MUDANÇA] Usa `draft.photos` em vez de `project.photos`.
-	// `project` é a prop — imutável, valor original.
-	// `draft` é o estado local — mutável, valor atual em edição.
-	const photos = draft.photos || [];
+	// ─── Remoção de foto ──────────────────────────────────────────────────
+	const handleRemove = (photo: Photo, idx: number) => {
+		const entityType = isProd ? "products" : "projects";
+
+		const promise = (async () => {
+			const res = await fetch(
+				`/api/admin/${entityType}/${project.id}/photos/${photo.id}/`,
+				{
+					method: "DELETE",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ blobUrl: photo.url }),
+				},
+			);
+
+			if (!res.ok) {
+				const err = await res.json();
+				throw new Error(err.error ?? "Falha ao remover foto.");
+			}
+
+			const newPhotos = photos.filter((_, j) => j !== idx);
+			setPhotos(newPhotos);
+
+			// se removeu capa
+			if (draft.capa === photo.url) {
+				const newCapa = newPhotos[0]?.url ?? null;
+
+				onUpdate((p) => ({
+					...p,
+					capa: newCapa,
+				}));
+
+				updateDraft({
+					capa: newCapa,
+				} as Partial<T>);
+
+				await fetch(`/api/admin/${entityType}/${project.id}/`, {
+					method: "PATCH",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						capa: newCapa,
+					}),
+				});
+			}
+		})();
+
+		return toast.promise(promise, {
+			position: "top-center",
+			loading: "Removendo foto...",
+			success: "Foto removida com sucesso!",
+			error: (err) => err.message,
+		});
+	};
+
+	const handleSave = () => {
+		const finalCapa =
+			photos.length > 0
+				? (photos.find((p) => p.url === draft.capa)?.url ?? photos[0].url)
+				: null;
+
+		const syncedDraft = {
+			...draft,
+			capa: finalCapa,
+		};
+
+		toast.promise(onSave(syncedDraft), {
+			position: "top-center",
+			loading: "Salvando projeto...",
+			success: () => "Projeto salvo com sucesso!",
+			error: (err) => err?.message ?? "Erro ao salvar o projeto.",
+		});
+	};
+	// ─── Render ───────────────────────────────────────────────────────────
+
+	// [CONCEITO] Narrowing para acessar campos específicos de Projeto/Produto
+	// no cabeçalho sem duplo cast. isProjeto(draft) retorna `draft is Projeto`
+	// — dentro do bloco true, TypeScript SABE que draft é Projeto.
+	const headerSubtitle = isProjeto(draft)
+		? `${draft.cliente} · ${draft.cidade}`
+		: isProduto(draft)
+			? `${draft.tipo} · lançamento ${draft.lancamento}`
+			: "";
+
+	const headerLabel = isProduto(draft)
+		? draft.sku
+		: String(draft.id).toUpperCase();
 
 	return (
 		<div
@@ -151,10 +314,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 				>
 					<div>
 						<div className="label-eyebrow">
-							— {isProd ? "Produto" : "Projeto"}{" "}
-							{isProd
-								? (draft as unknown as Produto).sku
-								: String(draft.id).toUpperCase()}
+							— {isProd ? "Produto" : "Projeto"} {headerLabel}
 						</div>
 						<h2
 							style={{
@@ -167,9 +327,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 							{draft.nome}
 						</h2>
 						<div style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
-							{isProd
-								? `${(draft as unknown as Produto).tipo} · lançamento ${(draft as unknown as Produto).lancamento}`
-								: `${(draft as unknown as Projeto).cliente} · ${(draft as unknown as Projeto).cidade}`}
+							{headerSubtitle}
 						</div>
 					</div>
 					<button
@@ -194,20 +352,23 @@ export function ProjectDetail<T extends ItemEditavel>({
 							setDrag(false);
 							handleFiles(e.dataTransfer.files);
 						}}
-						onClick={() => fileInputRef.current?.click()}
+						onClick={() => !uploading && fileInputRef.current?.click()}
 						style={{
 							border: `2px dashed ${drag ? accent : "var(--border-2)"}`,
 							padding: 32,
 							marginBottom: 20,
 							textAlign: "center",
-							cursor: "pointer",
+							cursor: uploading ? "not-allowed" : "pointer",
 							background: drag ? "var(--primary-soft)" : "var(--bg-2)",
 							transition: "all .15s",
+							opacity: uploading ? 0.6 : 1,
 						}}
 					>
 						<Ic.Upload size={28} stroke={1.4} />
 						<div style={{ fontWeight: 700, marginTop: 10, fontSize: 14 }}>
-							Arraste fotos aqui ou clique para enviar
+							{uploading
+								? "Enviando fotos..."
+								: "Arraste fotos aqui ou clique para enviar"}
 						</div>
 						<div style={{ fontSize: 11, color: "var(--muted)", marginTop: 6 }}>
 							JPG, PNG, WEBP · até 10MB cada · múltiplos arquivos
@@ -222,11 +383,13 @@ export function ProjectDetail<T extends ItemEditavel>({
 						/>
 					</div>
 
-					{/* Galeria de fotos */}
+					{/* Galeria */}
 					<div className="label-eyebrow" style={{ marginBottom: 12 }}>
 						— Galeria · {photos.length} {photos.length === 1 ? "foto" : "fotos"}
 					</div>
-					{photos.length === 0 ? (
+					{loadingPhotos ? (
+						<div className="empty">Carregando fotos...</div>
+					) : photos.length === 0 ? (
 						<div className="empty">
 							Nenhuma foto enviada ainda. Arraste arquivos para a área acima.
 						</div>
@@ -239,28 +402,12 @@ export function ProjectDetail<T extends ItemEditavel>({
 								marginBottom: 24,
 							}}
 						>
-							{photos.map((url, i) => (
+							{photos.map((photo, i) => (
 								<PhotoSlot
-									key={i}
-									url={url}
+									key={photo.id}
+									url={photo.url}
 									idx={i}
-									onRemove={() => {
-										// Remove a foto do índice `i` e atualiza tanto
-										// o estado pai quanto o draft local.
-										const handler = (prev: T): T => {
-											const newPhotos = (prev.photos ?? []).filter(
-												(_, j) => j !== i,
-											);
-											return {
-												...prev,
-												photos: newPhotos,
-												fotos: newPhotos.length,
-												capa: i === 0 ? newPhotos[0] : prev.capa,
-											};
-										};
-										onUpdate(handler);
-										setDraft(handler);
-									}}
+									onRemove={() => handleRemove(photo, i)}
 								/>
 							))}
 						</div>
@@ -274,11 +421,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 						— Detalhes
 					</div>
 					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: 14,
-						}}
+						style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}
 					>
 						{isProd ? (
 							<FieldsProduto
@@ -293,7 +436,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 						)}
 					</div>
 
-					{/* Botão salvar */}
+					{/* Salvar */}
 					<div
 						style={{
 							marginTop: 24,
@@ -304,14 +447,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 							paddingTop: 18,
 						}}
 					>
-						<button
-							className="btn-primary"
-							// [MUDANÇA — Bug 2 + 3] Antes: `onClick={() => onSave(p)}`
-							// onde `p` era o estado INICIAL (nunca atualizado).
-							// Agora: `draft` contém todas as edições do usuário.
-							// E onSave recebe T (genérico) em vez de Projeto fixo.
-							onClick={() => onSave(draft)}
-						>
+						<button className="btn-primary" onClick={handleSave}>
 							<Ic.Check size={14} /> Salvar alterações
 						</button>
 					</div>
@@ -322,14 +458,6 @@ export function ProjectDetail<T extends ItemEditavel>({
 }
 
 // ─── Sub-componentes de campos ────────────────────────────────────────────
-// [CONCEITO] Separamos os campos em dois componentes pequenos em vez de
-// usar `isProd` inline com um bloco grande de JSX.
-// Isso é o Single Responsibility Principle: cada componente tem uma razão
-// para existir e uma razão para mudar.
-//
-// FieldsProjeto muda quando os campos de Projeto mudam.
-// FieldsProduto muda quando os campos de Produto mudam.
-// ProjectDetail não muda por causa disso.
 
 interface FieldsProjetoProps {
 	draft: Projeto;
@@ -337,6 +465,39 @@ interface FieldsProjetoProps {
 }
 
 function FieldsProjeto({ draft, onChange }: FieldsProjetoProps) {
+	// [CONCEITO] Status 'Aprovado' é pré-condição para visible=true
+	// (CHECK constraint no banco). Desabilitar o toggle antecipa esse erro
+	// na UI em vez de deixar o usuário descobrir via erro 409.
+	const podePublicar = draft.status === "Aprovado";
+
+	// ─── Estado principal ──────────────────────────────────────────────────
+	const [clientes, setClientes] = useState<Cliente[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [erro, setErro] = useState<string | null>(null);
+
+	const [estado, setEstado] = useState("");
+	const [cidade, setCidade] = useState("");
+
+	const carregarClientes = useCallback(async () => {
+		setLoading(true);
+		setErro(null);
+		try {
+			const res = await fetch("/api/admin/clients/");
+			if (!res.ok) throw new Error(`HTTP ${res.status}`);
+			const data = await res.json();
+			setClientes(data.clientes);
+		} catch (e: unknown) {
+			setErro("Não foi possível carregar os clientes.");
+			console.error("[PageClientes] Erro ao carregar:", e);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		carregarClientes();
+	}, [carregarClientes]);
+
 	return (
 		<>
 			<EditField
@@ -347,25 +508,42 @@ function FieldsProjeto({ draft, onChange }: FieldsProjetoProps) {
 			<EditField
 				label="Cliente"
 				value={draft.cliente}
+				type="select"
+				options={clientes.map((c) => ({
+					label: c.nome,
+					value: c.nome,
+				}))}
 				onChange={(v) => onChange({ cliente: v })}
 			/>
 			<EditField
-				label="Cidade / UF"
-				value={draft.cidade}
-				onChange={(v) => onChange({ cidade: v })}
+				label="Cidade"
+				type="city"
+				value={cidade}
+				onChange={setCidade}
+				estado={estado}
 			/>
 			<EditField
 				label="Status"
 				value={draft.status}
+				type="select"
+				options={[
+					{ label: "Pendente", value: "Pendente" },
+					{ label: "Em andamento", value: "Em andamento" },
+					{ label: "Aprovado", value: "Aprovado" },
+				]}
+				disabled={draft.status === "Aprovado"}
 				onChange={(v) => onChange({ status: v as Projeto["status"] })}
 			/>
-			{/* ConfigRow já tem seu próprio estado interno de toggle */}
 			<div style={{ gridColumn: "1 / -1" }}>
 				<ConfigRow
 					label="Mostrar no site"
-					desc="Visibilidade na página de projetos"
+					desc={
+						podePublicar
+							? "Visibilidade na página de projetos"
+							: "Defina o status como 'Aprovado' antes de publicar"
+					}
 					enabled={draft.visible}
-					onToggle={(v) => onChange({ visible: v })}
+					onToggle={podePublicar ? (v) => onChange({ visible: v }) : () => {}}
 				/>
 			</div>
 		</>
@@ -414,18 +592,34 @@ function FieldsProduto({ draft, onChange }: FieldsProdutoProps) {
 	);
 }
 
-// ─── Campo de input reutilizável ──────────────────────────────────────────
-// [CONCEITO] Componente controlado (controlled component):
-// o valor do input SEMPRE vem de props (`value`), não do DOM.
-// React é a fonte da verdade — não o input.
-// Isso garante que o estado e a UI estejam sempre sincronizados.
+type SelectOption = {
+	label: string;
+	value: string;
+};
+
 interface EditFieldProps {
 	label: string;
-	value: string | undefined;
+	value: string | number | null;
 	onChange: (value: string) => void;
+
+	type?: "text" | "select" | "city";
+	options?: SelectOption[];
+	disabled?: boolean;
+
+	estado?: string;
 }
 
-function EditField({ label, value, onChange }: EditFieldProps) {
+function EditField({
+	label,
+	value,
+	onChange,
+	type = "text",
+	options = [],
+	disabled = false,
+	estado,
+}: EditFieldProps) {
+	const isDisabled = disabled;
+
 	return (
 		<div>
 			<div
@@ -439,24 +633,71 @@ function EditField({ label, value, onChange }: EditFieldProps) {
 			>
 				{label}
 			</div>
-			<input
-				className="input"
-				value={value ?? ""}
-				// [MUDANÇA — Bug 2 corrigido]
-				// `onChange` recebe um evento do DOM: `e: React.ChangeEvent<HTMLInputElement>`
-				// `e.target.value` é o texto atual do input.
-				// Passamos esse texto para o callback `onChange` da prop.
-				// O callback atualiza o `draft` no componente pai.
-				onChange={(e) => onChange(e.target.value)}
-				style={{
-					width: "100%",
-					padding: "7px 10px",
-					background: "var(--bg-2)",
-					border: "1px solid var(--border)",
-					color: "var(--fg)",
-					fontSize: 13,
-				}}
-			/>
+
+			{type === "city" ? (
+				<CitySelect
+					value={value as string}
+					onChange={onChange}
+					estado={estado ?? ""}
+				/>
+			) : (
+				<input
+					className="input"
+					value={value ?? ""}
+					onChange={(e) => onChange(e.target.value)}
+					disabled={isDisabled}
+					style={{
+						width: "100%",
+						padding: "7px 10px",
+						background: "var(--bg-2)",
+						border: "1px solid var(--border)",
+						color: "var(--fg)",
+						fontSize: 13,
+						opacity: isDisabled ? 0.6 : 1,
+						cursor: isDisabled ? "not-allowed" : "text",
+					}}
+				/>
+			)}
+
+			{type === "select" ? (
+				<select
+					className="input"
+					value={value ?? ""}
+					onChange={(e) => onChange(e.target.value)}
+					disabled={isDisabled}
+					style={{
+						width: "100%",
+						padding: "7px 10px",
+						background: "var(--bg-2)",
+						border: "1px solid var(--border)",
+						color: "var(--fg)",
+						fontSize: 13,
+					}}
+				>
+					{options.map((opt) => (
+						<option key={opt.value} value={opt.value}>
+							{opt.label}
+						</option>
+					))}
+				</select>
+			) : (
+				<input
+					className="input"
+					value={value ?? ""}
+					onChange={(e) => onChange(e.target.value)}
+					disabled={isDisabled}
+					style={{
+						width: "100%",
+						padding: "7px 10px",
+						background: "var(--bg-2)",
+						border: "1px solid var(--border)",
+						color: "var(--fg)",
+						fontSize: 13,
+						opacity: isDisabled ? 0.6 : 1,
+						cursor: isDisabled ? "not-allowed" : "text",
+					}}
+				/>
+			)}
 		</div>
 	);
 }

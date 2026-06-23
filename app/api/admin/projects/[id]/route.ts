@@ -23,7 +23,7 @@ const atualizacaoSchema = z.object({
 	area: z.string().optional(),
 	status: statusSchema.optional(),
 	visible: z.boolean().optional(),
-	capa: z.string().url().optional(),
+	capa: z.string().url().nullable().optional(),
 });
 
 interface RouteParams {
@@ -34,7 +34,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 	try {
 		const { id } = await params;
 		const body = await request.json();
-		console.log(body);
+
 		const validation = atualizacaoSchema.safeParse(body);
 		if (!validation.success) {
 			return NextResponse.json(

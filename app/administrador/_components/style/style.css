@@ -498,3 +498,14 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
 	-moz-appearance: textfield;
 }
+
+select:disabled {
+	appearance: none;
+}
+.input:disabled {
+	background: linear-gradient(180deg, var(--bg-2), var(--bg-3));
+	color: var(--muted-2);
+	border-color: var(--border-2);
+	opacity: 0.7;
+	cursor: not-allowed;
+}

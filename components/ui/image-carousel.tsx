@@ -1,4 +1,6 @@
 // components/ui/image-carousel.tsx
+"use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Building2 } from "lucide-react";
