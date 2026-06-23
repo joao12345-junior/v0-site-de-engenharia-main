@@ -103,6 +103,11 @@ const META_PAGINAS: Record<Pagina, MetaPagina> = {
 		subtitle: "Catálogo de produtos em desenvolvimento",
 		breadcrumb: "Gestão › Produtos",
 	},
+	clientes: {
+		title: "Clientes",
+		subtitle: "Empresas que confiam na Optare",
+		breadcrumb: "Site › Clientes",
+	},
 	emails: {
 		title: "E-mails",
 		subtitle: "Caixa de entrada da Optare · administrativo@optare.com.br",
@@ -112,11 +117,6 @@ const META_PAGINAS: Record<Pagina, MetaPagina> = {
 		title: "Conteúdo do Site",
 		subtitle: "Edite seções publicadas em optare.com.br",
 		breadcrumb: "Site › Conteúdo",
-	},
-	clientes: {
-		title: "Clientes",
-		subtitle: "Empresas que confiam na Optare",
-		breadcrumb: "Site › Clientes",
 	},
 	usuarios: {
 		title: "Usuários e permissões",
@@ -143,6 +143,16 @@ const META_PAGINAS: Record<Pagina, MetaPagina> = {
 declare global {
 	interface Window {
 		toast: (msg: string) => void;
+	}
+}
+
+function removeHeaderAndFooter(): boolean {
+	try {
+		const header = document.getElementsByTagName("header").item(0)?.remove();
+		const footer = document.getElementsByTagName("footer").item(0)?.remove();
+		return true;
+	} catch {
+		return false;
 	}
 }
 
@@ -187,6 +197,7 @@ export default function PaginaAdministrador() {
 		// Lê o hash inicial ao carregar a página
 		const paginaHash = location.hash.replace("#", "") as Pagina;
 		if (paginaHash) setPagina(paginaHash);
+		removeHeaderAndFooter();
 
 		// Escuta mudanças futuras no hash (navegação pelo browser)
 		const aoMudarHash = () => {
@@ -275,6 +286,8 @@ export default function PaginaAdministrador() {
 				return <PageProjetos accent={accentAtual} />;
 			case "produtos":
 				return <PageProdutos accent={accentAtual} />;
+			case "clientes":
+				return <PageClientes accent={accentAtual} />;
 			case "emails":
 				return (
 					<PageEmails
@@ -285,8 +298,6 @@ export default function PaginaAdministrador() {
 				);
 			case "conteudo":
 				return <PageConteudo accent={accentAtual} />;
-			case "clientes":
-				return <PageClientes accent={accentAtual} />;
 			case "usuarios":
 				return <PageUsuarios accent={accentAtual} />;
 			case "logs":

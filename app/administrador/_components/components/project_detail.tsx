@@ -45,6 +45,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 	// useState<T> precisa do tipo explícito porque TypeScript não consegue
 	// inferir T apenas do valor inicial — o genérico vem de fora do componente.
 	const [draft, setDraft] = useState<T>(project as T);
+	console.log(draft);
 
 	// [CONCEITO] Função auxiliar para atualizar um campo do draft.
 	// O spread `{ ...prev, ...fields }` copia todos os campos de `prev`

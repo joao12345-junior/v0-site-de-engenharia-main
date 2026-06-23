@@ -114,6 +114,8 @@ export async function updateProject(
 	const values: unknown[] = [];
 	let i = 1;
 
+	console.log(data);
+
 	if (data.nome !== undefined) {
 		fields.push(`name = $${i++}`);
 		values.push(data.nome);

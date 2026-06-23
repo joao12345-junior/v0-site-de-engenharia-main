@@ -1,24 +1,26 @@
 "use client";
-// components/projetos-client.tsx
+// components/projects-client.tsx
 //
-// [CONCEITO] Mesma separação de clientes-animated-sections.tsx e ClientCarouselClient:
-// o Server Component (page.tsx) busca dados e os passa como prop.
-// Este Client Component cuida de tudo que precisa do browser:
-// - useState (filtro ativo)
-// - useMemo (lista filtrada)
-// - Framer Motion (animações)
-// - ImageCarousel (usa estado de imagem atual)
+// [CONCEITO] Client Component por uma razão específica e só por ela:
+// useState (filtro ativo) e as animações do Framer Motion (LayoutGroup,
+// AnimatePresence). Tudo que é dado já chegou pronto via props — zero fetch aqui.
+//
+// [MUDANÇA] Filtro agora é por `categoria` (Comercial/Residencial/Saúde)
+// em vez de por nome de cliente. Motivo: o campo anterior chamava "category"
+// mas guardava o nome do cliente — uma mentira no código que confundia
+// quem lia. Com o banco, `categoria` tem o shape correto e é mais escalável:
+// 3 opções fixas em vez de N opções crescendo com cada cliente novo.
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight, MapPin, Building2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
 	motion,
 	AnimatePresence,
 	LayoutGroup,
 	type Variants,
 } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 import {
 	fadeUpVariants,
@@ -28,10 +30,25 @@ import {
 	defaultViewport,
 	shortSectionViewport,
 } from "@/lib/animation-variants";
-import type { PublicProject } from "@/lib/repositories/public-projects-repository";
+import type {
+	PublicProject,
+	CategoriaPublica,
+} from "@/lib/repositories/public-projects-repository";
 
-// ─── Variantes de card ────────────────────────────────────────────────────
-// Mantidas iguais à versão original — não mexer sem necessidade.
+// ─── Tipos ────────────────────────────────────────────────────────────────
+
+interface ProjectsClientProps {
+	projects: PublicProject[];
+}
+
+// ─── Variantes de animação dos cards ─────────────────────────────────────
+//
+// [CONCEITO] `custom` no Framer Motion:
+// Quando você usa `custom={index}` num motion.div, o Framer Motion passa
+// esse valor pra função de variante. Isso permite delays diferentes
+// por card sem criar um objeto de variante por índice.
+// `Math.min(index, 8)` limita o delay máximo em ~320ms (8 × 40ms) —
+// sem isso, o 30º card esperaria 1.2s pra aparecer.
 
 const cardVariants: Variants = {
 	initial: { opacity: 0, y: 16, scale: 0.97 },
@@ -52,29 +69,27 @@ const cardVariants: Variants = {
 	},
 };
 
-// ─── Tipos de categoria disponíveis ───────────────────────────────────────
-// [MUDANÇA] Antes: filtro por nome de cliente (equívoco herdado do JSON).
-// Agora: filtro por categoria real do banco (Comercial/Residencial/Saúde).
+// ─── Constante: categorias disponíveis ────────────────────────────────────
+//
+// [CONCEITO] Por que constante em vez de derivar dos dados?
+// As categorias são um enum fixo do domínio — sempre serão essas três,
+// independente de quantos projetos existam. Derivar dos dados seria
+// correto se as categorias fossem abertas (como nomes de cliente), mas
+// aqui o schema do banco já define o conjunto fechado via CHECK constraint.
 
-const CATEGORIAS_FIXAS = [
-	"Todos",
-	"Comercial",
-	"Residencial",
-	"Saúde",
-] as const;
-
-// ─── Props ────────────────────────────────────────────────────────────────
-
-interface ProjetosClientProps {
-	projects: PublicProject[];
-}
+const CATEGORIAS: CategoriaPublica[] = ["Comercial", "Residencial", "Saúde"];
 
 // ─── Componente principal ─────────────────────────────────────────────────
 
-export function ProjetosClient({ projects }: ProjetosClientProps) {
-	const [activeCategory, setActiveCategory] = useState("Todos");
-
-	const filtered = useMemo(
+export function ProjectsClient({ projects }: ProjectsClientProps) {
+	const [activeCategory, setActiveCategory] = useState<
+		"Todos" | CategoriaPublica
+	>("Todos");
+	// [CONCEITO] useMemo com dependência em [activeCategory, projects]:
+	// Recalcula só quando o filtro ou os dados mudam.
+	// Sem useMemo, filteredProjects seria recalculado a cada re-render
+	// (ex: hover num botão causaria re-render e re-filtragem desnecessária).
+	const filteredProjects = useMemo(
 		() =>
 			activeCategory === "Todos"
 				? projects
@@ -82,16 +97,17 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 		[activeCategory, projects],
 	);
 
-	// Imagens pra cada projeto: project_photos primeiro, cover_url como fallback
-	function resolveImages(p: PublicProject): string[] {
-		if (p.photos.length > 0) return p.photos;
-		if (p.coverUrl) return [p.coverUrl];
-		return [];
-	}
-
 	return (
 		<>
 			{/* ── Hero ── */}
+			{/*
+			 * [CONCEITO] Por que o Hero animado pode ficar aqui em vez de num
+			 * componente separado como em clientes-animated-sections.tsx?
+			 * Porque esse componente já é "use client" — o Framer Motion funciona.
+			 * Em clientes, o Hero ficou separado porque a page.tsx precisava
+			 * manter o buildLogoMap (fs.readdir) no Server Component. Aqui não
+			 * há essa restrição: o Server Component só faz a query e passa os dados.
+			 */}
 			<section className="py-24 bg-card">
 				<div className="mx-auto max-w-7xl px-6 lg:px-8">
 					<motion.div
@@ -109,11 +125,23 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 						<h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
 							Nossos Projetos
 						</h1>
+						<p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+							Projetos de engenharia complementar realizados em parceria com as
+							maiores construtoras, redes de varejo e hospitais do Sul do
+							Brasil.
+						</p>
 					</motion.div>
 				</div>
 			</section>
 
 			{/* ── Filtros ── */}
+			{/*
+			  [DECISÃO] motion.section com fadeInVariants — sem slide.
+			  Filtros são controles funcionais: animação de slide chamaria
+			  atenção para o container em vez de para os botões.
+			  Fade simples mantém a presença sem distrair.
+			  shortSectionViewport: seção de baixa altura, margin menor.
+			*/}
 			<motion.section
 				className="py-8 border-b border-border"
 				variants={fadeInVariants}
@@ -123,7 +151,7 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 			>
 				<div className="mx-auto max-w-7xl lg:px-8">
 					<div className="grid grid-cols-2 gap-2 px-6 md:flex md:flex-wrap md:justify-center md:px-0">
-						{CATEGORIAS_FIXAS.map((cat) => (
+						{(["Todos", ...CATEGORIAS] as const).map((cat) => (
 							<button
 								key={cat}
 								onClick={() => setActiveCategory(cat)}
@@ -140,20 +168,13 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 				</div>
 			</motion.section>
 
-			{/* ── Grid de Projetos ── */}
+			{/* ── Lista de projetos ── */}
 			<section className="py-24">
 				<div className="mx-auto max-w-7xl px-6 lg:px-8">
-					{filtered.length === 0 ? (
-						<motion.p
-							variants={fadeUpVariants}
-							initial="hidden"
-							animate="visible"
-							className="text-center text-muted-foreground"
-						>
-							{activeCategory === "Todos"
-								? "Nenhum projeto publicado ainda."
-								: `Nenhum projeto na categoria "${activeCategory}".`}
-						</motion.p>
+					{filteredProjects.length === 0 ? (
+						<p className="text-center text-muted-foreground text-sm py-16">
+							Nenhum projeto publicado nesta categoria ainda.
+						</p>
 					) : (
 						<LayoutGroup>
 							<motion.div
@@ -161,7 +182,7 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 								className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
 							>
 								<AnimatePresence mode="popLayout">
-									{filtered.map((project, index) => (
+									{filteredProjects.map((project, index) => (
 										<motion.div
 											key={project.id}
 											custom={index}
@@ -173,9 +194,16 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 											className="group bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors"
 										>
 											<div className="relative">
+												{/*
+												 * [CONCEITO — TODO galeria]
+												 * Hoje passamos [project.capa] — um array de uma imagem só.
+												 * Quando a galeria (project_photos) for implementada, substituir por:
+												 *   images={[project.capa, ...project.photos].filter(Boolean)}
+												 * O ImageCarousel já aceita múltiplas imagens, sem precisar mudar sua API.
+												 */}
 												<ImageCarousel
 													title={project.nome}
-													images={resolveImages(project)}
+													images={project.capa ? [project.capa] : []}
 													priority={index === 0}
 													loading={index > 0 && index < 6 ? "eager" : "lazy"}
 												/>
@@ -197,10 +225,12 @@ export function ProjetosClient({ projects }: ProjetosClientProps) {
 															{project.cliente}
 														</span>
 													)}
-													<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-														<MapPin className="h-4 w-4 flex-shrink-0" />
-														{project.cidade || "Localização desconhecida"}
-													</span>
+													{project.cidade && (
+														<span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+															<MapPin className="h-4 w-4 flex-shrink-0" />
+															{project.cidade}
+														</span>
+													)}
 												</div>
 											</div>
 										</motion.div>

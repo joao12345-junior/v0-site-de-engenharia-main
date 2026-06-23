@@ -1,28 +1,37 @@
 // lib/repositories/public-projects-repository.ts
 //
-// [CONCEITO] Server-only — importa `pool` (Node.js/pg).
-// Mesmo papel de public-clients-repository.ts, mas para projetos.
-//
-// [SEPARAÇÃO]
-// lib/repositories/admin/projects-repository.ts  → CRUD admin (autenticado)
-// lib/repositories/public-projects-repository.ts → leitura pública (visible=true)
+// [CONCEITO] Server-only — importa pool (Node.js/pg).
+// Mesmo padrão de public-clients-repository.ts.
+// NUNCA importar em Client Components.
 
 import { pool } from "@/lib/db/db";
 import { TABLES } from "@/lib/db/tables";
 
+export type CategoriaPublica = "Comercial" | "Residencial" | "Saúde";
+
 export interface PublicProject {
 	id: string;
 	nome: string;
-	categoria: string; // "Comercial" | "Residencial" | "Saúde"
+	categoria: CategoriaPublica;
 	cidade: string;
 	cliente: string; // nome resolvido via LEFT JOIN com clients
-	coverUrl: string | null;
-	photos: string[]; // URLs de project_photos ordenadas por position
+	capa: string | null; // URL do Vercel Blob — null se ainda não tiver foto
 }
 
 /**
- * Busca todos os projetos publicados (visible=true) com fotos e cliente resolvido.
- * Subquery de photos inline — evita N+1 queries (uma por projeto).
+ * Retorna todos os projetos publicados (visible=true), com nome do cliente
+ * resolvido via JOIN.
+ *
+ * [CONCEITO] LEFT JOIN em vez de INNER JOIN:
+ * Um projeto pode ter client_id NULL (válvula de segurança do schema).
+ * Com INNER JOIN, esses projetos sumiriam da listagem silenciosamente.
+ * Com LEFT JOIN, cliente fica "" e o projeto aparece — comportamento
+ * previsível e fácil de detectar.
+ *
+ * [CONCEITO] COALESCE(c.name, ''):
+ * Se client_id for NULL, o LEFT JOIN devolve NULL para todos os campos de c.
+ * COALESCE substitui NULL por '' — o componente recebe string vazia em vez
+ * de null, e não precisa fazer null-check pra renderizar o nome do cliente.
  */
 export async function getPublicProjects(): Promise<PublicProject[]> {
 	const result = await pool.query(`
@@ -31,17 +40,8 @@ export async function getPublicProjects(): Promise<PublicProject[]> {
 			p.name,
 			p.category,
 			p.city,
-			COALESCE(c.name, '') AS client_name,
 			p.cover_url,
-			COALESCE(
-				ARRAY(
-					SELECT url
-					FROM ${TABLES.projectPhotos}
-					WHERE project_id = p.id
-					ORDER BY position ASC
-				),
-				ARRAY[]::text[]
-			) AS photos
+			COALESCE(c.name, '') AS client_name
 		FROM ${TABLES.projects} p
 		LEFT JOIN ${TABLES.clients} c ON c.id = p.client_id
 		WHERE p.visible = true
@@ -51,10 +51,9 @@ export async function getPublicProjects(): Promise<PublicProject[]> {
 	return result.rows.map((row) => ({
 		id: row.id as string,
 		nome: row.name as string,
-		categoria: row.category as string,
+		categoria: row.category as CategoriaPublica,
 		cidade: row.city as string,
 		cliente: row.client_name as string,
-		coverUrl: (row.cover_url as string | null) ?? null,
-		photos: (row.photos as string[]) ?? [],
+		capa: (row.cover_url as string | null) ?? null,
 	}));
 }

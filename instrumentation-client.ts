@@ -6,7 +6,7 @@ Sentry.init({
 	sendDefaultPii: true,
 
 	// 100% em dev, 10% em produção
-	tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
+	tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0,
 
 	// 10% das sessões normais, 100% das sessões com erro
 	replaysSessionSampleRate: 0.1,

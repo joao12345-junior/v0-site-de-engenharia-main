@@ -88,19 +88,19 @@ const GRUPOS_NAV: { title: string; items: ItemNavegacao[] }[] = [
 				icon: Ic.Box,
 				badge: "produtos" as keyof ContagensBadge,
 			},
-			{
-				id: "emails",
-				label: "E-mails",
-				icon: Ic.Mail,
-				badge: "emails" as keyof ContagensBadge,
-			},
+			{ id: "clientes", label: "Clientes", icon: Ic.Building },
 		],
 	},
 	{
 		title: "Site",
 		items: [
 			{ id: "conteudo", label: "Conteúdo", icon: Ic.Globe },
-			{ id: "clientes", label: "Clientes", icon: Ic.Building },
+			{
+				id: "emails",
+				label: "E-mails",
+				icon: Ic.Mail,
+				badge: "emails" as keyof ContagensBadge,
+			},
 		],
 	},
 	{
