@@ -18,6 +18,7 @@ import { PageContainer } from "./lib/shell";
 import type { Projeto, TipoCategoria, TipoStatusProjetos } from "./lib/types";
 import { ProjectDetail } from "./components/project_detail";
 import { ProjectCard } from "./components/project_card";
+import { Cliente } from "@/lib/repositories/admin/admin-clients-repository";
 
 // ─── Tipos locais ──────────────────────────────────────────────────────────
 interface ClienteOpcao {
@@ -63,11 +64,39 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 	const [form, setForm] = useState(FORM_VAZIO);
 	const [salvando, setSalvando] = useState(false);
 	const [erroForm, setErroForm] = useState<string | null>(null);
-	const [clientes, setClientes] = useState<ClienteOpcao[]>([]);
+	const [clientes, setClientes] = useState<Cliente[]>([]);
 
 	// ─── Estado de publicação inline ──────────────────────────────────────
 	const [publicando, setPublicando] = useState<string | null>(null);
 	const [deletando, setDeletando] = useState<string | null>(null);
+
+	const carregarDados = useCallback(async () => {
+		setLoading(true);
+		setErro(null);
+		try {
+			const [resP, resC] = await Promise.all([
+				fetch("/api/admin/projects/"),
+				fetch("/api/admin/clients/"),
+			]);
+
+			// [CONCEITO] Verifica ok ANTES de parsear o JSON.
+			// Uma resposta 500 ainda tem body JSON válido, mas com { error: "..." }
+			// em vez de { projetos: [...] }. Sem essa verificação, dataP.projetos
+			// seria undefined e setProjetos(undefined) quebraria o .filter() depois.
+			if (!resP.ok || !resC.ok) {
+				throw new Error(`HTTP ${resP.ok ? resC.status : resP.status}`);
+			}
+
+			const [dataP, dataC] = await Promise.all([resP.json(), resC.json()]);
+			setProjetos(dataP.projetos ?? []);
+			setClientes(dataC.clientes ?? []);
+		} catch (e) {
+			setErro("Não foi possível carregar os dados.");
+			console.error("[PageProjetos] Erro ao carregar:", e);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
 
 	// ─── Busca projetos ────────────────────────────────────────────────────
 	const carregarProjetos = useCallback(async () => {
@@ -89,6 +118,10 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 	useEffect(() => {
 		carregarProjetos();
 	}, [carregarProjetos]);
+
+	useEffect(() => {
+		carregarDados();
+	}, [carregarDados]);
 
 	// ─── Busca clientes para o dropdown do modal ───────────────────────────
 	// [CONCEITO] Dois fetches independentes no mesmo componente — cada um
@@ -176,6 +209,7 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 					area: projetoEditado.area,
 					status: projetoEditado.status,
 					capa: projetoEditado.capa,
+					visible: projetoEditado.visible,
 				}),
 			});
 			const data = await res.json();
@@ -471,6 +505,7 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 			{openProject && (
 				<ProjectDetail
 					project={openProject}
+					clientes={clientes}
 					onClose={() => setOpen(null)}
 					onUpdate={updateOpen}
 					onSave={handleSave}

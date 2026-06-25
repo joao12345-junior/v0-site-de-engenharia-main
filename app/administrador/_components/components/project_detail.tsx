@@ -1,5 +1,5 @@
 // components/project_detail.tsx
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import type { ItemEditavel, Projeto, Produto } from "../lib/types";
 import { PhotoSlot } from "./photo_slot";
 import { Ic } from "../lib/icons";
@@ -8,11 +8,13 @@ import type { Photo } from "@/lib/repositories/admin/photos-repository";
 import { toast } from "sonner";
 import type { Cliente } from "@/lib/repositories/admin/admin-clients-repository";
 import { CitySelect } from "./city_select";
+import estadosCidades from "@/public/JSON/outros/estados-cidades.json";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 interface ProjectDetailProps<T extends ItemEditavel> {
 	project: T;
+	clientes?: Cliente[];
 	onClose: () => void;
 	onUpdate: (updater: (p: T) => T) => void;
 	onSave: (p: T) => Promise<void>;
@@ -44,6 +46,7 @@ function isProduto(p: ItemEditavel): p is Produto {
 
 export function ProjectDetail<T extends ItemEditavel>({
 	project,
+	clientes,
 	onClose,
 	onUpdate,
 	onSave,
@@ -114,6 +117,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 
 			const entityType = isProd ? "products" : "projects";
 
+			let nextPosition = photos.length;
 			for (const file of images) {
 				if (file.size > MAX_FILE_SIZE) {
 					throw new Error(`${file.name} é muito grande. Máx: 10MB.`);
@@ -135,17 +139,15 @@ export function ProjectDetail<T extends ItemEditavel>({
 
 				const { url } = await uploadRes.json();
 
-				// 2. salvar no banco
-				const position = photos.length;
-
 				const saveRes = await fetch(
 					`/api/admin/${entityType}/${project.id}/photos/`,
 					{
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ url, position }),
+						body: JSON.stringify({ url, position: nextPosition }),
 					},
 				);
+				nextPosition++;
 
 				if (!saveRes.ok) {
 					const err = await saveRes.json();
@@ -430,6 +432,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 							/>
 						) : (
 							<FieldsProjeto
+								clientes={clientes ?? []}
 								draft={draft as unknown as Projeto}
 								onChange={(fields) => updateDraft(fields as Partial<T>)}
 							/>
@@ -458,45 +461,54 @@ export function ProjectDetail<T extends ItemEditavel>({
 }
 
 // ─── Sub-componentes de campos ────────────────────────────────────────────
+const todosEstados = estadosCidades.estados;
 
 interface FieldsProjetoProps {
 	draft: Projeto;
 	onChange: (fields: Partial<Projeto>) => void;
+	clientes: Cliente[];
 }
 
-function FieldsProjeto({ draft, onChange }: FieldsProjetoProps) {
-	// [CONCEITO] Status 'Aprovado' é pré-condição para visible=true
-	// (CHECK constraint no banco). Desabilitar o toggle antecipa esse erro
-	// na UI em vez de deixar o usuário descobrir via erro 409.
+function FieldsProjeto({ draft, onChange, clientes }: FieldsProjetoProps) {
+	// [CONCEITO] Estado e cidade como estado LOCAL separado do draft.
+	// O draft guarda "Porto Alegre, RS" como string única.
+	// O componente precisa de duas peças separadas pra funcionar:
+	//   - `estado` (sigla) → filtra as cidades no CitySelect
+	//   - `cidade` → o que o usuário está digitando/selecionando
+	//
+	// Inicialização: se draft.cidade já existe ("Porto Alegre, RS"),
+	// extrai as duas partes. Se for formato antigo sem sigla, usa como cidade.
+	const [estado, setEstado] = useState(() => {
+		const parts = (draft.cidade ?? "").split(", ");
+		return parts.length === 2 ? parts[1] : "";
+	});
+	const [cidade, setCidade] = useState(() => {
+		const parts = (draft.cidade ?? "").split(", ");
+		return parts.length >= 1 ? parts[0] : "";
+	});
+
+	// [CONCEITO] Derivado de `estado` — recalcula só quando estado muda.
+	// O CitySelect recebe a lista pronta, não o JSON inteiro.
+	// Separação de responsabilidades: FieldsProjeto sabe onde buscar os dados,
+	// CitySelect sabe como exibir e filtrar — nenhum dos dois faz as duas coisas.
+	const cidadesDoEstado = useMemo(
+		() => todosEstados.find((e) => e.sigla === estado)?.cidades ?? [],
+		[estado],
+	);
+
+	const handleEstadoChange = (sigla: string) => {
+		setEstado(sigla);
+		setCidade("");
+		onChange({ cidade: "" });
+	};
+
+	const handleCidadeChange = (novaCidade: string) => {
+		setCidade(novaCidade);
+		const cidadeCompleta = estado ? `${novaCidade}, ${estado}` : novaCidade;
+		onChange({ cidade: cidadeCompleta });
+	};
+
 	const podePublicar = draft.status === "Aprovado";
-
-	// ─── Estado principal ──────────────────────────────────────────────────
-	const [clientes, setClientes] = useState<Cliente[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [erro, setErro] = useState<string | null>(null);
-
-	const [estado, setEstado] = useState("");
-	const [cidade, setCidade] = useState("");
-
-	const carregarClientes = useCallback(async () => {
-		setLoading(true);
-		setErro(null);
-		try {
-			const res = await fetch("/api/admin/clients/");
-			if (!res.ok) throw new Error(`HTTP ${res.status}`);
-			const data = await res.json();
-			setClientes(data.clientes);
-		} catch (e: unknown) {
-			setErro("Não foi possível carregar os clientes.");
-			console.error("[PageClientes] Erro ao carregar:", e);
-		} finally {
-			setLoading(false);
-		}
-	}, []);
-
-	useEffect(() => {
-		carregarClientes();
-	}, [carregarClientes]);
 
 	return (
 		<>
@@ -507,28 +519,48 @@ function FieldsProjeto({ draft, onChange }: FieldsProjetoProps) {
 			/>
 			<EditField
 				label="Cliente"
-				value={draft.cliente}
+				value={draft.clienteId}
 				type="select"
-				options={clientes.map((c) => ({
-					label: c.nome,
-					value: c.nome,
-				}))}
-				onChange={(v) => onChange({ cliente: v })}
+				options={clientes.map((c) => ({ label: c.nome, value: c.id }))}
+				onChange={(v) => {
+					// Atualiza os dois campos juntos: o id (FK real) e o nome (exibição)
+					const clienteSelecionado = clientes.find((c) => c.id === v);
+					onChange({
+						clienteId: v,
+						cliente: clienteSelecionado?.nome ?? "",
+					});
+				}}
 			/>
+			{/* Estado primeiro — habilita o CitySelect */}
+			<EditField
+				label="Estado"
+				value={estado}
+				type="select"
+				options={[
+					{ label: "Selecione...", value: "" },
+					...todosEstados.map((e) => ({
+						label: `${e.sigla} — ${e.nome}`,
+						value: e.sigla,
+					})),
+				]}
+				onChange={handleEstadoChange}
+			/>
+			{/* CitySelect recebe estado como sigla pra filtrar as cidades */}
 			<EditField
 				label="Cidade"
 				type="city"
 				value={cidade}
-				onChange={setCidade}
-				estado={estado}
+				onChange={handleCidadeChange}
+				cidades={cidadesDoEstado}
 			/>
 			<EditField
 				label="Status"
 				value={draft.status}
 				type="select"
 				options={[
-					{ label: "Pendente", value: "Pendente" },
-					{ label: "Em andamento", value: "Em andamento" },
+					{ label: "Pré-projeto", value: "Pré-projeto" },
+					{ label: "Em projeto", value: "Em projeto" },
+					{ label: "Aprovação", value: "Aprovação" },
 					{ label: "Aprovado", value: "Aprovado" },
 				]}
 				disabled={draft.status === "Aprovado"}
@@ -606,7 +638,7 @@ interface EditFieldProps {
 	options?: SelectOption[];
 	disabled?: boolean;
 
-	estado?: string;
+	cidades?: string[];
 }
 
 function EditField({
@@ -616,7 +648,7 @@ function EditField({
 	type = "text",
 	options = [],
 	disabled = false,
-	estado,
+	cidades,
 }: EditFieldProps) {
 	const isDisabled = disabled;
 
@@ -638,28 +670,10 @@ function EditField({
 				<CitySelect
 					value={value as string}
 					onChange={onChange}
-					estado={estado ?? ""}
+					cidades={cidades ?? []}
+					disabled={disabled}
 				/>
-			) : (
-				<input
-					className="input"
-					value={value ?? ""}
-					onChange={(e) => onChange(e.target.value)}
-					disabled={isDisabled}
-					style={{
-						width: "100%",
-						padding: "7px 10px",
-						background: "var(--bg-2)",
-						border: "1px solid var(--border)",
-						color: "var(--fg)",
-						fontSize: 13,
-						opacity: isDisabled ? 0.6 : 1,
-						cursor: isDisabled ? "not-allowed" : "text",
-					}}
-				/>
-			)}
-
-			{type === "select" ? (
+			) : type === "select" ? (
 				<select
 					className="input"
 					value={value ?? ""}

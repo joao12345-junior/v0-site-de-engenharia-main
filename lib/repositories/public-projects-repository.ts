@@ -56,7 +56,10 @@ export async function getPublicProjects(): Promise<PublicProject[]> {
 		categoria: row.category as CategoriaPublica,
 		cidade: row.city as string,
 		cliente: row.client_name as string,
-		capa: (row.cover_url as string | null) ?? null,
+		capa:
+			row.cover_url && !row.cover_url.includes("google.com")
+				? row.cover_url
+				: null,
 		photos: null,
 	}));
 }

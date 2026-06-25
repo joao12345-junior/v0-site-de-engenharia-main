@@ -1,1414 +1,1386 @@
 [
-  {
-    "id": "proj-lojas-renner-0",
-    "nome": "RENNER Shopping Iguatemi Porto Alegre, RS",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.silvanatoazza.com.br/cms/_files/general/2253308dfa.jpg",
-    "photos": [
-      "https://www.silvanatoazza.com.br/cms/_files/general/2253308dfa.jpg"
-    ],
-    "visible": false
-  },
-  {
-    "id": "proj-lojas-renner-1",
-    "nome": "RENNER Shopping BH Belo Horizonte, MG",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://storage.googleapis.com/ancarx-stores-images-prd/001SG000007rABrYAM.jpeg",
-    "photos": [
-      "https://storage.googleapis.com/ancarx-stores-images-prd/001SG000007rABrYAM.jpeg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-renner-2",
-    "nome": "RENNER Tramandaí Tramandaí, RS",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://jplitoral.com.br/wp-content/uploads/2019/11/Renner_01.jpeg",
-    "photos": [
-      "https://jplitoral.com.br/wp-content/uploads/2019/11/Renner_01.jpeg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-renner-3",
-    "nome": "RENNER Florida Buenos Aires, Argentina",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://mercadoeconsumo.com.br/wp-content/uploads/2019/12/Renner-inicia-opera%C3%A7%C3%A3o-na-Argentina-e-amplia-presen%C3%A7a-no-Uruguai.jpg",
-    "photos": [
-      "https://mercadoeconsumo.com.br/wp-content/uploads/2019/12/Renner-inicia-opera%C3%A7%C3%A3o-na-Argentina-e-amplia-presen%C3%A7a-no-Uruguai.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-renner-4",
-    "nome": "Mapa de Lojas RENNER existentes",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://assets.multiplan.com.br/Multiplan/filer_public/da/ad/daad589c-6c75-4787-9039-59c10fbf845a/vinidallarosa2024-8252.webp",
-    "photos": [
-      "https://assets.multiplan.com.br/Multiplan/filer_public/da/ad/daad589c-6c75-4787-9039-59c10fbf845a/vinidallarosa2024-8252.webp"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-renner-5",
-    "nome": "RENNER Shopping Iguatemi Brasília, DF",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://amanha.com.br/images/p/19741/b2ap3_large_Loja-Circular-da-Renner-do-Iguatemi-POA.JPG",
-    "photos": [
-      "https://amanha.com.br/images/p/19741/b2ap3_large_Loja-Circular-da-Renner-do-Iguatemi-POA.JPG"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-renner-6",
-    "nome": "RENNER Shopping Recife Recife, PE",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.datocms-assets.com/160965/1758823839-renditiondownload-3.jpeg?auto=format&fit=max&w=1200",
-    "photos": [
-      "https://www.datocms-assets.com/160965/1758823839-renditiondownload-3.jpeg?auto=format&fit=max&w=1200"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-renner-7",
-    "nome": "RENNER Shopping Ibirapuera São Paulo, SP",
-    "cliente": "Lojas Renner",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://ibirapuera.com.br/wp-content/uploads/2022/08/RENNER.jpeg",
-    "photos": [
-      "https://ibirapuera.com.br/wp-content/uploads/2022/08/RENNER.jpeg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-plaenge-0",
-    "nome": "Verdant Porto Alegre, RS",
-    "cliente": "Grupo Plaenge",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.plaenge.com.br/upload/imagens/084165f1-f063-492e-9bd5-debfd22584a0_O.jpg",
-    "photos": [
-      "https://www.plaenge.com.br/upload/imagens/084165f1-f063-492e-9bd5-debfd22584a0_O.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-plaenge-1",
-    "nome": "Signature Curitiba, PR",
-    "cliente": "Grupo Plaenge",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://blog.plaenge.com.br/wp-content/uploads/2021/11/PL_CTBA_BERG_FACHNOT03.jpg",
-    "photos": [
-      "https://blog.plaenge.com.br/wp-content/uploads/2021/11/PL_CTBA_BERG_FACHNOT03.jpg",
-      "https://betaimages.lopes.com.br/realestate/sml/REB453832/2_Curitiba_Ecoville_Signature_Fachada_1.2.jpg",
-      "https://betaimages.lopes.com.br/realestate/sml/REB453832/1_Curitiba_Ecoville_Signature_Fachada_1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-plaenge-2",
-    "nome": "Orbitale Porto Alegre, RS",
-    "cliente": "Grupo Plaenge",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://blog.plaenge.com.br/wp-content/uploads/2024/01/1aedc6d4-ff08-4d9d-bea8-113cfcfe.webp",
-    "photos": [
-      "https://blog.plaenge.com.br/wp-content/uploads/2024/01/1aedc6d4-ff08-4d9d-bea8-113cfcfe.webp",
-      "https://ronaldorezende.com.br/app/uploads/2023/01/01-6-1440x915.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-plaenge-3",
-    "nome": "Rodin Curitiba, PR",
-    "cliente": "Grupo Plaenge",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.plaenge.com.br/upload/imagens/dad624e2-dfca-4987-b0bf-7207a73c554b.jpg",
-    "photos": [
-      "https://www.plaenge.com.br/upload/imagens/dad624e2-dfca-4987-b0bf-7207a73c554b.jpg",
-      "https://static.revistahaus.com.br/revistahaus/2021/09/28142545/PL-CTBA-RODIN-ACESSO02.jpg",
-      "https://blog.plaenge.com.br/wp-content/uploads/2021/09/PL_CTBA_RODIN_APTO01_TERRACO01.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-plaenge-4",
-    "nome": "Ivy Lindoia Porto Alegre, RS",
-    "cliente": "Grupo Plaenge",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.vanguard.com.br/upload/imagens/6c694f15-0a1d-4383-928c-6db99c7597d7_O.jpg",
-    "photos": [
-      "https://www.vanguard.com.br/upload/imagens/6c694f15-0a1d-4383-928c-6db99c7597d7_O.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-plaenge-5",
-    "nome": "New.In Curitiba, RS",
-    "cliente": "Grupo Plaenge",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.invictta.com.br/wp-content/uploads/2025/02/FACHADA_ESQUINA.jpg",
-    "photos": [
-      "https://www.invictta.com.br/wp-content/uploads/2025/02/FACHADA_ESQUINA.jpg",
-      "https://www.invictta.com.br/wp-content/uploads/2025/02/FACHADA_NOTURNA.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-0",
-    "nome": "BIG Sertório Porto Alegre, RS",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.rbsdirect.com.br/filestore/5/2/4/6/8/8/4_3462f5306ed2e34/4886425_883d6b8943bc183.jpg?format=webp&w=1600&h=1600&a=c",
-    "photos": [
-      "https://www.rbsdirect.com.br/filestore/5/2/4/6/8/8/4_3462f5306ed2e34/4886425_883d6b8943bc183.jpg?format=webp&w=1600&h=1600&a=c"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-1",
-    "nome": "BIG Torres Curitiba, PR",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://media.gazetadopovo.com.br/2019/10/10101422/big-3-960x540.jpg",
-    "photos": [
-      "https://media.gazetadopovo.com.br/2019/10/10101422/big-3-960x540.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-2",
-    "nome": "MAXXI Atacado Santa Maria Santa Maria, RS",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://dsmcdn.cloud-bricks.net/fotos/795268/file/mobile/maxxi.jpg?1762085471",
-    "photos": [
-      "https://dsmcdn.cloud-bricks.net/fotos/795268/file/mobile/maxxi.jpg?1762085471"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-3",
-    "nome": "Sam's Club Natal Natal, RN",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://backup.tribunadonorte.com.br/fotos/254639.jpg",
-    "photos": [
-      "https://backup.tribunadonorte.com.br/fotos/254639.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-4",
-    "nome": "Bom Preço Casa Amarela Recife, PE",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://blogdomagno.com.br/wp-content/uploads/2024/07/bompreco-casa-amarela.jpg",
-    "photos": [
-      "https://blogdomagno.com.br/wp-content/uploads/2024/07/bompreco-casa-amarela.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-5",
-    "nome": "BIG Bauru Bauru, SP",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://sampi.net.br/dir-arquivo-imagem/2020/11/485a846403aed4bd365f79e9b52fb7d5.jpg",
-    "photos": [
-      "https://sampi.net.br/dir-arquivo-imagem/2020/11/485a846403aed4bd365f79e9b52fb7d5.jpg",
-      "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1322395727943815"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-carrefour-6",
-    "nome": "Sam's Club Blumenau Blumenau, SC",
-    "cliente": "Grupo Carrefour",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.noticenter.com.br/noticias/609192be743b7.jpg",
-    "photos": [
-      "https://www.noticenter.com.br/noticias/609192be743b7.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-0",
-    "nome": "GO24 Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.trvl-media.com/lodging/108000000/107060000/107056500/107056439/7259d38e.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
-    "photos": [
-      "https://images.trvl-media.com/lodging/108000000/107060000/107056500/107056439/7259d38e.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
-      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/498126616.jpg?k=9b13b00c9830413791f267f828b5f2dc569a21daf2b8a0aebf729ec4b164d63c&o="
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-1",
-    "nome": "Vida Viva Linked Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/13124256/09-min-2-1.jpg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/13124256/09-min-2-1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-2",
-    "nome": "Carlos Gomes Square Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/28162833/DJI_20250512180934_0645_D-HDR.jpg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/28162833/DJI_20250512180934_0645_D-HDR.jpg",
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/28162726/CFF3260-HDR.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-3",
-    "nome": "Botanique Residences Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/09152136/DJI_20241108053416_0550_D-HDR.webp",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/09152136/DJI_20241108053416_0550_D-HDR.webp",
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/09151921/CFF1685-scaled.webp"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-4",
-    "nome": "Grand Park Lindóia Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/08142937/fachada_comercial-min-1.jpeg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/08142937/fachada_comercial-min-1.jpeg",
-      "https://www.melnick.com.br/wp-content/uploads/2022/03/18-4.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-5",
-    "nome": "Artur 505 Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/14110847/Melnick-Artur-505-selc-alta-2359-scaled.webp",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/14110847/Melnick-Artur-505-selc-alta-2359-scaled.webp",
-      "https://www.morare.com.br/media/imoveis/38425/iT1i07_384256509df53a3bc1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-6",
-    "nome": "GO 1092 Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08152148/Guarita-1.jpeg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08152148/Guarita-1.jpeg",
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/13142619/03-10-1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-7",
-    "nome": "HOM Nilo Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08143318/fachada-min-scaled.jpeg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08143318/fachada-min-scaled.jpeg",
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/28110527/fachada-min-4-scaled-1.webp"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-8",
-    "nome": "SEEN Boa Vista Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/12140546/DJI_20250423180656_0116_D-HDR-Pano.jpg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/12140546/DJI_20250423180656_0116_D-HDR-Pano.jpg",
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/12140529/CFF2105-HDR.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-melnick-9",
-    "nome": "Supreme Higienópolis Porto Alegre, RS",
-    "cliente": "Melnick",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/12115942/07-39-1.jpg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/12115942/07-39-1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-0",
-    "nome": "Mapa de Lojas Petz no Brasil. A Optare projetou mais de 1/5 delas.",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://trademap.com.br/wp-content/uploads/2021/11/Petz-foto-divulgac%CC%A7a%CC%83o-1.png",
-    "photos": [
-      "https://trademap.com.br/wp-content/uploads/2021/11/Petz-foto-divulgac%CC%A7a%CC%83o-1.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-1",
-    "nome": "Petz Gravataí Gravataí, RS",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1665257701473.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1665257701473.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-2",
-    "nome": "Petz Taguatinga Brasília, DF",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1663591615451.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1663591615451.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-3",
-    "nome": "Petz Paulo Fontes Florianópolis, SC",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1542374513188.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1542374513188.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-4",
-    "nome": "Petz Botucatu Botucatu, SP",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1699112862537.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1699112862537.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-5",
-    "nome": "Petz Mooca São Paulo, SP",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1544105902414.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1544105902414.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-6",
-    "nome": "Petz Aldeota Fortaleza, CE",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1660929523763.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1660929523763.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-7",
-    "nome": "Petz Jockey Club Curitiba, PR",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://jockeyplaza.com.br/wp-content/uploads/2023/03/IMG_45221.webp",
-    "photos": [
-      "https://jockeyplaza.com.br/wp-content/uploads/2023/03/IMG_45221.webp"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-8",
-    "nome": "Petz Shopping Bangu Rio de Janeiro, RJ",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1661032688498.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1661032688498.jpg",
-      "https://media.licdn.com/dms/image/v2/C4D22AQGrMH3nAMXvpA/feedshare-shrink_800/feedshare-shrink_800/0/1661451589452?e=2147483647&v=beta&t=48K-4M4O-iGCqvBavDSm7qX4W4q8zbp13S4YuHJgVyk"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-9",
-    "nome": "Petz São Luis São Luis, MA",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1667259912536.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1667259912536.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-10",
-    "nome": "Petz Rio Grande Rio Grande, RS",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1664555140375.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1664555140375.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-11",
-    "nome": "Petz Contagem Contagem, MG",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1563031906249.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1563031906249.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-12",
-    "nome": "Petz Ipiranga São Paulo, SP",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1543508691232.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1543508691232.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-13",
-    "nome": "Petz Belém Belém, PA",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1671745893756.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1671745893756.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-lojas-petz-14",
-    "nome": "Petz Afonso Pena Campo Grande, MS",
-    "cliente": "Lojas Petz",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.petz.com.br/fotos/1542122379287.jpg",
-    "photos": [
-      "https://images.petz.com.br/fotos/1542122379287.jpg",
-      "https://s2-g1.glbimg.com/TXuiaBBjKzWKcjXiZz-Ofqfiogo=/0x0:1080x1080/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/f/B/mBw0IFTEm9uT6AgU6xgw/foto-1080x1080.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-0",
-    "nome": "Nova Olaria Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/styles/webp/public/2023-08/OLA_06_Fachada_Residencial_A_EF_v2.jpg.webp?itok=ENfvBx0i",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/styles/webp/public/2023-08/OLA_06_Fachada_Residencial_A_EF_v2.jpg.webp?itok=ENfvBx0i"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-1",
-    "nome": "MedPlex Eixo Norte Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/2023-04/Fachada%20%284%29.jpg",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/2023-04/Fachada%20%284%29.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-2",
-    "nome": "MedPlex Santana Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2838%29.png",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2838%29.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-3",
-    "nome": "Prime Wish Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://s01.jetimgs.com/tnnAwYXphKBPiW3sr35S56TSBu41PCPMXJgG4UpLuMhmB5uKGXsEydyXaxruLCKtnCpS7tryikYRHZzf9l13wD6TvgDXMh1u1FnREiA8yVUCY4tuu29GBdp4IA/primewish1jpeg.webp",
-    "photos": [
-      "https://s01.jetimgs.com/tnnAwYXphKBPiW3sr35S56TSBu41PCPMXJgG4UpLuMhmB5uKGXsEydyXaxruLCKtnCpS7tryikYRHZzf9l13wD6TvgDXMh1u1FnREiA8yVUCY4tuu29GBdp4IA/primewish1jpeg.webp"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-4",
-    "nome": "The Arch Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://cdn.imoview.com.br/lajeado/Imoveis/16101/or4nm-the-arch-fachada-aerea-2-1757448701.jpg?1757448702",
-    "photos": [
-      "https://cdn.imoview.com.br/lajeado/Imoveis/16101/or4nm-the-arch-fachada-aerea-2-1757448701.jpg?1757448702"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-5",
-    "nome": "JP Redenção Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11710/developmentPictures/02-INFRA-11710-JP-REDENCAO-886994.JPG",
-    "photos": [
-      "https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11710/developmentPictures/02-INFRA-11710-JP-REDENCAO-886994.JPG"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-6",
-    "nome": "Connect Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2852%29.png",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2852%29.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-7",
-    "nome": "Prime Altos do Germânia Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://betaimages.lopes.com.br/realestate/sml/REB281032/1-Fachada.jpg",
-    "photos": [
-      "https://betaimages.lopes.com.br/realestate/sml/REB281032/1-Fachada.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-8",
-    "nome": "Vintage Senior Residence Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/2023-10/LOCALIZA%C3%87%C3%83O%20%286%29.png",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/2023-10/LOCALIZA%C3%87%C3%83O%20%286%29.png",
-      "https://betaimages.lopes.com.br/realestate/sml/REB154840/Vintage-Fachada2.jpg",
-      "https://betaimages.lopes.com.br/realestate/sml/REB154840/Vintage-Fachada1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-9",
-    "nome": "Cyrela by Pininfarina Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://pininfarinaportoalegre.cyrela.com.br/assets/imgs/arquivos/galeria/PININFARINA%20-%20Fachada%20Noturna.jpg",
-    "photos": [
-      "https://pininfarinaportoalegre.cyrela.com.br/assets/imgs/arquivos/galeria/PININFARINA%20-%20Fachada%20Noturna.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-10",
-    "nome": "DOC Castelo Batel Curitiba, PR",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/2023-06/original-27-02-2020-16-38-32-230657-doc-castelo-batel.jpg",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/2023-06/original-27-02-2020-16-38-32-230657-doc-castelo-batel.jpg",
-      "https://www.cyrela.com.br/sites/default/files/styles/webp/public/2023-06/original-27-02-2020-16-38-32-886903-doc-castelo-batel.jpg.webp?itok=aIeWPFNL",
-      "https://bsa.com.br/uploads/ddef1e26331269ec68d408d20d43f7e11598647157-.jpg?w=382&h=267&q=90"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-11",
-    "nome": "Garden Haus + Tree Haus Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2848%29.png",
-    "photos": [
-      "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2848%29.png",
-      "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2845%29.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-cyrela-12",
-    "nome": "Prime Menino Deus Porto Alegre, RS",
-    "cliente": "Cyrela",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.verabernardes.com.br/fotos/g/i1e4lR7e4Tw070_476676353f4f32f386.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbEZtNmt0MlE2SktiLzdSUE9MV3FQTExONlRZWXphSVN5VW8yYTAzNm9vdUtnVmZuYVlkTjR4b2wvZGZjbmRGQzU=",
-    "photos": [
-      "https://www.verabernardes.com.br/fotos/g/i1e4lR7e4Tw070_476676353f4f32f386.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbEZtNmt0MlE2SktiLzdSUE9MV3FQTExONlRZWXphSVN5VW8yYTAzNm9vdUtnVmZuYVlkTjR4b2wvZGZjbmRGQzU=",
-      "https://betaimages.lopes.com.br/realestate/sml/REB84131/Prime-Fachada0.jpg",
-      "https://betaimages.lopes.com.br/realestate/sml/REB177860/Prime-Fachada.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-hospital-moinhos-de-vento-0",
-    "nome": "Complexo Hospitalar Moinhos de Vento Porto Alegre, RS",
-    "cliente": "Hospital Moinhos de Vento",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Saúde",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.hospitalmoinhos.org.br/media/c9e0cfee-c901-4158-a487-e36cbffdf6ec.png",
-    "photos": [
-      "https://www.hospitalmoinhos.org.br/media/c9e0cfee-c901-4158-a487-e36cbffdf6ec.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-hospital-moinhos-de-vento-1",
-    "nome": "Clínica Moinhos de Vento Linked Teresópolis Porto Alegre, RS",
-    "cliente": "Hospital Moinhos de Vento",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Saúde",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2023/08/29112148/108-1024x572.jpg",
-    "photos": [
-      "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2023/08/29112148/108-1024x572.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-multiplan-0",
-    "nome": "Barra Shopping Sul Porto Alegre, RS",
-    "cliente": "Multiplan",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a1/c8/a6/barrashoppingsul.jpg?w=1200&h=-1&s=1",
-    "photos": [
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a1/c8/a6/barrashoppingsul.jpg?w=1200&h=-1&s=1"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-multiplan-1",
-    "nome": "Diamond Tower + Résidence du Lac Porto Alegre, RS",
-    "cliente": "Multiplan",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj30CAmtsPil0i-C4FYKssB5Q8XRqWsfTlC0Ho6XFnJS4v7viJSRMcLun8UO-8mlViaZK0JvxOnQcNm_MyFoFhnaWtDquVkeGR4KZIXH1IyN9u6b93akYdo5cVJnWfmnVQpFmsR7104f8oc/s1600/Fachada+Diamond+01.jpg",
-    "photos": [
-      "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj30CAmtsPil0i-C4FYKssB5Q8XRqWsfTlC0Ho6XFnJS4v7viJSRMcLun8UO-8mlViaZK0JvxOnQcNm_MyFoFhnaWtDquVkeGR4KZIXH1IyN9u6b93akYdo5cVJnWfmnVQpFmsR7104f8oc/s1600/Fachada+Diamond+01.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-multiplan-2",
-    "nome": "Golden Lake Lake VictoriaPórticos e Áreas Condominiais",
-    "cliente": "Multiplan",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmtMbx39jJj_D9sqqN7AkpbDut-G43082NxA&s",
-    "photos": [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmtMbx39jJj_D9sqqN7AkpbDut-G43082NxA&s",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0J3uacfuteMyO9ZrmBxqoLf8u_stIbjEYhQ&s"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-0",
-    "nome": "Atlântida Lagos Park Xangri-lá, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://i.ytimg.com/vi/aMhmFZI0pBg/hqdefault.jpg",
-    "photos": [
-      "https://i.ytimg.com/vi/aMhmFZI0pBg/hqdefault.jpg",
-      "https://storage.agil.net/cdn/agil/677/property/3778/medium/9c6fff4e5ebb.webp"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-1",
-    "nome": "Mirador Playa Arenas Curumim, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/20240117092823596892.jpg",
-    "photos": [
-      "https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/20240117092823596892.jpg",
-      "https://cdn-images-site-qub.qub.com.br/2023/12/Design-sem-nome-69.png",
-      "https://api.duo.imb.br/duoimoveis-app/imagens/6917/mirador-playa-arenas-6917-5"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-2",
-    "nome": "Bosques de Atlântida Xangri-lá, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.solutioninvestimentos.com.br/vista.imobi/fotos/28/ico9jSG65474q1Y1U1_2864f093d0c6d63.jpg",
-    "photos": [
-      "https://www.solutioninvestimentos.com.br/vista.imobi/fotos/28/ico9jSG65474q1Y1U1_2864f093d0c6d63.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-3",
-    "nome": "Condado de Capão Capão da Canoa, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.solutioninvestimentos.com.br/vista.imobi/fotos/34/is8s2HO410_3465170bcf1b510.jpg",
-    "photos": [
-      "https://www.solutioninvestimentos.com.br/vista.imobi/fotos/34/is8s2HO410_3465170bcf1b510.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-4",
-    "nome": "Enseada Lagos Xangri-lá, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://i.ytimg.com/vi/EZHeOFPnbF4/sddefault.jpg?v=64d67004",
-    "photos": [
-      "https://i.ytimg.com/vi/EZHeOFPnbF4/sddefault.jpg?v=64d67004"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-5",
-    "nome": "Lagos São Gonçalo Pelotas, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://idealizacidades.com.br/laravel/public/storage/projects/June2019/Fv6aq7TM8ejEQXWSeg7o.jpg",
-    "photos": [
-      "https://idealizacidades.com.br/laravel/public/storage/projects/June2019/Fv6aq7TM8ejEQXWSeg7o.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-wagnerpar-6",
-    "nome": "Rivieira Xangri-lá, RS",
-    "cliente": "Wagnerpar",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.eleganceimoveis.com.br/fotos/800x600/iQJKs_461064c2e5b9f0e3b.webp?token=Ynk2eE45cm9KZkNSR3MvSjJCL3pReGRyZjIzQlNodllzNFp5MG85V1lLeTM1c0F5WlFvSUlZeXVVaHQyWFI5cjZnU1JEYitDS0ZaZ3l3VTRoWkZPUTV4eFg1clVFRTRLWnVDV0g3b09TZ0o1UGpPR2xBMWFrQjJ1cWlsUXg3N28=",
-    "photos": [
-      "https://www.eleganceimoveis.com.br/fotos/800x600/iQJKs_461064c2e5b9f0e3b.webp?token=Ynk2eE45cm9KZkNSR3MvSjJCL3pReGRyZjIzQlNodllzNFp5MG85V1lLeTM1c0F5WlFvSUlZeXVVaHQyWFI5cjZnU1JEYitDS0ZaZ3l3VTRoWkZPUTV4eFg1clVFRTRLWnVDV0g3b09TZ0o1UGpPR2xBMWFrQjJ1cWlsUXg3N28="
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-maiojama-0",
-    "nome": "Trend24 Porto Alegre, RS",
-    "cliente": "Maiojama",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://eduardobecker.com/wp-content/uploads/2020/12/01_Trend-24-Maiojama.jpg",
-    "photos": [
-      "https://eduardobecker.com/wp-content/uploads/2020/12/01_Trend-24-Maiojama.jpg",
-      "https://eduardobecker.com/wp-content/uploads/2020/12/02_Trend-24-Maiojama.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-maiojama-1",
-    "nome": "MW Porto Alegre, RS",
-    "cliente": "Maiojama",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.verabernardes.com.br/fotos/g/iP63bV63h035t6f_449136436f3f91149a.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbGx3ZnVUQTRQUlhEMTJ4ejdJWEVoRzk4dGVOc0pBZmhXTVpmcGJYNkQ4bUxTcnN1NzhubkYxZkhRNER1M0tLdnE=",
-    "photos": [
-      "https://www.verabernardes.com.br/fotos/g/iP63bV63h035t6f_449136436f3f91149a.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbGx3ZnVUQTRQUlhEMTJ4ejdJWEVoRzk4dGVOc0pBZmhXTVpmcGJYNkQ4bUxTcnN1NzhubkYxZkhRNER1M0tLdnE=",
-      "https://www.passowimoveis.com.br/vista.imobi/fotos/19816/i1ei00z643DOY_19816628f99b832771.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-maiojama-2",
-    "nome": "Ares Soledade Porto Alegre, RS",
-    "cliente": "Maiojama",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.maiojama.com.br/static/website/new/img/ares/galeria/1.jpg",
-    "photos": [
-      "https://www.maiojama.com.br/static/website/new/img/ares/galeria/1.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-maiojama-3",
-    "nome": "Parador 2447 Porto Alegre, RS",
-    "cliente": "Maiojama",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.maiojama.com.br/static/website/new/img/parador/parador_01.png",
-    "photos": [
-      "https://www.maiojama.com.br/static/website/new/img/parador/parador_01.png"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-maiojama-4",
-    "nome": "Anita Residences Porto Alegre, RS",
-    "cliente": "Maiojama",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Residencial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://piacini.com.br/wp-content/uploads/2022/01/WhatsApp-Image-2023-01-09-at-12.29.54.jpeg",
-    "photos": [
-      "https://piacini.com.br/wp-content/uploads/2022/01/WhatsApp-Image-2023-01-09-at-12.29.54.jpeg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-abf-developments-0",
-    "nome": "Alfa Residences Porto Alegre, RS",
-    "cliente": "ABF Developments",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://static.wixstatic.com/media/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg/v1/fill/w_2500,h_1049,al_c/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg",
-    "photos": [
-      "https://static.wixstatic.com/media/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg/v1/fill/w_2500,h_1049,al_c/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-abf-developments-1",
-    "nome": "Magno Três Figueiras Porto Alegre, RS",
-    "cliente": "ABF Developments",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.modernaidade.com.br/wp-content/uploads/2024/12/FACHADA-scaled.jpg",
-    "photos": [
-      "https://www.modernaidade.com.br/wp-content/uploads/2024/12/FACHADA-scaled.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-abf-developments-2",
-    "nome": "4D Complex Porto Alegre, RS",
-    "cliente": "ABF Developments",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://ronaldorezende.com.br/app/uploads/2023/04/ABF_TAMANDARE_FACHADA_VOLUNTARIOS_FINAL_CMYK-1440x915.jpg",
-    "photos": [
-      "https://ronaldorezende.com.br/app/uploads/2023/04/ABF_TAMANDARE_FACHADA_VOLUNTARIOS_FINAL_CMYK-1440x915.jpg",
-      "https://portoimagem.wordpress.com/wp-content/uploads/2023/06/abf_tamandare_fachada_almirante_final-scaled-1.jpg",
-      "https://vitaaltopadrao.com.br/wp-content/uploads/2022/01/Boulevard-4d-complex.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-abf-developments-3",
-    "nome": "Magno Moinhos Porto Alegre, RS",
-    "cliente": "ABF Developments",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://static.wixstatic.com/media/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg/v1/fill/w_2500,h_2084,al_c/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg",
-    "photos": [
-      "https://static.wixstatic.com/media/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg/v1/fill/w_2500,h_2084,al_c/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg",
-      "https://vitaaltopadrao.com.br/wp-content/uploads/2022/04/Magno-moinhos-fachada-1-1-scaled.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-abf-developments-4",
-    "nome": "Hola Sunset Lofts Porto Alegre, RS",
-    "cliente": "ABF Developments",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://www.arquiteturanacional.com.br/images/uploads/posts/desktop/gnd-02-fachada-a-ef_1756923846.jpg",
-    "photos": [
-      "https://www.arquiteturanacional.com.br/images/uploads/posts/desktop/gnd-02-fachada-a-ef_1756923846.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-isdra-0",
-    "nome": "Aris Porto Alegre, RS",
-    "cliente": "Grupo Isdra",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OyjrevhimR0UN-_DFOK4tV9TzoWmwObeQQ&s",
-    "photos": [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OyjrevhimR0UN-_DFOK4tV9TzoWmwObeQQ&s",
-      "https://www.google.com/imgres?q=Aris%20Porto%20Alegre%20fachada&imgurl=https%3A%2F%2Fstatic.orulo.com.br%2Fimages%2Fproperties%2Flarge%2F1778139.jpeg&imgrefurl=https%3A%2F%2Fduboisimoveis.com.br%2Fimovel%2Fapartamento-a-venda-no-bairro-tres-figueiras-em-porto-alegre-rs%2FO-24390-40404&docid=EPLVe1uouPUn1M&tbnid=j_Du-jlCvtTnnM&vet=12ahUKEwjwkfOS6-uTAxXhpJUCHSXmOPIQnPAOegQIFBAB..i&w=810&h=1080&hcb=2&itg=1&ved=2ahUKEwjwkfOS6-uTAxXhpJUCHSXmOPIQnPAOegQIFBAB"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-isdra-1",
-    "nome": "Switch Porto Alegre, RS",
-    "cliente": "Grupo Isdra",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11466/developmentPictures/Fachada%20Switch%20Frente.jpeg",
-    "photos": [
-      "https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11466/developmentPictures/Fachada%20Switch%20Frente.jpeg",
-      "https://www.ideia1.com.br/i1cms/uploads/8709915a7b701ebde26fca699f8d95e7.jpg",
-      "https://www.ideia1.com.br/i1cms/uploads/d36bc45734f958cd7869825aa19b29c2.jpg"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-isdra-2",
-    "nome": "Master Hotel Holiday Inn Porto Alegre, RS",
-    "cliente": "Grupo Isdra",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.trvl-media.com/lodging/1000000/480000/477300/477253/1014c80a.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
-    "photos": [
-      "https://images.trvl-media.com/lodging/1000000/480000/477300/477253/1014c80a.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-isdra-3",
-    "nome": "Master Express Cidade Baixa Porto Alegre, RS",
-    "cliente": "Grupo Isdra",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://images.trvl-media.com/lodging/9000000/8130000/8120200/8120186/5fe37123.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
-    "photos": [
-      "https://images.trvl-media.com/lodging/9000000/8130000/8120200/8120186/5fe37123.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
-    ],
-    "visible": true
-  },
-  {
-    "id": "proj-grupo-isdra-4",
-    "nome": "Studio CB Porto Alegre, RS",
-    "cliente": "Grupo Isdra",
-    "clienteId": "",
-    "cidade": "",
-    "categoria": "Comercial",
-    "status": "Em projeto",
-    "prazo": "",
-    "area": "",
-    "capa": "https://imgbr.imovelwebcdn.com/avisos/2/30/27/27/16/48/360x266/6034336790.jpg?isFirstImage=true",
-    "photos": [
-      "https://imgbr.imovelwebcdn.com/avisos/2/30/27/27/16/48/360x266/6034336790.jpg?isFirstImage=true"
-    ],
-    "visible": true
-  }
+	{
+		"id": "proj-lojas-renner-0",
+		"nome": "RENNER Shopping Iguatemi Porto Alegre, RS",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.silvanatoazza.com.br/cms/_files/general/2253308dfa.jpg",
+		"photos": [
+			"https://www.silvanatoazza.com.br/cms/_files/general/2253308dfa.jpg"
+		],
+		"visible": false
+	},
+	{
+		"id": "proj-lojas-renner-1",
+		"nome": "RENNER Shopping BH Belo Horizonte, MG",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://storage.googleapis.com/ancarx-stores-images-prd/001SG000007rABrYAM.jpeg",
+		"photos": [
+			"https://storage.googleapis.com/ancarx-stores-images-prd/001SG000007rABrYAM.jpeg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-renner-2",
+		"nome": "RENNER Tramandaí Tramandaí, RS",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://jplitoral.com.br/wp-content/uploads/2019/11/Renner_01.jpeg",
+		"photos": [
+			"https://jplitoral.com.br/wp-content/uploads/2019/11/Renner_01.jpeg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-renner-3",
+		"nome": "RENNER Florida Buenos Aires, Argentina",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://mercadoeconsumo.com.br/wp-content/uploads/2019/12/Renner-inicia-opera%C3%A7%C3%A3o-na-Argentina-e-amplia-presen%C3%A7a-no-Uruguai.jpg",
+		"photos": [
+			"https://mercadoeconsumo.com.br/wp-content/uploads/2019/12/Renner-inicia-opera%C3%A7%C3%A3o-na-Argentina-e-amplia-presen%C3%A7a-no-Uruguai.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-renner-4",
+		"nome": "Mapa de Lojas RENNER existentes",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://assets.multiplan.com.br/Multiplan/filer_public/da/ad/daad589c-6c75-4787-9039-59c10fbf845a/vinidallarosa2024-8252.webp",
+		"photos": [
+			"https://assets.multiplan.com.br/Multiplan/filer_public/da/ad/daad589c-6c75-4787-9039-59c10fbf845a/vinidallarosa2024-8252.webp"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-renner-5",
+		"nome": "RENNER Shopping Iguatemi Brasília, DF",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://amanha.com.br/images/p/19741/b2ap3_large_Loja-Circular-da-Renner-do-Iguatemi-POA.JPG",
+		"photos": [
+			"https://amanha.com.br/images/p/19741/b2ap3_large_Loja-Circular-da-Renner-do-Iguatemi-POA.JPG"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-renner-6",
+		"nome": "RENNER Shopping Recife Recife, PE",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.datocms-assets.com/160965/1758823839-renditiondownload-3.jpeg?auto=format&fit=max&w=1200",
+		"photos": [
+			"https://www.datocms-assets.com/160965/1758823839-renditiondownload-3.jpeg?auto=format&fit=max&w=1200"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-renner-7",
+		"nome": "RENNER Shopping Ibirapuera São Paulo, SP",
+		"cliente": "Lojas Renner",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://ibirapuera.com.br/wp-content/uploads/2022/08/RENNER.jpeg",
+		"photos": [
+			"https://ibirapuera.com.br/wp-content/uploads/2022/08/RENNER.jpeg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-plaenge-0",
+		"nome": "Verdant Porto Alegre, RS",
+		"cliente": "Grupo Plaenge",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.plaenge.com.br/upload/imagens/084165f1-f063-492e-9bd5-debfd22584a0_O.jpg",
+		"photos": [
+			"https://www.plaenge.com.br/upload/imagens/084165f1-f063-492e-9bd5-debfd22584a0_O.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-plaenge-1",
+		"nome": "Signature Curitiba, PR",
+		"cliente": "Grupo Plaenge",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://blog.plaenge.com.br/wp-content/uploads/2021/11/PL_CTBA_BERG_FACHNOT03.jpg",
+		"photos": [
+			"https://blog.plaenge.com.br/wp-content/uploads/2021/11/PL_CTBA_BERG_FACHNOT03.jpg",
+			"https://betaimages.lopes.com.br/realestate/sml/REB453832/2_Curitiba_Ecoville_Signature_Fachada_1.2.jpg",
+			"https://betaimages.lopes.com.br/realestate/sml/REB453832/1_Curitiba_Ecoville_Signature_Fachada_1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-plaenge-2",
+		"nome": "Orbitale Porto Alegre, RS",
+		"cliente": "Grupo Plaenge",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://blog.plaenge.com.br/wp-content/uploads/2024/01/1aedc6d4-ff08-4d9d-bea8-113cfcfe.webp",
+		"photos": [
+			"https://blog.plaenge.com.br/wp-content/uploads/2024/01/1aedc6d4-ff08-4d9d-bea8-113cfcfe.webp",
+			"https://ronaldorezende.com.br/app/uploads/2023/01/01-6-1440x915.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-plaenge-3",
+		"nome": "Rodin Curitiba, PR",
+		"cliente": "Grupo Plaenge",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.plaenge.com.br/upload/imagens/dad624e2-dfca-4987-b0bf-7207a73c554b.jpg",
+		"photos": [
+			"https://www.plaenge.com.br/upload/imagens/dad624e2-dfca-4987-b0bf-7207a73c554b.jpg",
+			"https://static.revistahaus.com.br/revistahaus/2021/09/28142545/PL-CTBA-RODIN-ACESSO02.jpg",
+			"https://blog.plaenge.com.br/wp-content/uploads/2021/09/PL_CTBA_RODIN_APTO01_TERRACO01.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-plaenge-4",
+		"nome": "Ivy Lindoia Porto Alegre, RS",
+		"cliente": "Grupo Plaenge",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.vanguard.com.br/upload/imagens/6c694f15-0a1d-4383-928c-6db99c7597d7_O.jpg",
+		"photos": [
+			"https://www.vanguard.com.br/upload/imagens/6c694f15-0a1d-4383-928c-6db99c7597d7_O.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-plaenge-5",
+		"nome": "New.In Curitiba, RS",
+		"cliente": "Grupo Plaenge",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.invictta.com.br/wp-content/uploads/2025/02/FACHADA_ESQUINA.jpg",
+		"photos": [
+			"https://www.invictta.com.br/wp-content/uploads/2025/02/FACHADA_ESQUINA.jpg",
+			"https://www.invictta.com.br/wp-content/uploads/2025/02/FACHADA_NOTURNA.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-0",
+		"nome": "BIG Sertório Porto Alegre, RS",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.rbsdirect.com.br/filestore/5/2/4/6/8/8/4_3462f5306ed2e34/4886425_883d6b8943bc183.jpg?format=webp&w=1600&h=1600&a=c",
+		"photos": [
+			"https://www.rbsdirect.com.br/filestore/5/2/4/6/8/8/4_3462f5306ed2e34/4886425_883d6b8943bc183.jpg?format=webp&w=1600&h=1600&a=c"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-1",
+		"nome": "BIG Torres Curitiba, PR",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://media.gazetadopovo.com.br/2019/10/10101422/big-3-960x540.jpg",
+		"photos": [
+			"https://media.gazetadopovo.com.br/2019/10/10101422/big-3-960x540.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-2",
+		"nome": "MAXXI Atacado Santa Maria Santa Maria, RS",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://dsmcdn.cloud-bricks.net/fotos/795268/file/mobile/maxxi.jpg?1762085471",
+		"photos": [
+			"https://dsmcdn.cloud-bricks.net/fotos/795268/file/mobile/maxxi.jpg?1762085471"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-3",
+		"nome": "Sam's Club Natal Natal, RN",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://backup.tribunadonorte.com.br/fotos/254639.jpg",
+		"photos": ["https://backup.tribunadonorte.com.br/fotos/254639.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-4",
+		"nome": "Bom Preço Casa Amarela Recife, PE",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://blogdomagno.com.br/wp-content/uploads/2024/07/bompreco-casa-amarela.jpg",
+		"photos": [
+			"https://blogdomagno.com.br/wp-content/uploads/2024/07/bompreco-casa-amarela.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-5",
+		"nome": "BIG Bauru Bauru, SP",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://sampi.net.br/dir-arquivo-imagem/2020/11/485a846403aed4bd365f79e9b52fb7d5.jpg",
+		"photos": [
+			"https://sampi.net.br/dir-arquivo-imagem/2020/11/485a846403aed4bd365f79e9b52fb7d5.jpg",
+			"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1322395727943815"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-carrefour-6",
+		"nome": "Sam's Club Blumenau Blumenau, SC",
+		"cliente": "Grupo Carrefour",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.noticenter.com.br/noticias/609192be743b7.jpg",
+		"photos": ["https://www.noticenter.com.br/noticias/609192be743b7.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-0",
+		"nome": "GO24 Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.trvl-media.com/lodging/108000000/107060000/107056500/107056439/7259d38e.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+		"photos": [
+			"https://images.trvl-media.com/lodging/108000000/107060000/107056500/107056439/7259d38e.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+			"https://cf.bstatic.com/xdata/images/hotel/max1024x768/498126616.jpg?k=9b13b00c9830413791f267f828b5f2dc569a21daf2b8a0aebf729ec4b164d63c&o="
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-1",
+		"nome": "Vida Viva Linked Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/13124256/09-min-2-1.jpg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/13124256/09-min-2-1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-2",
+		"nome": "Carlos Gomes Square Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/28162833/DJI_20250512180934_0645_D-HDR.jpg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/28162833/DJI_20250512180934_0645_D-HDR.jpg",
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/28162726/CFF3260-HDR.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-3",
+		"nome": "Botanique Residences Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/09152136/DJI_20241108053416_0550_D-HDR.webp",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/09152136/DJI_20241108053416_0550_D-HDR.webp",
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/09151921/CFF1685-scaled.webp"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-4",
+		"nome": "Grand Park Lindóia Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/08142937/fachada_comercial-min-1.jpeg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/08142937/fachada_comercial-min-1.jpeg",
+			"https://www.melnick.com.br/wp-content/uploads/2022/03/18-4.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-5",
+		"nome": "Artur 505 Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/14110847/Melnick-Artur-505-selc-alta-2359-scaled.webp",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/14110847/Melnick-Artur-505-selc-alta-2359-scaled.webp",
+			"https://www.morare.com.br/media/imoveis/38425/iT1i07_384256509df53a3bc1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-6",
+		"nome": "GO 1092 Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08152148/Guarita-1.jpeg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08152148/Guarita-1.jpeg",
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/13142619/03-10-1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-7",
+		"nome": "HOM Nilo Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08143318/fachada-min-scaled.jpeg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/08143318/fachada-min-scaled.jpeg",
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/28110527/fachada-min-4-scaled-1.webp"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-8",
+		"nome": "SEEN Boa Vista Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/12140546/DJI_20250423180656_0116_D-HDR-Pano.jpg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/12140546/DJI_20250423180656_0116_D-HDR-Pano.jpg",
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/03/12140529/CFF2105-HDR.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-melnick-9",
+		"nome": "Supreme Higienópolis Porto Alegre, RS",
+		"cliente": "Melnick",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/12115942/07-39-1.jpg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2022/04/12115942/07-39-1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-0",
+		"nome": "Mapa de Lojas Petz no Brasil. A Optare projetou mais de 1/5 delas.",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://trademap.com.br/wp-content/uploads/2021/11/Petz-foto-divulgac%CC%A7a%CC%83o-1.png",
+		"photos": [
+			"https://trademap.com.br/wp-content/uploads/2021/11/Petz-foto-divulgac%CC%A7a%CC%83o-1.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-1",
+		"nome": "Petz Gravataí Gravataí, RS",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1665257701473.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1665257701473.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-2",
+		"nome": "Petz Taguatinga Brasília, DF",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1663591615451.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1663591615451.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-3",
+		"nome": "Petz Paulo Fontes Florianópolis, SC",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1542374513188.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1542374513188.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-4",
+		"nome": "Petz Botucatu Botucatu, SP",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1699112862537.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1699112862537.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-5",
+		"nome": "Petz Mooca São Paulo, SP",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1544105902414.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1544105902414.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-6",
+		"nome": "Petz Aldeota Fortaleza, CE",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1660929523763.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1660929523763.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-7",
+		"nome": "Petz Jockey Club Curitiba, PR",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://jockeyplaza.com.br/wp-content/uploads/2023/03/IMG_45221.webp",
+		"photos": [
+			"https://jockeyplaza.com.br/wp-content/uploads/2023/03/IMG_45221.webp"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-8",
+		"nome": "Petz Shopping Bangu Rio de Janeiro, RJ",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1661032688498.jpg",
+		"photos": [
+			"https://images.petz.com.br/fotos/1661032688498.jpg",
+			"https://media.licdn.com/dms/image/v2/C4D22AQGrMH3nAMXvpA/feedshare-shrink_800/feedshare-shrink_800/0/1661451589452?e=2147483647&v=beta&t=48K-4M4O-iGCqvBavDSm7qX4W4q8zbp13S4YuHJgVyk"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-9",
+		"nome": "Petz São Luis São Luis, MA",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1667259912536.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1667259912536.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-10",
+		"nome": "Petz Rio Grande Rio Grande, RS",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1664555140375.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1664555140375.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-11",
+		"nome": "Petz Contagem Contagem, MG",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1563031906249.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1563031906249.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-12",
+		"nome": "Petz Ipiranga São Paulo, SP",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1543508691232.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1543508691232.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-13",
+		"nome": "Petz Belém Belém, PA",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1671745893756.jpg",
+		"photos": ["https://images.petz.com.br/fotos/1671745893756.jpg"],
+		"visible": true
+	},
+	{
+		"id": "proj-lojas-petz-14",
+		"nome": "Petz Afonso Pena Campo Grande, MS",
+		"cliente": "Lojas Petz",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.petz.com.br/fotos/1542122379287.jpg",
+		"photos": [
+			"https://images.petz.com.br/fotos/1542122379287.jpg",
+			"https://s2-g1.glbimg.com/TXuiaBBjKzWKcjXiZz-Ofqfiogo=/0x0:1080x1080/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/f/B/mBw0IFTEm9uT6AgU6xgw/foto-1080x1080.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-0",
+		"nome": "Nova Olaria Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/styles/webp/public/2023-08/OLA_06_Fachada_Residencial_A_EF_v2.jpg.webp?itok=ENfvBx0i",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/styles/webp/public/2023-08/OLA_06_Fachada_Residencial_A_EF_v2.jpg.webp?itok=ENfvBx0i"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-1",
+		"nome": "MedPlex Eixo Norte Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/2023-04/Fachada%20%284%29.jpg",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/2023-04/Fachada%20%284%29.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-2",
+		"nome": "MedPlex Santana Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2838%29.png",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2838%29.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-3",
+		"nome": "Prime Wish Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://s01.jetimgs.com/tnnAwYXphKBPiW3sr35S56TSBu41PCPMXJgG4UpLuMhmB5uKGXsEydyXaxruLCKtnCpS7tryikYRHZzf9l13wD6TvgDXMh1u1FnREiA8yVUCY4tuu29GBdp4IA/primewish1jpeg.webp",
+		"photos": [
+			"https://s01.jetimgs.com/tnnAwYXphKBPiW3sr35S56TSBu41PCPMXJgG4UpLuMhmB5uKGXsEydyXaxruLCKtnCpS7tryikYRHZzf9l13wD6TvgDXMh1u1FnREiA8yVUCY4tuu29GBdp4IA/primewish1jpeg.webp"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-4",
+		"nome": "The Arch Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://cdn.imoview.com.br/lajeado/Imoveis/16101/or4nm-the-arch-fachada-aerea-2-1757448701.jpg?1757448702",
+		"photos": [
+			"https://cdn.imoview.com.br/lajeado/Imoveis/16101/or4nm-the-arch-fachada-aerea-2-1757448701.jpg?1757448702"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-5",
+		"nome": "JP Redenção Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11710/developmentPictures/02-INFRA-11710-JP-REDENCAO-886994.JPG",
+		"photos": [
+			"https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11710/developmentPictures/02-INFRA-11710-JP-REDENCAO-886994.JPG"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-6",
+		"nome": "Connect Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2852%29.png",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2852%29.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-7",
+		"nome": "Prime Altos do Germânia Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://betaimages.lopes.com.br/realestate/sml/REB281032/1-Fachada.jpg",
+		"photos": [
+			"https://betaimages.lopes.com.br/realestate/sml/REB281032/1-Fachada.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-8",
+		"nome": "Vintage Senior Residence Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/2023-10/LOCALIZA%C3%87%C3%83O%20%286%29.png",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/2023-10/LOCALIZA%C3%87%C3%83O%20%286%29.png",
+			"https://betaimages.lopes.com.br/realestate/sml/REB154840/Vintage-Fachada2.jpg",
+			"https://betaimages.lopes.com.br/realestate/sml/REB154840/Vintage-Fachada1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-9",
+		"nome": "Cyrela by Pininfarina Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://pininfarinaportoalegre.cyrela.com.br/assets/imgs/arquivos/galeria/PININFARINA%20-%20Fachada%20Noturna.jpg",
+		"photos": [
+			"https://pininfarinaportoalegre.cyrela.com.br/assets/imgs/arquivos/galeria/PININFARINA%20-%20Fachada%20Noturna.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-10",
+		"nome": "DOC Castelo Batel Curitiba, PR",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/2023-06/original-27-02-2020-16-38-32-230657-doc-castelo-batel.jpg",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/2023-06/original-27-02-2020-16-38-32-230657-doc-castelo-batel.jpg",
+			"https://www.cyrela.com.br/sites/default/files/styles/webp/public/2023-06/original-27-02-2020-16-38-32-886903-doc-castelo-batel.jpg.webp?itok=aIeWPFNL",
+			"https://bsa.com.br/uploads/ddef1e26331269ec68d408d20d43f7e11598647157-.jpg?w=382&h=267&q=90"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-11",
+		"nome": "Garden Haus + Tree Haus Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2848%29.png",
+		"photos": [
+			"https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2848%29.png",
+			"https://www.cyrela.com.br/sites/default/files/2023-10/Design%20sem%20nome%20%2845%29.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-cyrela-12",
+		"nome": "Prime Menino Deus Porto Alegre, RS",
+		"cliente": "Cyrela",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.verabernardes.com.br/fotos/g/i1e4lR7e4Tw070_476676353f4f32f386.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbEZtNmt0MlE2SktiLzdSUE9MV3FQTExONlRZWXphSVN5VW8yYTAzNm9vdUtnVmZuYVlkTjR4b2wvZGZjbmRGQzU=",
+		"photos": [
+			"https://www.verabernardes.com.br/fotos/g/i1e4lR7e4Tw070_476676353f4f32f386.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbEZtNmt0MlE2SktiLzdSUE9MV3FQTExONlRZWXphSVN5VW8yYTAzNm9vdUtnVmZuYVlkTjR4b2wvZGZjbmRGQzU=",
+			"https://betaimages.lopes.com.br/realestate/sml/REB84131/Prime-Fachada0.jpg",
+			"https://betaimages.lopes.com.br/realestate/sml/REB177860/Prime-Fachada.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-hospital-moinhos-de-vento-0",
+		"nome": "Complexo Hospitalar Moinhos de Vento Porto Alegre, RS",
+		"cliente": "Hospital Moinhos de Vento",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Saúde",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.hospitalmoinhos.org.br/media/c9e0cfee-c901-4158-a487-e36cbffdf6ec.png",
+		"photos": [
+			"https://www.hospitalmoinhos.org.br/media/c9e0cfee-c901-4158-a487-e36cbffdf6ec.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-hospital-moinhos-de-vento-1",
+		"nome": "Clínica Moinhos de Vento Linked Teresópolis Porto Alegre, RS",
+		"cliente": "Hospital Moinhos de Vento",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Saúde",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2023/08/29112148/108-1024x572.jpg",
+		"photos": [
+			"https://wordpress-melnick.s3.sa-east-1.amazonaws.com/wp-content/uploads/2023/08/29112148/108-1024x572.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-multiplan-0",
+		"nome": "Barra Shopping Sul Porto Alegre, RS",
+		"cliente": "Multiplan",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a1/c8/a6/barrashoppingsul.jpg?w=1200&h=-1&s=1",
+		"photos": [
+			"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a1/c8/a6/barrashoppingsul.jpg?w=1200&h=-1&s=1"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-multiplan-1",
+		"nome": "Diamond Tower + Résidence du Lac Porto Alegre, RS",
+		"cliente": "Multiplan",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj30CAmtsPil0i-C4FYKssB5Q8XRqWsfTlC0Ho6XFnJS4v7viJSRMcLun8UO-8mlViaZK0JvxOnQcNm_MyFoFhnaWtDquVkeGR4KZIXH1IyN9u6b93akYdo5cVJnWfmnVQpFmsR7104f8oc/s1600/Fachada+Diamond+01.jpg",
+		"photos": [
+			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj30CAmtsPil0i-C4FYKssB5Q8XRqWsfTlC0Ho6XFnJS4v7viJSRMcLun8UO-8mlViaZK0JvxOnQcNm_MyFoFhnaWtDquVkeGR4KZIXH1IyN9u6b93akYdo5cVJnWfmnVQpFmsR7104f8oc/s1600/Fachada+Diamond+01.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-multiplan-2",
+		"nome": "Golden Lake Lake VictoriaPórticos e Áreas Condominiais",
+		"cliente": "Multiplan",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmtMbx39jJj_D9sqqN7AkpbDut-G43082NxA&s",
+		"photos": [
+			"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmtMbx39jJj_D9sqqN7AkpbDut-G43082NxA&s",
+			"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0J3uacfuteMyO9ZrmBxqoLf8u_stIbjEYhQ&s"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-0",
+		"nome": "Atlântida Lagos Park Xangri-lá, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://i.ytimg.com/vi/aMhmFZI0pBg/hqdefault.jpg",
+		"photos": [
+			"https://i.ytimg.com/vi/aMhmFZI0pBg/hqdefault.jpg",
+			"https://storage.agil.net/cdn/agil/677/property/3778/medium/9c6fff4e5ebb.webp"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-1",
+		"nome": "Mirador Playa Arenas Curumim, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/20240117092823596892.jpg",
+		"photos": [
+			"https://imgs1.cdn-imobibrasil.com.br/imagens/imoveis/20240117092823596892.jpg",
+			"https://cdn-images-site-qub.qub.com.br/2023/12/Design-sem-nome-69.png",
+			"https://api.duo.imb.br/duoimoveis-app/imagens/6917/mirador-playa-arenas-6917-5"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-2",
+		"nome": "Bosques de Atlântida Xangri-lá, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.solutioninvestimentos.com.br/vista.imobi/fotos/28/ico9jSG65474q1Y1U1_2864f093d0c6d63.jpg",
+		"photos": [
+			"https://www.solutioninvestimentos.com.br/vista.imobi/fotos/28/ico9jSG65474q1Y1U1_2864f093d0c6d63.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-3",
+		"nome": "Condado de Capão Capão da Canoa, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.solutioninvestimentos.com.br/vista.imobi/fotos/34/is8s2HO410_3465170bcf1b510.jpg",
+		"photos": [
+			"https://www.solutioninvestimentos.com.br/vista.imobi/fotos/34/is8s2HO410_3465170bcf1b510.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-4",
+		"nome": "Enseada Lagos Xangri-lá, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://i.ytimg.com/vi/EZHeOFPnbF4/sddefault.jpg?v=64d67004",
+		"photos": ["https://i.ytimg.com/vi/EZHeOFPnbF4/sddefault.jpg?v=64d67004"],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-5",
+		"nome": "Lagos São Gonçalo Pelotas, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://idealizacidades.com.br/laravel/public/storage/projects/June2019/Fv6aq7TM8ejEQXWSeg7o.jpg",
+		"photos": [
+			"https://idealizacidades.com.br/laravel/public/storage/projects/June2019/Fv6aq7TM8ejEQXWSeg7o.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-wagnerpar-6",
+		"nome": "Rivieira Xangri-lá, RS",
+		"cliente": "Wagnerpar",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.eleganceimoveis.com.br/fotos/800x600/iQJKs_461064c2e5b9f0e3b.webp?token=Ynk2eE45cm9KZkNSR3MvSjJCL3pReGRyZjIzQlNodllzNFp5MG85V1lLeTM1c0F5WlFvSUlZeXVVaHQyWFI5cjZnU1JEYitDS0ZaZ3l3VTRoWkZPUTV4eFg1clVFRTRLWnVDV0g3b09TZ0o1UGpPR2xBMWFrQjJ1cWlsUXg3N28=",
+		"photos": [
+			"https://www.eleganceimoveis.com.br/fotos/800x600/iQJKs_461064c2e5b9f0e3b.webp?token=Ynk2eE45cm9KZkNSR3MvSjJCL3pReGRyZjIzQlNodllzNFp5MG85V1lLeTM1c0F5WlFvSUlZeXVVaHQyWFI5cjZnU1JEYitDS0ZaZ3l3VTRoWkZPUTV4eFg1clVFRTRLWnVDV0g3b09TZ0o1UGpPR2xBMWFrQjJ1cWlsUXg3N28="
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-maiojama-0",
+		"nome": "Trend24 Porto Alegre, RS",
+		"cliente": "Maiojama",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://eduardobecker.com/wp-content/uploads/2020/12/01_Trend-24-Maiojama.jpg",
+		"photos": [
+			"https://eduardobecker.com/wp-content/uploads/2020/12/01_Trend-24-Maiojama.jpg",
+			"https://eduardobecker.com/wp-content/uploads/2020/12/02_Trend-24-Maiojama.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-maiojama-1",
+		"nome": "MW Porto Alegre, RS",
+		"cliente": "Maiojama",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.verabernardes.com.br/fotos/g/iP63bV63h035t6f_449136436f3f91149a.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbGx3ZnVUQTRQUlhEMTJ4ejdJWEVoRzk4dGVOc0pBZmhXTVpmcGJYNkQ4bUxTcnN1NzhubkYxZkhRNER1M0tLdnE=",
+		"photos": [
+			"https://www.verabernardes.com.br/fotos/g/iP63bV63h035t6f_449136436f3f91149a.webp?token=Ym5Fb09SSTVuMmpFSVVLYTVyNUp5Uk1ad2dQYXBNS1V2a08rOEpHOEFlTFRpdlNnaFNlTGZwTEtCTnVjQUxhbGx3ZnVUQTRQUlhEMTJ4ejdJWEVoRzk4dGVOc0pBZmhXTVpmcGJYNkQ4bUxTcnN1NzhubkYxZkhRNER1M0tLdnE=",
+			"https://www.passowimoveis.com.br/vista.imobi/fotos/19816/i1ei00z643DOY_19816628f99b832771.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-maiojama-2",
+		"nome": "Ares Soledade Porto Alegre, RS",
+		"cliente": "Maiojama",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.maiojama.com.br/static/website/new/img/ares/galeria/1.jpg",
+		"photos": [
+			"https://www.maiojama.com.br/static/website/new/img/ares/galeria/1.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-maiojama-3",
+		"nome": "Parador 2447 Porto Alegre, RS",
+		"cliente": "Maiojama",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.maiojama.com.br/static/website/new/img/parador/parador_01.png",
+		"photos": [
+			"https://www.maiojama.com.br/static/website/new/img/parador/parador_01.png"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-maiojama-4",
+		"nome": "Anita Residences Porto Alegre, RS",
+		"cliente": "Maiojama",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Residencial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://piacini.com.br/wp-content/uploads/2022/01/WhatsApp-Image-2023-01-09-at-12.29.54.jpeg",
+		"photos": [
+			"https://piacini.com.br/wp-content/uploads/2022/01/WhatsApp-Image-2023-01-09-at-12.29.54.jpeg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-abf-developments-0",
+		"nome": "Alfa Residences Porto Alegre, RS",
+		"cliente": "ABF Developments",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://static.wixstatic.com/media/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg/v1/fill/w_2500,h_1049,al_c/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg",
+		"photos": [
+			"https://static.wixstatic.com/media/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg/v1/fill/w_2500,h_1049,al_c/1998d6_05596c26b0d246c2bf26adca0932eafe~mv2.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-abf-developments-1",
+		"nome": "Magno Três Figueiras Porto Alegre, RS",
+		"cliente": "ABF Developments",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.modernaidade.com.br/wp-content/uploads/2024/12/FACHADA-scaled.jpg",
+		"photos": [
+			"https://www.modernaidade.com.br/wp-content/uploads/2024/12/FACHADA-scaled.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-abf-developments-2",
+		"nome": "4D Complex Porto Alegre, RS",
+		"cliente": "ABF Developments",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://ronaldorezende.com.br/app/uploads/2023/04/ABF_TAMANDARE_FACHADA_VOLUNTARIOS_FINAL_CMYK-1440x915.jpg",
+		"photos": [
+			"https://ronaldorezende.com.br/app/uploads/2023/04/ABF_TAMANDARE_FACHADA_VOLUNTARIOS_FINAL_CMYK-1440x915.jpg",
+			"https://portoimagem.wordpress.com/wp-content/uploads/2023/06/abf_tamandare_fachada_almirante_final-scaled-1.jpg",
+			"https://vitaaltopadrao.com.br/wp-content/uploads/2022/01/Boulevard-4d-complex.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-abf-developments-3",
+		"nome": "Magno Moinhos Porto Alegre, RS",
+		"cliente": "ABF Developments",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://static.wixstatic.com/media/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg/v1/fill/w_2500,h_2084,al_c/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg",
+		"photos": [
+			"https://static.wixstatic.com/media/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg/v1/fill/w_2500,h_2084,al_c/1998d6_2337d197adaa4aeb9f28463fb05ee6a7~mv2.jpg",
+			"https://vitaaltopadrao.com.br/wp-content/uploads/2022/04/Magno-moinhos-fachada-1-1-scaled.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-abf-developments-4",
+		"nome": "Hola Sunset Lofts Porto Alegre, RS",
+		"cliente": "ABF Developments",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://www.arquiteturanacional.com.br/images/uploads/posts/desktop/gnd-02-fachada-a-ef_1756923846.jpg",
+		"photos": [
+			"https://www.arquiteturanacional.com.br/images/uploads/posts/desktop/gnd-02-fachada-a-ef_1756923846.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-isdra-0",
+		"nome": "Aris Porto Alegre, RS",
+		"cliente": "Astir Incorporadora",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OyjrevhimR0UN-_DFOK4tV9TzoWmwObeQQ&s",
+		"photos": [
+			"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-OyjrevhimR0UN-_DFOK4tV9TzoWmwObeQQ&s",
+			"https://www.google.com/imgres?q=Aris%20Porto%20Alegre%20fachada&imgurl=https%3A%2F%2Fstatic.orulo.com.br%2Fimages%2Fproperties%2Flarge%2F1778139.jpeg&imgrefurl=https%3A%2F%2Fduboisimoveis.com.br%2Fimovel%2Fapartamento-a-venda-no-bairro-tres-figueiras-em-porto-alegre-rs%2FO-24390-40404&docid=EPLVe1uouPUn1M&tbnid=j_Du-jlCvtTnnM&vet=12ahUKEwjwkfOS6-uTAxXhpJUCHSXmOPIQnPAOegQIFBAB..i&w=810&h=1080&hcb=2&itg=1&ved=2ahUKEwjwkfOS6-uTAxXhpJUCHSXmOPIQnPAOegQIFBAB"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-isdra-1",
+		"nome": "Switch Porto Alegre, RS",
+		"cliente": "Astir Incorporadora",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11466/developmentPictures/Fachada%20Switch%20Frente.jpeg",
+		"photos": [
+			"https://images.foxter.com.br/rest/image/outer/480/1/foxter/wm/Development/11466/developmentPictures/Fachada%20Switch%20Frente.jpeg",
+			"https://www.ideia1.com.br/i1cms/uploads/8709915a7b701ebde26fca699f8d95e7.jpg",
+			"https://www.ideia1.com.br/i1cms/uploads/d36bc45734f958cd7869825aa19b29c2.jpg"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-isdra-2",
+		"nome": "Master Hotel Holiday Inn Porto Alegre, RS",
+		"cliente": "Astir Incorporadora",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.trvl-media.com/lodging/1000000/480000/477300/477253/1014c80a.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+		"photos": [
+			"https://images.trvl-media.com/lodging/1000000/480000/477300/477253/1014c80a.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-isdra-3",
+		"nome": "Master Express Cidade Baixa Porto Alegre, RS",
+		"cliente": "Astir Incorporadora",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://images.trvl-media.com/lodging/9000000/8130000/8120200/8120186/5fe37123.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+		"photos": [
+			"https://images.trvl-media.com/lodging/9000000/8130000/8120200/8120186/5fe37123.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill"
+		],
+		"visible": true
+	},
+	{
+		"id": "proj-grupo-isdra-4",
+		"nome": "Studio CB Porto Alegre, RS",
+		"cliente": "Astir Incorporadora",
+		"clienteId": "",
+		"cidade": "",
+		"categoria": "Comercial",
+		"status": "Em projeto",
+		"prazo": "",
+		"area": "",
+		"capa": "https://imgbr.imovelwebcdn.com/avisos/2/30/27/27/16/48/360x266/6034336790.jpg?isFirstImage=true",
+		"photos": [
+			"https://imgbr.imovelwebcdn.com/avisos/2/30/27/27/16/48/360x266/6034336790.jpg?isFirstImage=true"
+		],
+		"visible": true
+	}
 ]

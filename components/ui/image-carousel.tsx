@@ -63,6 +63,9 @@ export function ImageCarousel({
 				priority={priority && currentIndex === 0}
 				loading={priority ? undefined : loading}
 				sizes={sizes}
+				onError={() => {
+					setCurrentIndex((prev) => (prev > 0 ? prev - 1 : 0));
+				}}
 			/>
 			{images.length > 1 && (
 				<>

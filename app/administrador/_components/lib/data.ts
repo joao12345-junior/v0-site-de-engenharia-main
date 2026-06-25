@@ -46,7 +46,7 @@ function mapearProjetosDoJson(): Projeto[] {
 				prazo: "",
 				area: "",
 				capa: imagem.urls_imagens?.[0] ?? "",
-				photos: imagem.urls_imagens ?? [],
+				photos: [],
 				visible: true,
 			};
 		}),
