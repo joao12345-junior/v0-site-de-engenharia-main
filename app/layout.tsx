@@ -44,30 +44,7 @@ export default function RootLayout({
 		>
 			<body className="font-sans antialiased">
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-					<Header />
-					{/*
-					 * [ADICIONADO] PageTransition envolve {children}.
-					 *
-					 * [CONCEITO] Por que funciona aqui mesmo sendo "use client"?
-					 * layout.tsx é um Server Component — não pode usar hooks.
-					 * PageTransition é um Client Component (tem "use client").
-					 * O Next.js permite importar Client Components dentro de
-					 * Server Components. O que NÃO é permitido é o inverso:
-					 * um Server Component dentro de um Client Component
-					 * sem usar a pattern de "children como prop".
-					 *
-					 * Hierarquia resultante:
-					 *   RootLayout (Server)
-					 *     └── ThemeProvider (Client)
-					 *           └── PageTransition (Client) ← novo
-					 *                 └── {children} (cada página)
-					 *
-					 * [ATENÇÃO] O PageTransition SÓ se aplica às rotas públicas.
-					 * O painel /administrador tem seu próprio layout isolado,
-					 * então não será afetado por esta transição.
-					 */}
-					<PageTransition>{children}</PageTransition>
-					<Footer />
+					{children}
 				</ThemeProvider>
 				<Toaster />
 			</body>
