@@ -18,7 +18,7 @@ import type {
 	Projeto,
 	TipoStatusProjetos,
 	TipoCategoria,
-} from "@/app/administrador/_components/lib/types";
+} from "@/app/admin/painel/lib/types";
 
 export interface NovoProjeto {
 	nome: string;
@@ -60,15 +60,19 @@ function mapRow(row: Record<string, unknown>): Projeto {
 		status: row.status as TipoStatusProjetos,
 		visible: row.visible as boolean,
 		capa: (row.cover_url as string | null) ?? undefined,
-		photos: [], // [ESCOPO] ver nota no topo do arquivo
+		photos: Array(Number(row.photos_count ?? 0)).fill(null),
 	};
 }
 
 export async function listAllProjects(): Promise<Projeto[]> {
 	const result = await pool.query(`
-		SELECT p.*, c.name AS client_name
-		FROM ${TABLES.projects} p
-		LEFT JOIN ${TABLES.clients} c ON c.id = p.client_id
+		SELECT 
+			p.*,
+    		c.name AS client_name,
+    		(SELECT COUNT(*) FROM site_optare_content.project_photos ph 
+     		WHERE ph.project_id = p.id) AS photos_count
+		FROM site_optare_content.projects p
+		LEFT JOIN site_optare_content.clients c ON c.id = p.client_id
 		ORDER BY p.created_at DESC
 	`);
 	return result.rows.map(mapRow);
@@ -76,7 +80,11 @@ export async function listAllProjects(): Promise<Projeto[]> {
 
 export async function getProjectById(id: string): Promise<Projeto | null> {
 	const result = await pool.query(
-		`SELECT p.*, c.name AS client_name
+		`SELECT 
+			p.*,
+			c.name AS client_name,
+			(SELECT COUNT(*) FROM site_optare_content.project_photos ph
+			 WHERE ph.project_id = p.id) AS photos_count
 		 FROM ${TABLES.projects} p
 		 LEFT JOIN ${TABLES.clients} c ON c.id = p.client_id
 		 WHERE p.id = $1`,
@@ -113,8 +121,6 @@ export async function updateProject(
 	const fields: string[] = [];
 	const values: unknown[] = [];
 	let i = 1;
-
-	console.log(data);
 
 	if (data.nome !== undefined) {
 		fields.push(`name = $${i++}`);

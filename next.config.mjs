@@ -88,6 +88,10 @@ const nextConfig = {
 			{ protocol: "https", hostname: "eduardobecker.com" },
 			{ protocol: "https", hostname: "**.imovelwebcdn.com" },
 			{ protocol: "https", hostname: "idealizacidades.com.br" },
+
+			// ── Imobiliárias e portais externos ───────────────────────────────────
+			{ protocol: "https", hostname: "**.duo.imb.br" },
+			{ protocol: "https", hostname: "api.duo.imb.br" },
 		],
 	},
 };

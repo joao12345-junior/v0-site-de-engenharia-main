@@ -113,9 +113,12 @@ export async function deletePhoto(
 	]);
 	if ((result.rowCount ?? 0) === 0) return false;
 
-	// [CONCEITO] del() do @vercel/blob — operação idempotente.
-	// Se a URL não existir mais no Blob (já foi deletada manualmente, por exemplo),
-	// del() não lança erro — simplesmente não faz nada. Isso é seguro.
-	await del(blobUrl, { token: process.env.BLOB_READ_WRITE_TOKEN });
+	// [CONCEITO] del() só aceita URLs do Vercel Blob.
+	// Fotos históricas do JSON têm URLs de terceiros (plaenge.com.br, etc.)
+	// que o Blob não conhece. Tentar deletar causa erro 400 da API do Blob.
+	if (blobUrl.includes("public.blob.vercel-storage.com")) {
+		await del(blobUrl, { token: process.env.BLOB_READ_WRITE_TOKEN });
+	}
+
 	return true;
 }

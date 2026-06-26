@@ -14,12 +14,12 @@ const secret = new TextEncoder().encode(process.env.JWT_SECRET_ACCESS!);
 export async function proxy(req: NextRequest) {
 	const token = req.cookies.get("access_token")?.value;
 
-	const isApiRoute = req.nextUrl.pathname.startsWith("/api/admin");
+	const isApiRoute = req.nextUrl.pathname.startsWith("/admin/api/admin");
 
 	if (!token) {
 		if (isApiRoute)
 			return NextResponse.json({ message: "Não autenticado" }, { status: 401 });
-		return NextResponse.redirect(new URL("/administrador_login", req.url));
+		return NextResponse.redirect(new URL("/admin/login", req.url));
 	}
 
 	try {
@@ -29,10 +29,10 @@ export async function proxy(req: NextRequest) {
 	} catch (err: unknown) {
 		// Token inválido, expirado ou mal formado
 		console.error("\n[/proxy.ts] Erro ao verificar token: ", err);
-		return NextResponse.redirect(new URL("/administrador_login", req.url));
+		return NextResponse.redirect(new URL("/admin/login", req.url));
 	}
 }
 
 export const config = {
-	matcher: ["/administrador/:path*", "/api/admin/:path*"],
+	matcher: ["/admin/painel/:path*", "/admin/api/admin/:path*"],
 };

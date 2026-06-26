@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { PageTransition } from "./page-transition";
-import "./globals.css";
+import { PageTransition } from "../page-transition";
+import "../globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { isMaintenanceMode } from "../admin/painel/pages/page-config";
+import { MaintenancePage } from "@/components/maintenance/maintenance-page";
 
 // [FONTE 1] Inter — fonte principal do site (font-sans)
 // subsets: ["latin"] baixa apenas os caracteres latinos — menor bundle
@@ -36,37 +38,24 @@ export default function RootLayout({
 	return (
 		<html
 			lang="pt-BR"
-			// [MUDANÇA] Ambas as variáveis de fonte aplicadas no <html>
-			// Concatenar com template string garante que as duas CSS vars
-			// fiquem disponíveis em toda a árvore do documento
 			className={`${inter.variable} ${jetbrainsMono.variable}`}
 			suppressHydrationWarning
 		>
 			<body className="font-sans antialiased">
 				<ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-					{/*
-					 * [ADICIONADO] PageTransition envolve {children}.
-					 *
-					 * [CONCEITO] Por que funciona aqui mesmo sendo "use client"?
-					 * layout.tsx é um Server Component — não pode usar hooks.
-					 * PageTransition é um Client Component (tem "use client").
-					 * O Next.js permite importar Client Components dentro de
-					 * Server Components. O que NÃO é permitido é o inverso:
-					 * um Server Component dentro de um Client Component
-					 * sem usar a pattern de "children como prop".
-					 *
-					 * Hierarquia resultante:
-					 *   RootLayout (Server)
-					 *     └── ThemeProvider (Client)
-					 *           └── PageTransition (Client) ← novo
-					 *                 └── {children} (cada página)
-					 *
-					 * [ATENÇÃO] O PageTransition SÓ se aplica às rotas públicas.
-					 * O painel /administrador tem seu próprio layout isolado,
-					 * então não será afetado por esta transição.
-					 */}
-					<PageTransition>{children}</PageTransition>
+					{isMaintenanceMode ? (
+						<MaintenancePage />
+					) : (
+						<>
+							<Header />
+
+							<PageTransition>{children}</PageTransition>
+
+							<Footer />
+						</>
+					)}
 				</ThemeProvider>
+
 				<Toaster />
 			</body>
 		</html>

@@ -15,7 +15,7 @@ import type {
 	Produto,
 	TipoProduto,
 	StatusProduto,
-} from "@/app/administrador/_components/lib/types";
+} from "@/app/admin/painel/lib/types";
 
 export interface NovoProduto {
 	nome: string;
