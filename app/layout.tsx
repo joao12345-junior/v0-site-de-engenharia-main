@@ -4,8 +4,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "./page-transition";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 
 // [FONTE 1] Inter — fonte principal do site (font-sans)
 // subsets: ["latin"] baixa apenas os caracteres latinos — menor bundle
