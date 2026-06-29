@@ -46,6 +46,7 @@ export default async function ClientesPage() {
 	// O resultado (JSON serializável) é passado como prop para o cliente.
 	const { clients, counts } = await getPublicClients();
 	const logoMap = buildLogoMap(clients.map((c) => c.nome));
+	console.log(logoMap);
 
 	return (
 		<>
