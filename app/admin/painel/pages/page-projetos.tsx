@@ -1,13 +1,15 @@
 "use client";
 // app/administrador/_components/page-projetos.tsx
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Ic } from "../lib/icons";
 import { PageContainer } from "../lib/shell";
 import type { Projeto, TipoCategoria } from "../lib/types";
 import { ProjectDetail } from "../components/project_detail";
 import { ProjectCard } from "../components/project_card";
 import type { Cliente } from "@/lib/repositories/admin/admin-clients-repository";
+import { CitySelect } from "../components/city_select";
+import estadosCidades from "@/public/JSON/outros/estados-cidades.json";
 
 interface PageProjetosProps {
 	accent: string;
@@ -21,6 +23,8 @@ const FORM_VAZIO = {
 	cidade: "",
 	clienteId: "",
 };
+
+const todosEstados = estadosCidades.estados;
 
 export function PageProjetos({ accent }: PageProjetosProps) {
 	const [projetos, setProjetos] = useState<Projeto[]>([]);
@@ -36,6 +40,13 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 	const [publicando, setPublicando] = useState<string | null>(null);
 	const [deletando, setDeletando] = useState<string | null>(null);
 	const [busca, setBusca] = useState<string>("");
+
+	const [formEstado, setFormEstado] = useState("");
+	const [formCidade, setFormCidade] = useState("");
+	const cidadesDoFormEstado = useMemo(
+		() => todosEstados.find((e) => e.sigla === formEstado)?.cidades ?? [],
+		[formEstado],
+	);
 
 	// [FIX] Um único fetch no mount — carrega projetos E clientes em paralelo.
 	// Antes havia dois useEffect (carregarProjetos + carregarDados) ambos
@@ -76,7 +87,7 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 			setErroForm("Selecione um cliente.");
 			return;
 		}
-		if (!form.cidade.trim()) {
+		if (!formCidade.trim()) {
 			setErroForm("Cidade é obrigatória.");
 			return;
 		}
@@ -90,7 +101,10 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 				body: JSON.stringify({
 					nome: form.nome.trim(),
 					categoria: form.categoria,
-					cidade: form.cidade.trim(),
+					cidade:
+						formCidade && formEstado
+							? `${formCidade}, ${formEstado}`
+							: form.cidade.trim(),
 					clienteId: form.clienteId,
 				}),
 			});
@@ -181,24 +195,24 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 		}
 	};
 
-	// const handleDeletar = async (id: string) => {
-	// 	try {
-	// 		const res = await fetch(`/api/admin/projects/${id}/`, {
-	// 			method: "DELETE",
-	// 		});
-	// 		const data = await res.json();
-	// 		if (!res.ok) {
-	// 			alert(data.error ?? "Erro ao apagar.");
-	// 			return;
-	// 		}
-	// 		setProjetos((prev) => prev.filter((p) => p.id !== id));
-	// 		if (open === id) setOpen(null);
-	// 	} catch (e: unknown) {
-	// 		alert("Falha na conexão.");
-	// 	} finally {
-	// 		setDeletando(null);
-	// 	}
-	// };
+	const handleDeletar = async (id: string) => {
+		try {
+			const res = await fetch(`/api/admin/projects/${id}/`, {
+				method: "DELETE",
+			});
+			const data = await res.json();
+			if (!res.ok) {
+				alert(data.error ?? "Erro ao apagar.");
+				return;
+			}
+			setProjetos((prev) => prev.filter((p) => p.id !== id));
+			if (open === id) setOpen(null);
+		} catch (e: unknown) {
+			alert("Falha na conexão.");
+		} finally {
+			setDeletando(null);
+		}
+	};
 
 	const updateOpen = (updater: (p: Projeto) => Projeto) =>
 		setProjetos((prev) => prev.map((p) => (p.id === open ? updater(p) : p)));
@@ -221,7 +235,8 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 		.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
 	const openProject =
-		list.find((p) => p.id === open) || projetos.find((p) => p.id === open);
+		list.find((p) => p.id === open) ||
+		(projetos.find((p) => p.id === open) as Projeto);
 
 	if (loading) {
 		return (
@@ -312,6 +327,8 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 							style={{ whiteSpace: "nowrap" }}
 							onClick={() => {
 								setForm(FORM_VAZIO);
+								setFormEstado("");
+								setFormCidade("");
 								setErroForm(null);
 								setModalAberto(true);
 							}}
@@ -410,6 +427,7 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 					onUpdate={updateOpen}
 					onSave={handleSave}
 					accent={accent}
+					todosEstados={todosEstados}
 				/>
 			)}
 
@@ -507,6 +525,35 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 									))}
 								</select>
 							</div>
+							<div>
+								<label
+									style={{
+										fontSize: 11,
+										color: "var(--muted)",
+										display: "block",
+										marginBottom: 4,
+									}}
+								>
+									Categoria *
+								</label>
+								<select
+									className="input"
+									value={form.categoria}
+									onChange={(e) =>
+										setForm((f) => ({
+											...f,
+											categoria: e.target.value as TipoCategoria,
+										}))
+									}
+									style={{ width: "100%", boxSizing: "border-box" }}
+								>
+									{CATEGORIAS.map((cat) => (
+										<option key={cat} value={cat}>
+											{cat}
+										</option>
+									))}
+								</select>
+							</div>
 							<div
 								style={{
 									display: "grid",
@@ -523,22 +570,25 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 											marginBottom: 4,
 										}}
 									>
-										Categoria *
+										Estado *
 									</label>
 									<select
 										className="input"
-										value={form.categoria}
-										onChange={(e) =>
-											setForm((f) => ({
-												...f,
-												categoria: e.target.value as TipoCategoria,
-											}))
-										}
-										style={{ width: "100%", boxSizing: "border-box" }}
+										value={formEstado}
+										onChange={(e) => {
+											setFormEstado(e.target.value);
+											setFormCidade("");
+										}}
+										style={{
+											width: "100%",
+											boxSizing: "border-box",
+											height: 40,
+										}}
 									>
-										{CATEGORIAS.map((cat) => (
-											<option key={cat} value={cat}>
-												{cat}
+										<option value="">Selecione...</option>
+										{todosEstados.map((e) => (
+											<option key={e.sigla} value={e.sigla}>
+												{e.sigla} — {e.nome}
 											</option>
 										))}
 									</select>
@@ -554,14 +604,10 @@ export function PageProjetos({ accent }: PageProjetosProps) {
 									>
 										Cidade *
 									</label>
-									<input
-										className="input"
-										value={form.cidade}
-										onChange={(e) =>
-											setForm((f) => ({ ...f, cidade: e.target.value }))
-										}
-										placeholder="Ex: Porto Alegre"
-										style={{ width: "100%", boxSizing: "border-box" }}
+									<CitySelect
+										value={formCidade}
+										onChange={setFormCidade}
+										cidades={cidadesDoFormEstado}
 									/>
 								</div>
 							</div>

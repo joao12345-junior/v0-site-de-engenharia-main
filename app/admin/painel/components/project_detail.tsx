@@ -8,10 +8,8 @@ import type { Photo } from "@/lib/repositories/admin/photos-repository";
 import { toast } from "sonner";
 import type { Cliente } from "@/lib/repositories/admin/admin-clients-repository";
 import { CitySelect } from "./city_select";
-import estadosCidades from "@/public/JSON/outros/estados-cidades.json";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-
 interface ProjectDetailProps<T extends ItemEditavel> {
 	project: T;
 	clientes?: Cliente[];
@@ -20,6 +18,7 @@ interface ProjectDetailProps<T extends ItemEditavel> {
 	onSave: (p: T) => Promise<void>;
 	accent: string;
 	isProd?: boolean;
+	todosEstados?: { sigla: string; nome: string; cidades: string[] }[];
 }
 
 // ─── Type guards ───────────────────────────────────────────────────────────
@@ -52,6 +51,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 	onSave,
 	accent,
 	isProd = false,
+	todosEstados,
 }: ProjectDetailProps<T>) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [drag, setDrag] = useState(false);
@@ -453,6 +453,7 @@ export function ProjectDetail<T extends ItemEditavel>({
 								clientes={clientes ?? []}
 								draft={draft as unknown as Projeto}
 								onChange={(fields) => updateDraft(fields as Partial<T>)}
+								todosEstados={todosEstados ?? []}
 							/>
 						)}
 					</div>
@@ -479,15 +480,19 @@ export function ProjectDetail<T extends ItemEditavel>({
 }
 
 // ─── Sub-componentes de campos ────────────────────────────────────────────
-const todosEstados = estadosCidades.estados;
-
 interface FieldsProjetoProps {
 	draft: Projeto;
 	onChange: (fields: Partial<Projeto>) => void;
 	clientes: Cliente[];
+	todosEstados: { sigla: string; nome: string; cidades: string[] }[];
 }
 
-function FieldsProjeto({ draft, onChange, clientes }: FieldsProjetoProps) {
+function FieldsProjeto({
+	draft,
+	onChange,
+	clientes,
+	todosEstados,
+}: FieldsProjetoProps) {
 	// [CONCEITO] Estado e cidade como estado LOCAL separado do draft.
 	// O draft guarda "Porto Alegre, RS" como string única.
 	// O componente precisa de duas peças separadas pra funcionar:
@@ -505,14 +510,17 @@ function FieldsProjeto({ draft, onChange, clientes }: FieldsProjetoProps) {
 		return parts.length >= 1 ? parts[0] : "";
 	});
 
+	// [CONCEITO] cidadesDoEstado fica aqui — depende do estado selecionado
+	// que é estado local deste componente. Não faz sentido subir pro pai.
+	const cidadesDoEstado = useMemo(
+		() => todosEstados.find((e) => e.sigla === estado)?.cidades ?? [],
+		[estado, todosEstados],
+	);
+
 	// [CONCEITO] Derivado de `estado` — recalcula só quando estado muda.
 	// O CitySelect recebe a lista pronta, não o JSON inteiro.
 	// Separação de responsabilidades: FieldsProjeto sabe onde buscar os dados,
 	// CitySelect sabe como exibir e filtrar — nenhum dos dois faz as duas coisas.
-	const cidadesDoEstado = useMemo(
-		() => todosEstados.find((e) => e.sigla === estado)?.cidades ?? [],
-		[estado],
-	);
 
 	const handleEstadoChange = (sigla: string) => {
 		setEstado(sigla);
@@ -703,6 +711,7 @@ function EditField({
 						background: "var(--bg-2)",
 						border: "1px solid var(--border)",
 						color: "var(--fg)",
+						height: 40,
 						fontSize: 13,
 					}}
 				>
@@ -725,6 +734,7 @@ function EditField({
 						border: "1px solid var(--border)",
 						color: "var(--fg)",
 						fontSize: 13,
+						height: 40,
 						opacity: isDisabled ? 0.6 : 1,
 						cursor: isDisabled ? "not-allowed" : "text",
 					}}

@@ -1,34 +1,60 @@
 "use client";
+// app/administrador/_components/page-config.tsx
 
 import { ConfigRow } from "../components/config_role";
 import { PageContainer } from "../lib/shell";
 import { Field } from "../components/field";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 interface PageConfigProps {
 	accent: string;
 }
 
-export let isMaintenanceMode = false;
-
 export function PageConfig({ accent }: PageConfigProps) {
-	const [enabled, setEnabled] = useState<boolean>(isMaintenanceMode);
+	const [maintenance, setMaintenance] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [salvando, setSalvando] = useState(false);
 
-	const handlerToggle = async () => {
-		try {
-			if (enabled) setEnabled(false);
-			setEnabled(true);
-		} catch (e) {
-			console.error(e);
-		} finally {
-			isMaintenanceMode = enabled;
-		}
+	// Carrega o estado atual do banco ao abrir a página
+	useEffect(() => {
+		fetch("/admin/api/admin/maintenance/")
+			.then((r) => r.json())
+			.then((data) => setMaintenance(data.maintenance ?? false))
+			.catch(console.error)
+			.finally(() => setLoading(false));
+	}, []);
+
+	const handleToggle = async (novoValor: boolean) => {
+		const anterior = maintenance;
+		setMaintenance(novoValor); // optimistic update
+
+		const promise = fetch("/admin/api/admin/maintenance/", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ enabled: novoValor }),
+		})
+			.then(async (res) => {
+				if (!res.ok) throw new Error("Falha ao salvar configuração.");
+			})
+			.catch((e) => {
+				setMaintenance(anterior); // reverte se falhou
+				throw e;
+			});
+
+		toast.promise(promise, {
+			position: "top-center",
+			loading: novoValor
+				? "Ativando modo manutenção..."
+				: "Desativando modo manutenção...",
+			success: novoValor ? "Site em manutenção." : "Site público visível.",
+			error: "Erro ao salvar configuração.",
+		});
 	};
 
 	return (
 		<PageContainer>
 			<div
-				className="grid-2col"
 				style={{
 					display: "grid",
 					gridTemplateColumns: "1fr 1fr",
@@ -62,6 +88,7 @@ export function PageConfig({ accent }: PageConfigProps) {
 						<Field label="WhatsApp" value="+55 51 99865-5612" />
 					</div>
 				</div>
+
 				<div className="card-pop" style={{ padding: 22 }}>
 					<div className="label-eyebrow">— Sistema</div>
 					<h3
@@ -75,12 +102,22 @@ export function PageConfig({ accent }: PageConfigProps) {
 						Preferências e segurança
 					</h3>
 					<div style={{ display: "grid", gap: 12 }}>
-						<ConfigRow
-							label="Modo manutenção do site"
-							desc="Esconde o site público"
-							enabled={enabled}
-							onToggle={enabled ? handlerToggle : () => {}}
-						/>
+						{loading ? (
+							<div style={{ fontSize: 12, color: "var(--muted)" }}>
+								Carregando configurações...
+							</div>
+						) : (
+							<ConfigRow
+								label="Modo manutenção do site"
+								desc={
+									maintenance
+										? "Site público oculto — apenas o painel admin está acessível"
+										: "Site público visível para todos"
+								}
+								enabled={maintenance}
+								onToggle={salvando ? () => {} : handleToggle}
+							/>
+						)}
 					</div>
 				</div>
 			</div>

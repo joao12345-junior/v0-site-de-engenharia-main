@@ -52,6 +52,7 @@ export function CitySelect({
 					border: "1px solid var(--border)",
 					color: "var(--fg)",
 					fontSize: 13,
+					height: 40, // ← mesma altura fixa
 					opacity: disabled || cidades.length === 0 ? 0.6 : 1,
 					cursor: disabled || cidades.length === 0 ? "not-allowed" : "text",
 				}}
