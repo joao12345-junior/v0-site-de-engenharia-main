@@ -11,6 +11,7 @@ import {
 	TestimonialsAnimated,
 	CTAAnimated,
 } from "@/components/clientes-animated-sections";
+export const dynamic = "force-dynamic";
 
 const testimonials = [
 	{

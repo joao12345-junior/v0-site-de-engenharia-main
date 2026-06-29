@@ -9,7 +9,8 @@
 
 import { getPublicProjects } from "@/lib/repositories/public-projects-repository";
 import { ProjectsClient } from "@/components/projects-client";
-import { getPhotos, Photo } from "@/lib/repositories/admin/photos-repository";
+import { getPhotos } from "@/lib/repositories/admin/photos-repository";
+export const dynamic = "force-dynamic";
 
 export default async function ProjetosPage() {
 	const projects = await getPublicProjects();
