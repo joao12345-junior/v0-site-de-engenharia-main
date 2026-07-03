@@ -63,7 +63,7 @@ export function MaintenancePage() {
 				}}
 			/>
 			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ top: "12%", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite", zIndex: 0 }} />
-			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ bottom: "5dvh", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite 5s", zIndex: 0 }} />
+			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ bottom: "8dvh", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite 5s", zIndex: 0 }} />
 			<Particles />
 
 			{/* ── Conteúdo ──
