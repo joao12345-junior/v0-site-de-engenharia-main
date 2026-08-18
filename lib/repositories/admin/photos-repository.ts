@@ -69,6 +69,51 @@ export async function getPhotos(
 }
 
 /**
+ * Lista as fotos de VÁRIOS projetos ou produtos numa única query.
+ *
+ * [CONCEITO] Isso existe pra evitar N+1: chamar getPhotos() dentro de um
+ * loop/Promise.all dispara uma query por entidade — com 80+ projetos, isso
+ * é 80+ round-trips concorrentes competindo pelas 3 conexões do pool
+ * (lib/db/db.ts limita `max: 3`), o que enfileira a maior parte das
+ * consultas e pode estourar o connectionTimeoutMillis (10s) sob carga.
+ *
+ * Uma única query com `WHERE column = ANY($1)` busca tudo de uma vez —
+ * o Postgres resolve o IN internamente, sem disputar conexão do pool.
+ * O agrupamento por entityId acontece em memória, depois que os dados
+ * já chegaram.
+ */
+export async function getPhotosForEntities(
+	entityType: EntityType,
+	entityIds: string[],
+): Promise<Map<string, Photo[]>> {
+	const result = new Map<string, Photo[]>();
+	if (entityIds.length === 0) return result;
+
+	const { table, column } = getConfig(entityType);
+	const { rows } = await pool.query(
+		`SELECT id, url, position, ${column} AS entity_id
+		 FROM ${table}
+		 WHERE ${column} = ANY($1)
+		 ORDER BY position ASC`,
+		[entityIds],
+	);
+
+	for (const row of rows) {
+		const entityId = String(row.entity_id);
+		const photo: Photo = {
+			id: row.id as number,
+			url: row.url as string,
+			position: row.position as number,
+		};
+		const existing = result.get(entityId);
+		if (existing) existing.push(photo);
+		else result.set(entityId, [photo]);
+	}
+
+	return result;
+}
+
+/**
  * Adiciona uma URL de foto ao banco.
  * [CONCEITO] Recebe a URL pronta — o upload pro Vercel Blob já aconteceu
  * antes de chamar esta função. Responsabilidade única: só grava o registro.

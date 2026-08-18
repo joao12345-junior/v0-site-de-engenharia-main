@@ -9,21 +9,25 @@
 
 import { getPublicProjects } from "@/lib/repositories/public-projects-repository";
 import { ProjectsClient } from "@/components/projects-client";
-import { getPhotos } from "@/lib/repositories/admin/photos-repository";
+import { getPhotosForEntities } from "@/lib/repositories/admin/photos-repository";
 export const dynamic = "force-dynamic";
 
 export default async function ProjetosPage() {
 	const projects = await getPublicProjects();
-	const projectsWithPhotos = await Promise.all(
-		projects.map(async (project, index) => {
-			const photos = await getPhotos("project", project.id);
 
-			return {
-				...project,
-				photos,
-			};
-		}),
+	// [CONCEITO] Uma query só pra todas as fotos, em vez de uma por projeto
+	// (N+1). Com o pool limitado a 3 conexões simultâneas (lib/db/db.ts),
+	// disparar uma consulta por projeto enfileira a maioria delas e é o que
+	// deixava essa página lenta com o catálogo atual (80+ projetos).
+	const photosByProject = await getPhotosForEntities(
+		"project",
+		projects.map((project) => project.id),
 	);
+
+	const projectsWithPhotos = projects.map((project) => ({
+		...project,
+		photos: photosByProject.get(project.id) ?? [],
+	}));
 
 	return (
 		<main className="pt-20">
