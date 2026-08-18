@@ -79,7 +79,7 @@ export default function ContatoPage() {
 		console.log(data);
 
 		toast.promise<{ message: string }>(
-			fetch("/api/email", {
+			fetch("/admin/api/email", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data),
