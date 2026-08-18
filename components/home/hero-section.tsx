@@ -1,6 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Droplets, Flame, Zap, Wind } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+	fadeUpVariants,
+	staggerContainerVariants,
+	fadeRightVariants,
+} from "@/lib/animation-variants";
 
 export function HeroSection() {
 	return (
@@ -12,21 +20,52 @@ export function HeroSection() {
 
 			<div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
 				<div className="grid lg:grid-cols-2 gap-12 items-center">
-					<div>
-						<div className="flex items-center gap-2 text-sm text-primary mb-6">
+					{/* ── Coluna esquerda: texto ── */}
+					{/*
+            [DECISÃO] staggerContainerVariants aqui faz os 4 filhos diretos
+            (eyebrow, h1, p, botões) aparecerem em cascata.
+            initial="hidden" + animate="visible" porque está acima da dobra.
+          */}
+					<motion.div
+						variants={staggerContainerVariants}
+						initial="hidden"
+						animate="visible"
+					>
+						{/*
+              [DECISÃO] motion.div em vez de motion.div na div original.
+              Cada filho precisa ser motion.* para herdar as variants do container.
+              Filhos HTML normais (<div>, <h1>) não participam do stagger —
+              o Framer Motion só propaga variants para componentes motion.*.
+            */}
+						<motion.div
+							variants={fadeUpVariants}
+							className="flex items-center gap-2 text-sm text-primary mb-6"
+						>
 							<span className="h-px w-8 bg-primary" />
 							Projetos de Engenharia
-						</div>
-						<h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl text-balance">
+						</motion.div>
+
+						<motion.h1
+							variants={fadeUpVariants}
+							className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl text-balance"
+						>
 							A Melhor Opção em Projetos Complementares
-						</h1>
-						<p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+						</motion.h1>
+
+						<motion.p
+							variants={fadeUpVariants}
+							className="mt-6 text-lg leading-relaxed text-muted-foreground"
+						>
 							A Optare é especializada na elaboração de projetos de engenharia
 							para o setor da construção civil. Desenvolvemos projetos
 							hidrossanitários, de prevenção e combate à incêndios, elétricos,
 							de telefonia, SPDA e gás.
-						</p>
-						<div className="mt-10 flex flex-col sm:flex-row gap-4">
+						</motion.p>
+
+						<motion.div
+							variants={fadeUpVariants}
+							className="mt-10 flex flex-col sm:flex-row gap-4"
+						>
 							<Button size="lg" asChild>
 								<Link href="/projetos">
 									Ver Projetos
@@ -36,14 +75,30 @@ export function HeroSection() {
 							<Button size="lg" variant="outline" asChild>
 								<Link href="/sobre">Conheça a Empresa</Link>
 							</Button>
-						</div>
-					</div>
+						</motion.div>
+					</motion.div>
 
-					<div className="grid grid-cols-2 gap-4">
+					{/* ── Coluna direita: cards ── */}
+					{/*
+            [DECISÃO] fadeRightVariants no container inteiro — a coluna
+            inteira desliza da direita. Não usamos stagger nos cards aqui
+            porque mudar os filhos para motion.* exigiria alterar o HTML
+            interno dos cards, violando a regra de preservação do JSX.
+            
+            animate (não whileInView) — mesma razão da coluna esquerda:
+            está acima da dobra no carregamento inicial.
+          */}
+					<motion.div
+						variants={fadeRightVariants}
+						initial="hidden"
+						animate="visible"
+						className="grid grid-cols-2 gap-4"
+					>
 						<div className="space-y-4">
 							<div className="bg-card p-6 rounded-lg border border-border">
 								<Droplets className="h-10 w-10 text-primary mb-4" />
 								<h3 className="font-semibold text-foreground">
+									{/* TODO: corrigir quebra artificial — ver comentário no topo */}
 									<span className="block sm:inline">Hidrossani</span>
 									<span className="block sm:inline">tários</span>
 								</h3>
@@ -76,7 +131,7 @@ export function HeroSection() {
 								</p>
 							</div>
 						</div>
-					</div>
+					</motion.div>
 				</div>
 			</div>
 		</section>

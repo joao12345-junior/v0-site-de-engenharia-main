@@ -25,6 +25,8 @@
 //   - Protocolos: só https, nunca http
 //   - Caminhos: restringir a `/uploads/**` se quiser mais segurança
 
+import { withSentryConfig } from "@sentry/nextjs";
+
 const nextConfig = {
 	trailingSlash: true,
 	serverExternalPackages: ["argon2"],
@@ -33,6 +35,8 @@ const nextConfig = {
 	},
 	images: {
 		remotePatterns: [
+			{ protocol: "https", hostname: "**.public.blob.vercel-storage.com" },
+
 			// ── Brasil (.com.br / .org.br / .net.br) ──────────────────────────
 			// Cobre: plaenge.com.br, cyrela.com.br, hospitalmoinhos.org.br, etc.
 			{ protocol: "https", hostname: "**.com.br" },
@@ -83,13 +87,28 @@ const nextConfig = {
 			{ protocol: "https", hostname: "**.jetimgs.com" },
 			{ protocol: "https", hostname: "eduardobecker.com" },
 			{ protocol: "https", hostname: "**.imovelwebcdn.com" },
+			{ protocol: "https", hostname: "idealizacidades.com.br" },
 
-			// ── Clearbit e Google Favicon (logos dos clientes) ─────────────────
-			// Usados pelo ClientCarousel e ClientsGrid para carregar logos
-			{ protocol: "https", hostname: "logo.clearbit.com" },
-			{ protocol: "https", hostname: "www.google.com" }, // favicon API
+			// ── Imobiliárias e portais externos ───────────────────────────────────
+			{ protocol: "https", hostname: "**.duo.imb.br" },
+			{ protocol: "https", hostname: "api.duo.imb.br" },
 		],
 	},
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+	org: "optare",
+	project: "javascript-nextjs",
+
+	// Upload de source maps para stack traces legíveis em produção
+	authToken: process.env.SENTRY_AUTH_TOKEN,
+
+	// Faz upload de mais arquivos client-side para melhor resolução de stack traces
+	widenClientFileUpload: true,
+
+	// Cria uma rota proxy /monitoring para contornar ad-blockers
+	tunnelRoute: "/monitoring",
+
+	// Suprime output desnecessário fora do CI
+	silent: !process.env.CI,
+});

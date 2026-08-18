@@ -48,7 +48,15 @@ function getInitials(name: string): string {
 
 function ClientLogo({ client, logo }: ClientLogoProps) {
 	const { resolvedTheme } = useTheme();
-	const logoUrl = resolvedTheme === "dark" ? logo.dark : logo.light;
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	const isDark = mounted && resolvedTheme === "dark";
+
+	const logoUrl = isDark ? logo.dark : logo.light;
 
 	return (
 		<div
@@ -58,11 +66,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
                 flex items-center justify-center
                 rounded-xl p-4
                 transition-colors duration-200
-                ${
-									resolvedTheme === "dark"
-										? "bg-[oklch(0.22_0_0)]"
-										: "bg-[oklch(0.97_0_0)]"
-								}
+                ${isDark ? "bg-[oklch(0.22_0_0)]" : "bg-[oklch(0.97_0_0)]"}
             `}
 		>
 			{logoUrl ? (
@@ -72,7 +76,7 @@ function ClientLogo({ client, logo }: ClientLogoProps) {
 					draggable={false}
 					className={`
                         w-full h-full object-contain
-                        ${resolvedTheme === "dark" ? "brightness-90" : ""}
+                        ${isDark ? "brightness-90" : ""}
                     `}
 				/>
 			) : (
@@ -95,6 +99,7 @@ export function ClientCarouselClient({
 
 	// ── Estado ────────────────────────────────────────────────────────────
 	const [isHovered, setIsHovered] = useState(false);
+	const [isTouchDevice, setIsTouchDevice] = useState(false);
 	const [isDraggingState, setIsDragging] = useState(false);
 	const [activeIndex, setActiveIndex] = useState(0);
 
@@ -104,6 +109,12 @@ export function ClientCarouselClient({
 	const startX = useRef(0);
 	const scrollStart = useRef(0);
 	const rafRef = useRef<number | null>(null);
+
+	// ── Detecção de touch ─────────────────────────────────────────────────────
+
+	useEffect(() => {
+		setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
+	}, []);
 
 	// ── Posição inicial: terço do meio ────────────────────────────────────
 	useEffect(() => {
@@ -255,28 +266,46 @@ export function ClientCarouselClient({
 				<div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
 				<div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
 
-				{/* Botão esquerdo */}
+				{/* Botão esquerdo — esconde em touch */}
 				<button
 					onClick={() => scrollByOne("left")}
 					aria-label="Anterior"
-					className={`absolute left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center shadow-sm transition-all duration-200 hover:border-primary/50 hover:text-primary ${
-						isHovered
-							? "opacity-100 pointer-events-auto"
-							: "opacity-0 pointer-events-none"
-					}`}
+					className={`
+						absolute left-4 top-1/2 -translate-y-1/2 z-20
+						w-8 h-8 rounded-full bg-background border border-border
+						flex items-center justify-center shadow-sm
+						transition-all duration-200
+						hover:border-primary/50 hover:text-primary
+						${
+							isTouchDevice
+								? "hidden" // ← esconde completamente em touch
+								: isHovered
+									? "opacity-100 pointer-events-auto"
+									: "opacity-0 pointer-events-none"
+						}
+    								`}
 				>
 					<ChevronLeft className="h-4 w-4" />
 				</button>
 
-				{/* Botão direito */}
+				{/* Botão direito — mesma lógica */}
 				<button
 					onClick={() => scrollByOne("right")}
 					aria-label="Próximo"
-					className={`absolute right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center shadow-sm transition-all duration-200 hover:border-primary/50 hover:text-primary ${
-						isHovered
-							? "opacity-100 pointer-events-auto"
-							: "opacity-0 pointer-events-none"
-					}`}
+					className={`
+						absolute right-4 top-1/2 -translate-y-1/2 z-20
+						w-8 h-8 rounded-full bg-background border border-border
+						flex items-center justify-center shadow-sm
+						transition-all duration-200
+						hover:border-primary/50 hover:text-primary
+						${
+							isTouchDevice
+								? "hidden"
+								: isHovered
+									? "opacity-100 pointer-events-auto"
+									: "opacity-0 pointer-events-none"
+						}
+    								`}
 				>
 					<ChevronRight className="h-4 w-4" />
 				</button>
@@ -305,11 +334,11 @@ export function ClientCarouselClient({
 				</div>
 			</div>
 
-			{/* Dots */}
+			{/* Dots — sempre visíveis em touch, hover-dependente em mouse */}
 			<div
 				className="flex justify-center gap-2 mt-6 transition-opacity duration-300"
-				style={{ opacity: isHovered ? 1 : 0 }}
-				aria-hidden={!isHovered}
+				style={{ opacity: isTouchDevice || isHovered ? 1 : 0 }}
+				aria-hidden={!isTouchDevice && !isHovered}
 			>
 				{clients.map((client, index) => (
 					<button

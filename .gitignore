@@ -44,3 +44,8 @@ Desktop.ini
 
 # Misc
 *.pem
+*.txt
+*.json
+/migrations
+/scripts
+*.ps1

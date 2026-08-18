@@ -16,21 +16,23 @@ const SERVICOS = [
 
 export function MaintenancePage() {
 	return (
+		// [ARQUITETURA] Container raiz ocupa exatamente a viewport — sem scroll externo.
+		// position: fixed + inset: 0 é mais confiável que height: 100dvh em mobile
+		// porque não depende do cálculo de dvh do browser, que varia entre engines.
 		<div
 			style={{
-				position: "relative",
-				height: "100dvh",
+				position: "fixed",
+				inset: 0,
 				background: "var(--background)",
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
 				justifyContent: "center",
-				overflow: "hidden",
 				fontFamily: "var(--font-mono)",
 				color: "var(--foreground)",
 			}}
 		>
-			{/* ── Camadas de fundo ── */}
+			{/* ── Camadas de fundo — pointer-events-none garante que não bloqueiam touch ── */}
 			<div
 				className="pointer-events-none fixed inset-0"
 				style={{
@@ -60,37 +62,21 @@ export function MaintenancePage() {
 					zIndex: 0,
 				}}
 			/>
-			<div
-				className="pointer-events-none fixed left-0 right-0 h-px"
-				style={{
-					top: "12%",
-					background: "linear-gradient(90deg, transparent, var(--primary), transparent)",
-					opacity: 0.25,
-					animation: "scan 10s ease-in-out infinite",
-					zIndex: 0,
-				}}
-			/>
-			<div
-				className="pointer-events-none fixed left-0 right-0 h-px"
-				style={{
-					bottom: "12%",
-					background: "linear-gradient(90deg, transparent, var(--primary), transparent)",
-					opacity: 0.25,
-					animation: "scan 10s ease-in-out infinite 5s",
-					zIndex: 0,
-				}}
-			/>
+			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ top: "12%", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite 5s", zIndex: 0 }} />
+			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ bottom: "8dvh", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite 5s", zIndex: 0 }} />
 			<Particles />
 
 			{/* ── Conteúdo ──
-			    [CONCEITO] scrollbar-none: mantém o scroll funcional em telas pequenas
-			    mas esconde a barra visual — definida em globals.css com
-			    scrollbar-width: none (Firefox) e ::-webkit-scrollbar { display: none }
-			    (Chrome/Safari). O overflow: hidden no pai não é suficiente pois cortaria
-			    conteúdo; o scroll precisa existir, só não deve ser visível.
+			    [CONCEITO] vmin: unidade que usa o MENOR valor entre vw e vh.
+			    Em mobile portrait (360x800): vmin = 360px → 3vmin = 10.8px
+			    Em desktop landscape (1440x900): vmin = 900px → 3vmin = 27px
+			    Isso garante que o conteúdo nunca ultrapasse a menor dimensão
+			    da tela — sem scroll horizontal NEM vertical em nenhum breakpoint.
+
+			    justify-content: space-evenly distribui o espaço vertical
+			    uniformemente entre os elementos — sem scroll, sem overflow.
 			-->*/}
 			<main
-				className="scrollbar-none"
 				style={{
 					position: "relative",
 					zIndex: 10,
@@ -98,24 +84,15 @@ export function MaintenancePage() {
 					flexDirection: "column",
 					alignItems: "center",
 					textAlign: "center",
-					// [CONCEITO] padding-top 56px reserva espaço para o ThemeToggle
-					// que está posicionado como primeiro filho no topo direito.
-					// Sem isso, o badge ficaria atrás do botão em telas estreitas.
-					padding: "1rem 2rem 1.5rem",
 					width: "100%",
 					maxWidth: 640,
-					overflowY: "auto",
-					maxHeight: "100dvh",
+					height: "100dvh",
+					justifyContent: "space-evenly",
+					padding: "1dvh 2rem",
 				}}
 			>
-				{/* ThemeToggle — dentro do main para não ser cortado pelo overflow:hidden do pai */}
-				{/* [CONCEITO] Por que mover para dentro do main resolve o touch em mobile?
-				    O container pai tem overflow:hidden. Elementos position:absolute fora
-				    do scroll container ficam visualmente visíveis mas com hit-testing
-				    cortado pelo clipping region — o browser registra o clique visualmente
-				    mas o evento não dispara. Dentro do main (que tem overflow:auto),
-				    o elemento participa normalmente do flow de eventos. */}
-				<div style={{ width: "100%", display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+				{/* ThemeToggle — alinhado à direita, fora do fluxo vertical */}
+				<div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
 					<ThemeToggle />
 				</div>
 
@@ -125,41 +102,29 @@ export function MaintenancePage() {
 					style={{
 						borderColor: "color-mix(in oklch, var(--primary) 40%, transparent)",
 						background: "color-mix(in oklch, var(--primary) 8%, transparent)",
-						padding: "6px 14px",
-						fontSize: "clamp(9px, 2vw, 11px)",
+						padding: "0.5dvh 14px",
+						fontSize: "clamp(9px, 2vmin, 12px)",
 						letterSpacing: ".14em",
 						textTransform: "uppercase",
-						marginBottom: "clamp(16px, 3vh, 28px)",
 						animation: "fade-up .8s ease both",
 						maxWidth: "100%",
 					}}
 				>
-					<span
-						className="inline-block h-1.5 w-1.5 shrink-0 bg-primary"
-						style={{ animation: "blink 1.4s step-end infinite" }}
-					/>
+					<span className="inline-block h-1.5 w-1.5 shrink-0 bg-primary" style={{ animation: "blink 1.4s step-end infinite" }} />
 					<span>Site temporariamente indisponível</span>
 				</div>
 
 				{/* 2. Logo */}
-				<div style={{ marginBottom: "clamp(16px, 3vh, 28px)", animation: "fade-up .8s .1s ease both" }}>
+				<div style={{ animation: "fade-up .8s .1s ease both" }}>
 					<div style={{ position: "relative", display: "inline-flex" }}>
-						<div style={{
-							position: "absolute", top: -8, left: -8, width: 12, height: 12,
-							borderTop: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
-							borderLeft: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
-						}} />
-						<div style={{
-							position: "absolute", bottom: -8, right: -8, width: 12, height: 12,
-							borderBottom: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
-							borderRight: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
-						}} />
+						<div style={{ position: "absolute", top: -8, left: -8, width: 12, height: 12, borderTop: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)", borderLeft: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)" }} />
+						<div style={{ position: "absolute", bottom: -8, right: -8, width: 12, height: 12, borderBottom: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)", borderRight: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)" }} />
 						<div
 							className="border"
 							style={{
 								background: "color-mix(in oklch, var(--foreground) 4%, transparent)",
 								borderColor: "color-mix(in oklch, var(--foreground) 12%, transparent)",
-								padding: "14px 20px",
+								padding: "1.5dvh 20px",
 								display: "inline-flex",
 								animation: "border-flicker 4s ease-in-out infinite",
 							}}
@@ -172,7 +137,9 @@ export function MaintenancePage() {
 								priority
 								style={{
 									filter: "drop-shadow(0 0 16px color-mix(in oklch, var(--primary) 40%, transparent))",
-									width: "clamp(70px, 15vw, 110px)",
+									// [CONCEITO] vmin para imagens: escala proporcionalmente
+									// à menor dimensão da tela — nunca estoura nem fica minúscula
+									width: "clamp(60px, 12vmin, 110px)",
 									height: "auto",
 								}}
 							/>
@@ -181,24 +148,18 @@ export function MaintenancePage() {
 				</div>
 
 				{/* Divider */}
-				<div
-					style={{
-						width: 160, height: 1,
-						marginBottom: "clamp(16px, 3vh, 24px)",
-						background: "linear-gradient(90deg, transparent, var(--primary), transparent)",
-						animation: "fade-up .8s .2s ease both",
-					}}
-				/>
+				<div style={{ width: "clamp(100px, 20vmin, 180px)", height: 1, background: "linear-gradient(90deg, transparent, var(--primary), transparent)", animation: "fade-up .8s .2s ease both" }} />
 
 				{/* 3. Headline */}
 				<h1
 					style={{
 						fontFamily: "var(--font-display, 'Bebas Neue', sans-serif)",
-						fontSize: "clamp(2rem, 6vw, 4rem)",
+						// [CONCEITO] vmin no headline: em telas baixas (landscape mobile)
+						// o vw seria enorme mas o vmin respeita a altura disponível
+						fontSize: "clamp(1.8rem, 7vmin, 4rem)",
 						letterSpacing: ".08em",
 						lineHeight: 1.05,
 						color: "var(--foreground)",
-						marginBottom: "clamp(10px, 2vh, 16px)",
 						animation: "fade-up .8s .3s ease both",
 					}}
 				>
@@ -210,11 +171,10 @@ export function MaintenancePage() {
 				{/* 4. Subtítulo */}
 				<p
 					style={{
-						fontSize: "clamp(11px, 2vw, 13px)",
+						fontSize: "clamp(10px, 2vmin, 13px)",
 						color: "var(--muted-foreground)",
 						letterSpacing: ".06em",
-						lineHeight: 1.8,
-						marginBottom: "clamp(16px, 3vh, 28px)",
+						lineHeight: 1.7,
 						animation: "fade-up .8s .4s ease both",
 					}}
 				>
@@ -224,7 +184,7 @@ export function MaintenancePage() {
 				</p>
 
 				{/* 5. Contato */}
-				<div style={{ display: "flex", gap: 12, marginBottom: "clamp(16px, 3vh, 28px)", animation: "fade-up .8s .5s ease both" }}>
+				<div style={{ display: "flex", gap: 12, animation: "fade-up .8s .5s ease both" }}>
 					{[
 						{
 							href: "https://wa.me/5551998655612",
@@ -253,11 +213,11 @@ export function MaintenancePage() {
 							rel="noopener noreferrer"
 							className="inline-flex items-center gap-1.5 border transition-colors hover:text-foreground hover:border-primary"
 							style={{
-								fontSize: "clamp(10px, 1.8vw, 12px)",
+								fontSize: "clamp(10px, 1.8vmin, 12px)",
 								letterSpacing: ".1em",
 								textTransform: "uppercase",
 								color: "var(--muted-foreground)",
-								padding: "8px 16px",
+								padding: "0.8dvh 16px",
 								textDecoration: "none",
 							}}
 						>
@@ -268,25 +228,8 @@ export function MaintenancePage() {
 				</div>
 
 				{/* 6. Barra de progresso */}
-				<div
-					style={{
-						width: 220, height: 2,
-						background: "var(--border)",
-						overflow: "hidden",
-						marginBottom: "clamp(16px, 3vh, 28px)",
-						position: "relative",
-						animation: "fade-up .8s .6s ease both",
-					}}
-				>
-					<div
-						style={{
-							position: "absolute",
-							top: 0, left: 0,
-							height: "100%", width: "40%",
-							background: "linear-gradient(90deg, transparent, var(--primary))",
-							animation: "progress-sweep 2s ease-in-out infinite",
-						}}
-					/>
+				<div style={{ width: "clamp(160px, 25vmin, 240px)", height: 2, background: "var(--border)", overflow: "hidden", position: "relative", animation: "fade-up .8s .6s ease both" }}>
+					<div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: "40%", background: "linear-gradient(90deg, transparent, var(--primary))", animation: "progress-sweep 2s ease-in-out infinite" }} />
 				</div>
 
 				{/* 7. Tags de serviços */}
@@ -295,7 +238,7 @@ export function MaintenancePage() {
 						display: "flex",
 						flexWrap: "wrap",
 						justifyContent: "center",
-						gap: 8,
+						gap: 6,
 						maxWidth: 480,
 						animation: "fade-up .8s .7s ease both",
 					}}
@@ -305,10 +248,10 @@ export function MaintenancePage() {
 							key={s}
 							className="border border-border/40 text-muted-foreground hover:border-primary hover:text-primary transition-colors"
 							style={{
-								fontSize: "clamp(9px, 1.5vw, 11px)",
+								fontSize: "clamp(8px, 1.5vmin, 11px)",
 								letterSpacing: ".12em",
 								textTransform: "uppercase",
-								padding: "5px 12px",
+								padding: "4px 10px",
 							}}
 						>
 							{s}
@@ -318,14 +261,11 @@ export function MaintenancePage() {
 
 				{/* Footer */}
 				<footer
-					className="flex justify-center"
 					style={{
 						color: "color-mix(in oklch, var(--primary) 60%, transparent)",
-						fontSize: "clamp(8px, 1.5vw, 10px)",
+						fontSize: "clamp(8px, 1.5vmin, 10px)",
 						letterSpacing: ".08em",
 						textTransform: "uppercase",
-						marginTop: "clamp(20px, 4vh, 36px)",
-						paddingBottom: 8,
 						animation: "fade-up .8s .9s ease both",
 					}}
 				>

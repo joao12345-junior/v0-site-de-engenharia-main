@@ -1,0 +1,439 @@
+"use client";
+// app/administrador/_components/page-projetos.tsx
+
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { Ic } from "../lib/icons";
+import { PageContainer } from "../lib/shell";
+import type { Projeto, TipoCategoria } from "../lib/types";
+import { ProjectDetail } from "../components/project_detail";
+import { ProjectCard } from "../components/project_card";
+import type { Cliente } from "@/lib/repositories/admin/admin-clients-repository";
+import { CitySelect } from "../components/city_select";
+import estadosCidades from "@/public/JSON/outros/estados-cidades.json";
+
+interface PageProjetosProps {
+	accent: string;
+}
+
+// [CONCEITO] FORM_VAZIO como constante fora do componente.
+// Se fosse dentro, seria recriada a cada render — inofensivo aqui,
+// mas o padrão correto é que dados estáticos fiquem fora do ciclo de vida.
+// categoria mantida pois o banco ainda tem o campo, mesmo não filtrando por ela.
+const FORM_VAZIO = {
+	nome: "",
+	categoria: "Comercial" as TipoCategoria,
+	cidade: "",
+	clienteId: "",
+};
+
+// [CONCEITO] Dados estáticos no nível de módulo.
+// O JSON de estados (118KB) é importado UMA VEZ quando o módulo carrega.
+// Se estivesse dentro do componente, o JavaScript reprocessaria a referência
+// a cada render — não recarrega o arquivo, mas cria overhead desnecessário.
+const todosEstados = estadosCidades.estados;
+
+export function PageProjetos({ accent }: PageProjetosProps) {
+	const [projetos, setProjetos] = useState<Projeto[]>([]);
+	const [clientes, setClientes] = useState<Cliente[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [erro, setErro] = useState<string | null>(null);
+	const [open, setOpen] = useState<string | null>(null);
+	const [filter, setFilter] = useState("todos");
+	const [modalAberto, setModalAberto] = useState(false);
+	const [form, setForm] = useState(FORM_VAZIO);
+	const [salvando, setSalvando] = useState(false);
+	const [erroForm, setErroForm] = useState<string | null>(null);
+	const [publicando, setPublicando] = useState<string | null>(null);
+	const [deletando, setDeletando] = useState<string | null>(null);
+	const [busca, setBusca] = useState<string>("");
+	const [formEstado, setFormEstado] = useState("");
+	const [formCidade, setFormCidade] = useState("");
+
+	// [CONCEITO] useMemo para dados DERIVADOS de estado existente.
+	// Regra: se um valor pode ser calculado de outro estado, nunca armazene
+	// como useState separado — isso cria duas fontes de verdade que podem
+	// dessincronizar. useMemo recalcula só quando [formEstado] muda.
+	const cidadesDoFormEstado = useMemo(
+		() => todosEstados.find((e) => e.sigla === formEstado)?.cidades ?? [],
+		[formEstado],
+	);
+
+	// [CONCEITO] Set para deduplicação em O(1).
+	// Array.includes() faria O(n) por verificação — com 86 projetos e 45 clientes
+	// a diferença é pequena, mas o padrão é importante: Sets são a estrutura
+	// correta para "já vi esse valor?", não arrays.
+	//
+	// [ARQUITETURA] clientesFiltro é dado derivado de `projetos`.
+	// Não é estado — é uma view calculada. Isso segue o princípio de
+	// Single Source of Truth: projetos é a fonte, clientesFiltro é consequência.
+	const clientesFiltro = useMemo(() => {
+		const seen = new Set<string>();
+		const lista: { id: string; nome: string }[] = [];
+		for (const p of projetos) {
+			if (p.clienteId && !seen.has(p.clienteId)) {
+				seen.add(p.clienteId);
+				lista.push({ id: p.clienteId, nome: p.cliente });
+			}
+		}
+		return lista.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+	}, [projetos]);
+
+	// [CONCEITO] useEffect reativo ao estado externo.
+	// Quando projetos muda (após deleção), verifica se o cliente filtrado
+	// ainda existe. Se não, reseta para "todos".
+	// Sem isso, o usuário veria uma lista vazia sem feedback do porquê.
+	useEffect(() => {
+		if (filter === "todos") return;
+		const clienteAindaExiste = projetos.some((p) => p.clienteId === filter);
+		if (!clienteAindaExiste) setFilter("todos");
+	}, [projetos, filter]);
+
+	// [CONCEITO] useCallback memoriza a função entre renders.
+	// Necessário porque carregarDados está no array de dependências do useEffect
+	// abaixo. Sem useCallback, a função seria recriada a cada render,
+	// causando loop infinito: render → nova função → effect dispara → render...
+	const carregarDados = useCallback(async () => {
+		setLoading(true);
+		setErro(null);
+		try {
+			const [resP, resC] = await Promise.all([
+				fetch("/admin/api/admin/projects/"),
+				fetch("/admin/api/admin/clients/"),
+			]);
+			if (!resP.ok || !resC.ok) {
+				throw new Error(`HTTP ${resP.ok ? resC.status : resP.status}`);
+			}
+			const [dataP, dataC] = await Promise.all([resP.json(), resC.json()]);
+			setProjetos(dataP.projetos ?? []);
+			setClientes(dataC.clientes ?? []);
+		} catch (e) {
+			setErro("Não foi possível carregar os dados.");
+			console.error("[PageProjetos] Erro ao carregar:", e);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		carregarDados();
+	}, [carregarDados]);
+
+	const handleCriar = async () => {
+		if (!form.nome.trim()) { setErroForm("Nome é obrigatório."); return; }
+		if (!form.clienteId) { setErroForm("Selecione um cliente."); return; }
+		if (!formCidade.trim()) { setErroForm("Cidade é obrigatória."); return; }
+
+		setSalvando(true);
+		setErroForm(null);
+		try {
+			const res = await fetch("/admin/api/admin/projects/", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					nome: form.nome.trim(),
+					categoria: form.categoria,
+					cidade: formCidade && formEstado
+						? `${formCidade}, ${formEstado}`
+						: form.cidade.trim(),
+					clienteId: form.clienteId,
+				}),
+			});
+			const data = await res.json();
+			if (!res.ok) { setErroForm(data.error ?? "Erro ao criar projeto."); return; }
+			setProjetos((prev) => [data.projeto, ...prev]);
+			setModalAberto(false);
+			setForm(FORM_VAZIO);
+		} catch (e: unknown) {
+			setErroForm("Falha na conexão.");
+			console.error("[PageProjetos] Erro ao criar:", e);
+		} finally {
+			setSalvando(false);
+		}
+	};
+
+	const handleSave = async (projetoEditado: Projeto) => {
+		try {
+			const res = await fetch(`/admin/api/admin/projects/${projetoEditado.id}/`, {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					nome: projetoEditado.nome,
+					categoria: projetoEditado.categoria,
+					cidade: projetoEditado.cidade,
+					clienteId: projetoEditado.clienteId,
+					prazo: projetoEditado.prazo,
+					area: projetoEditado.area,
+					status: projetoEditado.status,
+					capa: projetoEditado.capa,
+					visible: projetoEditado.visible,
+				}),
+			});
+			const data = await res.json();
+			if (!res.ok) { alert(data.error ?? "Erro ao salvar projeto."); return; }
+			setProjetos((prev) =>
+				prev.map((p) => (p.id === data.projeto.id ? data.projeto : p)),
+			);
+		} catch (e: unknown) {
+			alert("Falha na conexão.");
+			console.error("[PageProjetos] Erro ao salvar:", e);
+		}
+	};
+
+	const handlePublicar = async (id: string) => {
+		setPublicando(id);
+		try {
+			const res = await fetch(`/admin/api/admin/projects/${id}/publish/`, { method: "POST" });
+			const data = await res.json();
+			if (!res.ok) { alert(data.error ?? "Erro ao publicar."); return; }
+			setProjetos((prev) => prev.map((p) => (p.id === id ? data.projeto : p)));
+		} catch {
+			alert("Falha na conexão.");
+		} finally {
+			setPublicando(null);
+		}
+	};
+
+	const handleDespublicar = async (id: string) => {
+		try {
+			const res = await fetch(`/admin/api/admin/projects/${id}/`, {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ visible: false }),
+			});
+			const data = await res.json();
+			if (!res.ok) { alert(data.error ?? "Erro ao despublicar."); return; }
+			setProjetos((prev) => prev.map((p) => (p.id === id ? data.projeto : p)));
+		} catch {
+			alert("Falha na conexão.");
+		}
+	};
+
+	const handleDeletar = async (id: string) => {
+		try {
+			const res = await fetch(`/admin/api/admin/projects/${id}/`, { method: "DELETE" });
+			const data = await res.json();
+			if (!res.ok) { alert(data.error ?? "Erro ao apagar."); return; }
+			setProjetos((prev) => prev.filter((p) => p.id !== id));
+			if (open === id) setOpen(null);
+		} catch {
+			alert("Falha na conexão.");
+		} finally {
+			setDeletando(null);
+		}
+	};
+
+	const updateOpen = (updater: (p: Projeto) => Projeto) =>
+		setProjetos((prev) => prev.map((p) => (p.id === open ? updater(p) : p)));
+
+	// [CONCEITO] list é dado derivado — não é estado.
+	// Filtro agora usa p.clienteId em vez de p.categoria.
+	// Comparamos por ID (chave única) não por nome (pode duplicar).
+	const list = projetos
+		.filter((p) => filter === "todos" || p.clienteId === filter)
+		.filter((p) => {
+			if (!busca.trim()) return true;
+			const termo = busca.toLowerCase();
+			return (
+				p.nome.toLowerCase().includes(termo) ||
+				p.cidade.toLowerCase().includes(termo) ||
+				p.cliente.toLowerCase().includes(termo)
+			);
+		})
+		.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+	const openProject =
+		list.find((p) => p.id === open) ||
+		(projetos.find((p) => p.id === open) as Projeto);
+
+	if (loading) {
+		return (
+			<PageContainer>
+				<div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--muted)", fontSize: 13 }}>
+					<Ic.Activity size={14} /> Carregando projetos...
+				</div>
+			</PageContainer>
+		);
+	}
+
+	if (erro) {
+		return (
+			<PageContainer>
+				<div style={{ color: "var(--muted)", fontSize: 13 }}>
+					{erro}{" "}
+					<button className="btn-ghost" onClick={carregarDados}>Tentar novamente</button>
+				</div>
+			</PageContainer>
+		);
+	}
+
+	return (
+		<PageContainer>
+			{/* Cabeçalho */}
+			<div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 18 }}>
+				<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+					{/* Filtros por cliente */}
+					<div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+						{[{ id: "todos", nome: "Todos" }, ...clientesFiltro].map((c) => (
+							<button
+								key={c.id}
+								onClick={() => setFilter(c.id)}
+								className={filter === c.id ? "" : "btn-ghost"}
+								style={{
+									padding: "7px 14px",
+									background: filter === c.id ? accent : "transparent",
+									color: filter === c.id ? "#fff" : "var(--fg-2)",
+									border: `1px solid ${filter === c.id ? accent : "var(--border)"}`,
+									fontSize: 12,
+									fontWeight: 500,
+								}}
+							>
+								{c.nome}
+							</button>
+						))}
+					</div>
+					<div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
+						<span style={{ fontSize: 12, color: "var(--muted)" }}>
+							{projetos.filter((p) => p.visible).length} publicados · {list.length}/{projetos.length}
+						</span>
+						<button
+							className="btn-primary"
+							style={{ whiteSpace: "nowrap" }}
+							onClick={() => {
+								setForm(FORM_VAZIO);
+								setFormEstado("");
+								setFormCidade("");
+								setErroForm(null);
+								setModalAberto(true);
+							}}
+						>
+							<Ic.Plus size={14} /> Novo Projeto
+						</button>
+					</div>
+				</div>
+
+				{/* Busca */}
+				<div style={{ position: "relative", maxWidth: 380 }}>
+					<Ic.Search size={13} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "var(--muted)", pointerEvents: "none" }} />
+					<input
+						className="input input-with-icon"
+						placeholder="Buscar por nome, cidade ou cliente..."
+						value={busca}
+						onChange={(e) => setBusca(e.target.value)}
+						style={{ width: "100%", boxSizing: "border-box", fontSize: 12 }}
+					/>
+					{busca && (
+						<button onClick={() => setBusca("")} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--muted)", padding: 2 }}>
+							<Ic.X size={12} />
+						</button>
+					)}
+				</div>
+			</div>
+
+			{/* Grid de cards */}
+			{list.length === 0 ? (
+				<div style={{ color: "var(--muted)", fontSize: 13 }}>
+					{filter === "todos"
+						? "Nenhum projeto cadastrado ainda."
+						: `Nenhum projeto para este cliente.`}
+				</div>
+			) : (
+				<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+					{list.map((p) => (
+						<ProjectCard
+							key={p.id}
+							p={p}
+							onOpen={() => setOpen(p.id)}
+							accent={accent}
+							onPublish={p.status === "Aprovado" ? () => handlePublicar(p.id) : undefined}
+							onUnpublish={p.visible ? () => handleDespublicar(p.id) : undefined}
+							onDelete={() => setDeletando(deletando === p.id ? null : p.id)}
+							deletando={deletando === p.id}
+							onCancelDelete={() => setDeletando(null)}
+							isPublishing={publicando === p.id}
+						/>
+					))}
+				</div>
+			)}
+
+			{openProject && (
+				<ProjectDetail
+					project={openProject}
+					clientes={clientes}
+					onClose={() => setOpen(null)}
+					onUpdate={updateOpen}
+					onSave={handleSave}
+					accent={accent}
+					todosEstados={todosEstados}
+				/>
+			)}
+
+			{/* Modal de criação */}
+			{modalAberto && (
+				<div
+					style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center" }}
+					onClick={() => setModalAberto(false)}
+				>
+					<div
+						className="card-pop"
+						style={{ width: 480, maxWidth: "95vw", padding: 28, background: "var(--bg)" }}
+						onClick={(e) => e.stopPropagation()}
+					>
+						<div style={{ fontSize: 15, fontWeight: 700, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+							Novo projeto
+							<button className="btn-ghost" style={{ padding: "4px 8px" }} onClick={() => setModalAberto(false)}>
+								<Ic.X size={14} />
+							</button>
+						</div>
+
+						<div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+							<div>
+								<label style={{ fontSize: 11, color: "var(--muted)", display: "block", marginBottom: 4 }}>Nome *</label>
+								<input className="input" value={form.nome} onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))} placeholder="Ex: Torre Belvedere" style={{ width: "100%", boxSizing: "border-box" }} />
+							</div>
+							<div>
+								<label style={{ fontSize: 11, color: "var(--muted)", display: "block", marginBottom: 4 }}>Cliente *</label>
+								<select className="input" value={form.clienteId} onChange={(e) => setForm((f) => ({ ...f, clienteId: e.target.value }))} style={{ width: "100%", boxSizing: "border-box" }}>
+									<option value="">Selecione...</option>
+									{clientes.map((c) => (
+										<option key={c.id} value={c.id}>{c.nome}</option>
+									))}
+								</select>
+							</div>
+							<div>
+								<label style={{ fontSize: 11, color: "var(--muted)", display: "block", marginBottom: 4 }}>Estado *</label>
+								<select
+									className="input"
+									value={formEstado}
+									onChange={(e) => { setFormEstado(e.target.value); setFormCidade(""); }}
+									style={{ width: "100%", boxSizing: "border-box", height: 40 }}
+								>
+									<option value="">Selecione...</option>
+									{todosEstados.map((e) => (
+										<option key={e.sigla} value={e.sigla}>{e.sigla} — {e.nome}</option>
+									))}
+								</select>
+							</div>
+							<div>
+								<label style={{ fontSize: 11, color: "var(--muted)", display: "block", marginBottom: 4 }}>Cidade *</label>
+								<CitySelect value={formCidade} onChange={setFormCidade} cidades={cidadesDoFormEstado} />
+							</div>
+
+							{erroForm && (
+								<div style={{ fontSize: 11, color: "var(--destructive, #c00)", padding: "8px 12px", background: "rgba(200,0,0,0.06)", border: "1px solid rgba(200,0,0,0.2)" }}>
+									{erroForm}
+								</div>
+							)}
+
+							<div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 4 }}>
+								<button className="btn-ghost" onClick={() => setModalAberto(false)} disabled={salvando}>Cancelar</button>
+								<button className="btn-primary" onClick={handleCriar} disabled={salvando}>
+									{salvando ? <><Ic.Activity size={13} /> Salvando...</> : <><Ic.Plus size={13} /> Criar projeto</>}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+		</PageContainer>
+	);
+}

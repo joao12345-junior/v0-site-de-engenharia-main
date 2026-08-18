@@ -21,7 +21,7 @@ export function Particles() {
 		const container = containerRef.current;
 		if (!container) return;
 
-		const COUNT = 28;
+		const COUNT = 55;
 
 		for (let i = 0; i < COUNT; i++) {
 			const particle = document.createElement("div");
@@ -29,7 +29,7 @@ export function Particles() {
 			// [CONCEITO] Estilo inline via JavaScript — mesmo padrão do HTML original,
 			// mas aqui é necessário porque os valores são dinâmicos (Math.random).
 			// Para estilos estáticos, sempre prefira classes CSS.
-			const size = Math.random() > 0.7 ? 3 : 2;
+			const size = Math.random() > 0.7 ? 4 : 2;
 			const duration = 8 + Math.random() * 14;
 			const delay = Math.random() * 12;
 
@@ -41,6 +41,7 @@ export function Particles() {
 				left: `${Math.random() * 100}vw`,
 				bottom: `${Math.random() * 100}vh`,
 				opacity: "0",
+				pointerEvents: "none",
 				animation: `float-up ${duration}s linear -${delay}s infinite`,
 			});
 

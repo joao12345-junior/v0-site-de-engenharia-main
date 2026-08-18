@@ -1,68 +1,40 @@
+"use client";
 // components/clients-grid.tsx
 //
-// [MUDANÇA] Adicionado logo real do cliente (Clearbit → Google Favicon → iniciais)
-// acima do ícone de categoria existente.
+// [MUDANÇA] Três mudanças coordenadas:
 //
-// [CONCEITO] Por que não substituir o ícone pelo logo?
-// O ícone de categoria (Construtora, Varejo, etc.) é informação estrutural —
-// diz ao visitante o TIPO do cliente. O logo é informação de identidade —
-// diz QUEM é o cliente. Os dois têm propósitos diferentes.
-// Manter ambos é mais rico: logo em destaque + categoria como metadado.
+// 1. ClientItem agora recebe { nome, categoria, siteUrl } em vez de { key, category }.
 //
-// [CONCEITO] "use client" aqui porque:
-// 1. Framer Motion (motion.div) requer o browser
-// 2. ClientLogo usa useState para gerenciar fallback de imagem
-// Se removêssemos as animações, poderíamos deixar como Server Component.
+// 2. logoMap recebido como prop (construído no Server Component via buildLogoMap/fs).
+//    Client Components não podem usar fs — por isso o mapa vem pronto do servidor.
+//    Mesmo padrão já usado em ClientCarouselClient (client-carousel-client.tsx).
+//
+// 3. ClientLogo usa logoMap + useTheme() pra escolher variante light/dark.
+//    Sem Clearbit, sem favicon, sem requests externos — só arquivos locais.
 
-"use client";
-
-import { useState, useCallback } from "react";
+import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
-import { toTitleCase } from "@/lib/utils";
+import Image from "next/image";
 import {
 	categoryIconsClient,
 	type categoryClients,
 } from "@/lib/repositories/clients-repository";
-import clientsData from "@/public/JSON/clientes/clients.json";
+import type { LogoEntry } from "@/lib/utils/logo-resolver";
 
 // ─── Tipos ────────────────────────────────────────────────────────────────
 
-interface ClientItem {
-	key: string;
-	category: categoryClients;
+export interface ClientItem {
+	nome: string;
+	categoria: categoryClients;
+	siteUrl: string | null;
 }
 
 interface ClientsGridProps {
 	clients: ClientItem[];
+	logoMap: Record<string, LogoEntry>;
 }
 
-// ─── Mapa de URL de site por nome de cliente ──────────────────────────────
-//
-// [CONCEITO] Por que um Map e não um array com .find()?
-// Map tem lookup O(1) — acesso instantâneo por chave.
-// Array com .find() é O(n) — percorre até encontrar.
-// Para 40+ clientes chamados a cada render de card, Map é a escolha certa.
-// Isso é o que suas preferências de estudo mencionam: HashSet/HashMap em vez de arrays para lookups.
-//
-// Normalizamos para lowercase porque o `key` do ClientItem pode vir em
-// formatos diferentes dependendo de como o repository transforma o JSON.
-
-const clientSiteMap = new Map<string, string>(
-	(clientsData as { CLIENTE: string; Site: string }[]).map((c) => [
-		c.CLIENTE.toLowerCase(),
-		c.Site,
-	]),
-);
-
-// ─── Helpers de logo ──────────────────────────────────────────────────────
-
-function getDomain(url: string): string {
-	try {
-		return new URL(url).hostname.replace("www.", "");
-	} catch {
-		return "";
-	}
-}
+// ─── Helpers ──────────────────────────────────────────────────────────────
 
 function getInitials(name: string): string {
 	return name
@@ -75,103 +47,127 @@ function getInitials(name: string): string {
 
 // ─── Componente: ClientLogo ───────────────────────────────────────────────
 //
-// [CONCEITO] State machine de 3 estados para fallback de imagem.
-// Cada estado representa uma "fonte" de logo, do melhor para o pior:
-//
-//   clearbit → favicon → initials
-//
-// A transição é unidirecional: só avança, nunca volta.
-// Isso é chamado de "degradação graciosa" (graceful degradation) —
-// a experiência piora progressivamente em vez de quebrar abruptamente.
+// [CONCEITO] useTheme().resolvedTheme em vez de theme porque `theme` pode ser
+// "system", que não é diretamente mapeável pra light/dark. resolvedTheme já
+// resolve "system" com base na preferência do SO do usuário.
+// No primeiro render (antes de hidratação), resolvedTheme é undefined —
+// fallback pra "light" evita flash de logo errado.
 
 interface ClientLogoProps {
-	clientName: string;
+	nome: string;
+	logoMap: Record<string, LogoEntry>;
 }
 
-function ClientLogo({ clientName }: ClientLogoProps) {
-	const siteUrl = clientSiteMap.get(clientName.toLowerCase()) ?? "";
-	const domain = getDomain(siteUrl);
-	const initials = getInitials(clientName);
+function ClientLogo({ nome, logoMap }: ClientLogoProps) {
+	const { resolvedTheme } = useTheme();
+	const isDark = resolvedTheme === "dark";
 
-	const [state, setState] = useState<"clearbit" | "favicon" | "initials">(
-		domain ? "clearbit" : "initials",
-	);
+	const entry = logoMap[nome];
+	const logoPath = entry
+		? isDark
+			? (entry.dark ?? entry.light)
+			: (entry.light ?? entry.dark)
+		: null;
 
-	const onClearbitError = useCallback(() => setState("favicon"), []);
-	const onFaviconError = useCallback(() => setState("initials"), []);
-
-	// Estado: iniciais (CSS puro, sempre funciona)
-	if (state === "initials" || !domain) {
+	if (!logoPath) {
 		return (
-			<div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-				<span className="text-xs font-bold text-primary">{initials}</span>
+			<div
+				style={{
+					width: 56,
+					height: 56,
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					fontSize: 16,
+					fontWeight: 700,
+					color: "hsl(var(--primary))",
+					background: "hsl(var(--primary) / 0.08)",
+					borderRadius: 8,
+					flexShrink: 0,
+				}}
+			>
+				{getInitials(nome)}
 			</div>
 		);
 	}
 
-	// Estado: Google Favicon (baixa resolução, mas cobre quase todos os domínios)
-	if (state === "favicon") {
-		return (
-			<div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-				{/* eslint-disable-next-line @next/next/no-img-element */}
-				<img
-					src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
-					alt={clientName}
-					className="w-8 h-8 object-contain"
-					onError={onFaviconError}
-				/>
-			</div>
-		);
-	}
-
-	// Estado: Clearbit (alta qualidade, fonte primária)
 	return (
-		<div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden border border-border/50">
-			{/* eslint-disable-next-line @next/next/no-img-element */}
-			<img
-				src={`https://logo.clearbit.com/${domain}`}
-				alt={clientName}
-				className="w-10 h-10 object-contain"
-				onError={onClearbitError}
+		<div
+			style={{
+				width: 56,
+				height: 56,
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+				flexShrink: 0,
+				position: "relative",
+			}}
+		>
+			<Image
+				src={logoPath}
+				alt={`Logo ${nome}`}
+				width={56}
+				height={56}
+				style={{ objectFit: "contain" }}
 			/>
 		</div>
 	);
 }
 
-// ─── Componente principal: ClientsGrid ───────────────────────────────────
+// ─── Componente principal: ClientsGrid ────────────────────────────────────
 
-export function ClientsGrid({ clients }: ClientsGridProps) {
+export function ClientsGrid({ clients, logoMap }: ClientsGridProps) {
+	if (clients.length === 0) {
+		return (
+			<p className="text-center text-muted-foreground text-sm py-8">
+				Nenhum cliente publicado ainda.
+			</p>
+		);
+	}
+
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-			{clients.map((client, index) => {
-				const Icon = categoryIconsClient[client.category];
+		<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+			{clients.map((client, i) => {
+				const Icon = categoryIconsClient[client.categoria];
+				const inner = (
+					<>
+						<ClientLogo nome={client.nome} logoMap={logoMap} />
+						<div>
+							<p className="text-xs font-semibold text-foreground leading-tight">
+								{client.nome}
+							</p>
+							<div className="flex items-center justify-center gap-1 mt-1">
+								<Icon className="h-3 w-3 text-muted-foreground" />
+								<p className="text-xs text-muted-foreground">
+									{client.categoria}
+								</p>
+							</div>
+						</div>
+					</>
+				);
 
 				return (
 					<motion.div
-						key={client.key}
-						initial={{ opacity: 0, y: 24 }}
+						key={client.nome}
+						initial={{ opacity: 0, y: 16 }}
 						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: false, amount: 0.2 }}
-						transition={{
-							duration: 0.4,
-							delay: Math.min(index, 20) * 0.04,
-							ease: "easeOut" as const,
-						}}
-						className="bg-background p-6 rounded-lg border border-border flex flex-col items-center text-center hover:border-primary/50 transition-colors"
+						viewport={{ once: true }}
+						transition={{ duration: 0.3, delay: i * 0.03 }}
 					>
-						{/* Logo do cliente — Clearbit → Favicon → Iniciais */}
-						<ClientLogo clientName={client.key} />
-
-						{/* Nome do cliente */}
-						<h3 className="font-semibold text-foreground mt-3 text-sm leading-tight">
-							{toTitleCase(client.key)}
-						</h3>
-
-						{/* Categoria com ícone — metadado secundário */}
-						<div className="flex items-center gap-1.5 mt-2">
-							<Icon className="h-3.5 w-3.5 text-primary/50 flex-shrink-0" />
-							<p className="text-xs text-muted-foreground">{client.category}</p>
-						</div>
+						{client.siteUrl ? (
+							<a
+								href={client.siteUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex flex-col items-center gap-3 p-4 rounded-lg border border-border hover:border-primary/50 bg-card transition-colors text-center"
+							>
+								{inner}
+							</a>
+						) : (
+							<div className="flex flex-col items-center gap-3 p-4 rounded-lg border border-border bg-card text-center">
+								{inner}
+							</div>
+						)}
 					</motion.div>
 				);
 			})}

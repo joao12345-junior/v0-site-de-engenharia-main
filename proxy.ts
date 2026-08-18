@@ -1,3 +1,4 @@
+//proxy.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
@@ -8,14 +9,19 @@ if (!process.env.JWT_SECRET_ACCESS)
 	throw new Error(
 		"\n[/proxy.ts] JWT_SECRET_ACCESS não configurado nas variáveis de ambiente",
 	);
+
 const secret = new TextEncoder().encode(process.env.JWT_SECRET_ACCESS!);
 
 export async function proxy(req: NextRequest) {
 	const token = req.cookies.get("access_token")?.value;
-	console.log(`\n[/proxy.ts] Token presente: ${!!token}\n`);
 
-	if (!token)
-		return NextResponse.redirect(new URL("/administrador_login", req.url));
+	const isApiRoute = req.nextUrl.pathname.startsWith("/admin/api/admin");
+
+	if (!token) {
+		if (isApiRoute)
+			return NextResponse.json({ message: "Não autenticado" }, { status: 401 });
+		return NextResponse.redirect(new URL("/admin/login", req.url));
+	}
 
 	try {
 		// jwtVerify é genuinamente assíncrona — usa Web Crypto API
@@ -24,10 +30,10 @@ export async function proxy(req: NextRequest) {
 	} catch (err: unknown) {
 		// Token inválido, expirado ou mal formado
 		console.error("\n[/proxy.ts] Erro ao verificar token: ", err);
-		return NextResponse.redirect(new URL("/administrador_login", req.url));
+		return NextResponse.redirect(new URL("/admin/login", req.url));
 	}
 }
 
 export const config = {
-	matcher: ["/administrador/:path*"],
+	matcher: ["/admin/painel/:path*", "/admin/api/admin/:path*"],
 };
