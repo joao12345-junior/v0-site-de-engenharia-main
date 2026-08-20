@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "./page-transition";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 // [FONTE 1] Inter — fonte principal do site (font-sans)
 // subsets: ["latin"] baixa apenas os caracteres latinos — menor bundle
@@ -71,6 +72,7 @@ export default function RootLayout({
 					<PageTransition>{children}</PageTransition>
 				</ThemeProvider>
 				<Toaster />
+				<Analytics />
 			</body>
 		</html>
 	);
