@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import OptareLogoBlack from "@/public/images/logos/optare/Logo_Black.svg";
+import OptareLogoWhite from "@/public/images/logos/optare/Logo_White.svg";
 
 const navigation = [
 	{ name: "Home", href: "/" },
@@ -71,15 +72,9 @@ export function Header() {
 				<nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
 					<div className="flex lg:flex-1">
 						<Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
-							<div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
-								<Image
-									src="/images/optare_logo.png"
-									alt="OPTARE — Voltar para página inicial"
-									fill
-									loading="eager"
-									className="object-contain p-1"
-									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-								/>
+							<div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md p-2">
+								<OptareLogoBlack className="h-full w-full object-contain p-1 dark:hidden" />
+								<OptareLogoWhite className="hidden h-full w-full object-contain p-1 dark:block" />
 							</div>
 						</Link>
 					</div>

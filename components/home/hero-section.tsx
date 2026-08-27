@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Droplets, Flame, Zap, Wind } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import {
 	fadeUpVariants,
 	staggerContainerVariants,
 	fadeRightVariants,
 } from "@/lib/animation-variants";
+import HidroIcon from "@/public/images/logos/optare/hidro.svg";
+import PPCIIcon from "@/public/images/logos/optare/ppci.svg";
+import EletricaIcon from "@/public/images/logos/optare/eletrica.svg";
 
 export function HeroSection() {
 	return (
@@ -96,7 +99,7 @@ export function HeroSection() {
 					>
 						<div className="space-y-4">
 							<div className="bg-card p-6 rounded-lg border border-border">
-								<Droplets className="h-10 w-10 text-primary mb-4" />
+								<HidroIcon className="h-10 w-10 text-primary mb-4" />
 								<h3 className="font-semibold text-foreground">
 									{/* TODO: corrigir quebra artificial — ver comentário no topo */}
 									<span className="block sm:inline">Hidrossani</span>
@@ -107,7 +110,7 @@ export function HeroSection() {
 								</p>
 							</div>
 							<div className="bg-card p-6 rounded-lg border border-border">
-								<Flame className="h-10 w-10 text-primary mb-4" />
+								<PPCIIcon className="h-10 w-10 text-primary mb-4" />
 								<h3 className="font-semibold text-foreground">Incêndio</h3>
 								<p className="text-sm text-muted-foreground mt-2">
 									Prevenção, proteção e combate à incêndios.
@@ -116,7 +119,7 @@ export function HeroSection() {
 						</div>
 						<div className="space-y-4 mt-8">
 							<div className="bg-card p-6 rounded-lg border border-border">
-								<Zap className="h-10 w-10 text-primary mb-4" />
+								<EletricaIcon className="h-10 w-10 text-primary mb-4" />
 								<h3 className="font-semibold text-foreground">Elétricos</h3>
 								<p className="text-sm text-muted-foreground mt-2">
 									Elétrica, telefonia e SPDA.

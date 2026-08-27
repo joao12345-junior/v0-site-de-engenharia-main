@@ -4,47 +4,52 @@ import { Droplets, Flame, Zap, Phone, Shield, Wind } from "lucide-react";
 import { motion } from "framer-motion";
 import {
 	fadeUpVariants,
-	staggerContainerVariants,
 	staggerContainerDelayedVariants,
 	defaultViewport,
 } from "@/lib/animation-variants";
+import HidroIcon from "@/public/images/logos/optare/hidro.svg";
+import PPCIIcon from "@/public/images/logos/optare/ppci.svg";
+import EletricaIcon from "@/public/images/logos/optare/eletrica.svg";
+import GasIcon from "@/public/images/logos/optare/gas.svg";
+import OleoIcon from "@/public/images/logos/optare/oleo_diesel.svg";
+import GasesMedicinaisIcon from "@/public/images/logos/optare/gases_medicinais.svg";
 
 const services = [
 	{
-		icon: Droplets,
+		icon: HidroIcon,
 		title: "Projetos Hidrossanitários",
 		description:
 			"Desenvolvemos projetos completos de instalações hidráulicas e sanitárias para edificações residenciais, comerciais e industriais.",
 	},
 	{
-		icon: Flame,
-		title: "Prevenção e Combate à Incêndios",
+		icon: PPCIIcon,
+		title: "Prevenção e Proteção Contra Incêndio",
 		description:
-			"Projetos de prevenção, proteção e combate à incêndios seguindo todas as normas técnicas e legislações vigentes.",
+			"Projetos de PPCI seguindo as normas técnicas e a legislação vigente, do dimensionamento à aprovação junto ao Corpo de Bombeiros.",
 	},
 	{
-		icon: Zap,
+		icon: EletricaIcon,
 		title: "Projetos Elétricos",
 		description:
 			"Instalações elétricas de baixa e média tensão para diversos tipos de edificações e finalidades.",
 	},
 	{
-		icon: Phone,
-		title: "Telefonia",
-		description:
-			"Projetos de infraestrutura de telecomunicações, incluindo cabeamento estruturado e sistemas de comunicação.",
-	},
-	{
-		icon: Shield,
-		title: "SPDA",
-		description:
-			"Sistema de Proteção contra Descargas Atmosféricas conforme normas ABNT NBR.",
-	},
-	{
-		icon: Wind,
+		icon: GasIcon,
 		title: "Projetos de Gás",
 		description:
 			"Instalações de gás natural e GLP para residências, comércios e indústrias.",
+	},
+	{
+		icon: OleoIcon,
+		title: "Projetos de Óleo Diesel",
+		description:
+			"Sistemas de armazenamento, bombeamento e distribuição de óleo diesel para geradores e aplicações industriais, conforme normas de segurança vigentes.",
+	},
+	{
+		icon: GasesMedicinaisIcon,
+		title: "Gases Medicinais",
+		description:
+			"Projetos de redes de gases medicinais para hospitais, clínicas e laboratórios, com dimensionamento técnico e conformidade normativa.",
 	},
 ];
 

@@ -33,6 +33,14 @@ const nextConfig = {
 	typescript: {
 		ignoreBuildErrors: false,
 	},
+	turbopack: {
+		rules: {
+			"*.svg": {
+				loaders: [{ loader: "@svgr/webpack", options: { icon: true } }],
+				as: "*.js", // obrigatório — sem isso o Turbopack não trata a saída como JS
+			},
+		},
+	},
 	images: {
 		remotePatterns: [
 			{ protocol: "https", hostname: "**.public.blob.vercel-storage.com" },

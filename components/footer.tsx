@@ -1,8 +1,10 @@
+"use client";
 import Link from "next/link";
-import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import OptareLogoBlack from "@/public/images/logos/optare/Logo_Black.svg";
+import OptareLogoWhite from "@/public/images/logos/optare/Logo_White.svg";
 
 const navigation = {
 	empresa: [
@@ -26,15 +28,9 @@ export function Footer() {
 				<div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
 					<div className="lg:col-span-1">
 						<Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
-							<div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md bg-white p-2">
-								<Image
-									src="/images/optare_logo.png"
-									alt="OPTARE Logo"
-									fill
-									loading="eager"
-									className="object-contain p-1"
-									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-								/>
+							<div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md p-2">
+								<OptareLogoBlack className="h-full w-full object-contain p-1 dark:hidden" />
+								<OptareLogoWhite className="hidden h-full w-full object-contain p-1 dark:block" />
 							</div>
 						</Link>
 						<p className="mt-4 text-sm text-muted-foreground leading-relaxed">

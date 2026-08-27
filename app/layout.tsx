@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Roboto, Roboto_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PageTransition } from "./page-transition";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 
-// [FONTE 1] Inter — fonte principal do site (font-sans)
-// subsets: ["latin"] baixa apenas os caracteres latinos — menor bundle
-// variable: cria a CSS var --font-inter que o globals.css vai consumir via --font-sans
-const inter = Inter({
+const roboto = Roboto({
 	subsets: ["latin"],
-	variable: "--font-inter",
+	weight: ["400", "500", "600", "700"],
+	variable: "--font-roboto",
 });
 
-// [FONTE 2] JetBrains Mono — fonte mono (font-mono)
-// Mantida para: elementos <code>, painel admin, classes font-mono no Tailwind
-const jetbrainsMono = JetBrains_Mono({
+const robotoMono = Roboto_Mono({
 	subsets: ["latin"],
-	variable: "--font-jetbrains",
+	variable: "--font-roboto-mono",
 });
 
 export const viewport = {
@@ -30,6 +26,10 @@ export const metadata: Metadata = {
 	title: "OPTARE - Projetos de Engenharia",
 	description:
 		"Empresa especializada na elaboração de projetos de engenharia para o setor da construção civil. Projetos hidrossanitários, elétricos, de incêndio e gás.",
+	icons: [
+		{ url: "/favicon-white.svg", media: "(prefers-color-scheme: dark)" },
+		{ url: "/favicon-black.svg", media: "(prefers-color-scheme: light)" },
+	],
 };
 
 export default function RootLayout({
@@ -43,7 +43,7 @@ export default function RootLayout({
 			// [MUDANÇA] Ambas as variáveis de fonte aplicadas no <html>
 			// Concatenar com template string garante que as duas CSS vars
 			// fiquem disponíveis em toda a árvore do documento
-			className={`${inter.variable} ${jetbrainsMono.variable}`}
+			className={`${roboto.variable} ${robotoMono.variable}`}
 			suppressHydrationWarning
 		>
 			<body className="font-sans antialiased">

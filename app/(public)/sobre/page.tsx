@@ -26,6 +26,7 @@ import {
 	staggerContainerDelayedVariants,
 	defaultViewport,
 } from "@/lib/animation-variants";
+import OptareLogo from "@/public/images/logos/optare/Logo.svg";
 
 // ─── Variant local: timeline mobile ──────────────────────────────────────
 //
@@ -219,13 +220,8 @@ export default function SobrePage() {
 								whileInView="visible"
 								viewport={defaultViewport}
 							>
-								<div className="relative aspect-square rounded-lg bg-muted">
-									<Image
-										src="/images/optare_logo.png"
-										alt="OPTARE Logo"
-										fill
-										className="object-contain p-1"
-									/>
+								<div className="relative aspect-square rounded-lg bg-[oklch(0.9674_0.0013_286.3752)]">
+									<OptareLogo className="absolute inset-0 h-full w-full object-contain p-6" />
 								</div>
 							</motion.div>
 						</div>
