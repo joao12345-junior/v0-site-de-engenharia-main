@@ -4,6 +4,8 @@
 import Image from "next/image";
 import { Particles } from "./particles";
 import { ThemeToggle } from "../theme-toggle";
+import OptareLogoBlack from "@/public/images/logos/optare/Logo_Black.svg";
+import OptareLogoWhite from "@/public/images/logos/optare/Logo_White.svg";
 
 const SERVICOS = [
 	"Hidrossanitários",
@@ -47,23 +49,47 @@ export function MaintenancePage() {
 			<div
 				className="pointer-events-none fixed inset-0"
 				style={{
-					background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, var(--background) 100%)",
+					background:
+						"radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, var(--background) 100%)",
 					zIndex: 1,
 				}}
 			/>
 			<div
 				className="pointer-events-none fixed"
 				style={{
-					width: 500, height: 500,
-					background: "radial-gradient(circle, oklch(0.4463 0.1678 27.4784 / 0.1) 0%, transparent 70%)",
-					top: "50%", left: "50%",
+					width: 500,
+					height: 500,
+					background:
+						"radial-gradient(circle, oklch(0.4463 0.1678 27.4784 / 0.1) 0%, transparent 70%)",
+					top: "50%",
+					left: "50%",
 					transform: "translate(-50%, -50%)",
 					animation: "pulse-glow 6s ease-in-out infinite",
 					zIndex: 0,
 				}}
 			/>
-			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ top: "12%", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite 5s", zIndex: 0 }} />
-			<div className="pointer-events-none fixed left-0 right-0 h-px" style={{ bottom: "8dvh", background: "linear-gradient(90deg, transparent, var(--primary), transparent)", opacity: 0.25, animation: "scan 10s ease-in-out infinite 5s", zIndex: 0 }} />
+			<div
+				className="pointer-events-none fixed left-0 right-0 h-px"
+				style={{
+					top: "12%",
+					background:
+						"linear-gradient(90deg, transparent, var(--primary), transparent)",
+					opacity: 0.25,
+					animation: "scan 10s ease-in-out infinite 5s",
+					zIndex: 0,
+				}}
+			/>
+			<div
+				className="pointer-events-none fixed left-0 right-0 h-px"
+				style={{
+					bottom: "8dvh",
+					background:
+						"linear-gradient(90deg, transparent, var(--primary), transparent)",
+					opacity: 0.25,
+					animation: "scan 10s ease-in-out infinite 5s",
+					zIndex: 0,
+				}}
+			/>
 			<Particles />
 
 			{/* ── Conteúdo ──
@@ -92,7 +118,9 @@ export function MaintenancePage() {
 				}}
 			>
 				{/* ThemeToggle — alinhado à direita, fora do fluxo vertical */}
-				<div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+				<div
+					style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+				>
 					<ThemeToggle />
 				</div>
 
@@ -110,45 +138,90 @@ export function MaintenancePage() {
 						maxWidth: "100%",
 					}}
 				>
-					<span className="inline-block h-1.5 w-1.5 shrink-0 bg-primary" style={{ animation: "blink 1.4s step-end infinite" }} />
+					<span
+						className="inline-block h-1.5 w-1.5 shrink-0 bg-primary"
+						style={{ animation: "blink 1.4s step-end infinite" }}
+					/>
 					<span>Site temporariamente indisponível</span>
 				</div>
 
 				{/* 2. Logo */}
 				<div style={{ animation: "fade-up .8s .1s ease both" }}>
 					<div style={{ position: "relative", display: "inline-flex" }}>
-						<div style={{ position: "absolute", top: -8, left: -8, width: 12, height: 12, borderTop: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)", borderLeft: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)" }} />
-						<div style={{ position: "absolute", bottom: -8, right: -8, width: 12, height: 12, borderBottom: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)", borderRight: "1px solid color-mix(in oklch, var(--primary) 60%, transparent)" }} />
+						<div
+							style={{
+								position: "absolute",
+								top: -8,
+								left: -8,
+								width: 12,
+								height: 12,
+								borderTop:
+									"1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
+								borderLeft:
+									"1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
+							}}
+						/>
+						<div
+							style={{
+								position: "absolute",
+								bottom: -8,
+								right: -8,
+								width: 12,
+								height: 12,
+								borderBottom:
+									"1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
+								borderRight:
+									"1px solid color-mix(in oklch, var(--primary) 60%, transparent)",
+							}}
+						/>
 						<div
 							className="border"
 							style={{
-								background: "color-mix(in oklch, var(--foreground) 4%, transparent)",
-								borderColor: "color-mix(in oklch, var(--foreground) 12%, transparent)",
-								padding: "1.5dvh 20px",
+								background:
+									"color-mix(in oklch, var(--foreground) 4%, transparent)",
+								borderColor:
+									"color-mix(in oklch, var(--foreground) 12%, transparent)",
+								padding: "3.0dvh 40px",
 								display: "inline-flex",
 								animation: "border-flicker 4s ease-in-out infinite",
 							}}
 						>
-							<Image
-								src="/images/optare_logo.png"
-								alt="OPTARE Engenharia"
-								width={100}
-								height={80}
-								priority
+							<div
+								className="relative"
 								style={{
-									filter: "drop-shadow(0 0 16px color-mix(in oklch, var(--primary) 40%, transparent))",
-									// [CONCEITO] vmin para imagens: escala proporcionalmente
-									// à menor dimensão da tela — nunca estoura nem fica minúscula
-									width: "clamp(60px, 12vmin, 110px)",
-									height: "auto",
+									width: "clamp(100px, 20vmin, 200px)",
+									aspectRatio: "100 / 80",
 								}}
-							/>
+							>
+								<OptareLogoBlack
+									className="h-full w-full dark:hidden"
+									style={{
+										filter:
+											"drop-shadow(0 0 16px color-mix(in oklch, var(--primary) 40%, transparent))",
+									}}
+								/>
+								<OptareLogoWhite
+									className="hidden h-full w-full dark:block"
+									style={{
+										filter:
+											"drop-shadow(0 0 16px color-mix(in oklch, var(--primary) 40%, transparent))",
+									}}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
 
 				{/* Divider */}
-				<div style={{ width: "clamp(100px, 20vmin, 180px)", height: 1, background: "linear-gradient(90deg, transparent, var(--primary), transparent)", animation: "fade-up .8s .2s ease both" }} />
+				<div
+					style={{
+						width: "clamp(100px, 20vmin, 180px)",
+						height: 1,
+						background:
+							"linear-gradient(90deg, transparent, var(--primary), transparent)",
+						animation: "fade-up .8s .2s ease both",
+					}}
+				/>
 
 				{/* 3. Headline */}
 				<h1
@@ -184,14 +257,25 @@ export function MaintenancePage() {
 				</p>
 
 				{/* 5. Contato */}
-				<div style={{ display: "flex", gap: 12, animation: "fade-up .8s .5s ease both" }}>
+				<div
+					style={{
+						display: "flex",
+						gap: 12,
+						animation: "fade-up .8s .5s ease both",
+					}}
+				>
 					{[
 						{
 							href: "https://wa.me/5551998655612",
 							label: "WhatsApp",
 							icon: (
-								<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-									<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+								<svg
+									width="12"
+									height="12"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+								>
+									<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
 								</svg>
 							),
 						},
@@ -199,9 +283,16 @@ export function MaintenancePage() {
 							href: "mailto:administrativo@optare.com.br",
 							label: "E-mail",
 							icon: (
-								<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-									<path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
-									<rect x="2" y="4" width="20" height="16" rx="2"/>
+								<svg
+									width="12"
+									height="12"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+								>
+									<path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+									<rect x="2" y="4" width="20" height="16" rx="2" />
 								</svg>
 							),
 						},
@@ -228,8 +319,27 @@ export function MaintenancePage() {
 				</div>
 
 				{/* 6. Barra de progresso */}
-				<div style={{ width: "clamp(160px, 25vmin, 240px)", height: 2, background: "var(--border)", overflow: "hidden", position: "relative", animation: "fade-up .8s .6s ease both" }}>
-					<div style={{ position: "absolute", top: 0, left: 0, height: "100%", width: "40%", background: "linear-gradient(90deg, transparent, var(--primary))", animation: "progress-sweep 2s ease-in-out infinite" }} />
+				<div
+					style={{
+						width: "clamp(160px, 25vmin, 240px)",
+						height: 2,
+						background: "var(--border)",
+						overflow: "hidden",
+						position: "relative",
+						animation: "fade-up .8s .6s ease both",
+					}}
+				>
+					<div
+						style={{
+							position: "absolute",
+							top: 0,
+							left: 0,
+							height: "100%",
+							width: "40%",
+							background: "linear-gradient(90deg, transparent, var(--primary))",
+							animation: "progress-sweep 2s ease-in-out infinite",
+						}}
+					/>
 				</div>
 
 				{/* 7. Tags de serviços */}

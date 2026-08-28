@@ -72,7 +72,7 @@ export function Header() {
 				<nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
 					<div className="flex lg:flex-1">
 						<Link href="/" className="-m-2.5 p-2.5 flex items-center gap-3">
-							<div className="relative h-16 w-40 flex items-center justify-center overflow-hidden rounded-md p-2">
+							<div className="relative h-16 w-45 flex items-center justify-center overflow-hidden rounded-md p-2">
 								<OptareLogoBlack className="h-full w-full object-contain p-1 dark:hidden" />
 								<OptareLogoWhite className="hidden h-full w-full object-contain p-1 dark:block" />
 							</div>

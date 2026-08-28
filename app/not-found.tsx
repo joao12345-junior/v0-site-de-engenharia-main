@@ -6,6 +6,8 @@ import { Mail } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { ThemeToggle } from "@/components/theme-toggle";
+import OptareLogoBlack from "@/public/images/logos/optare/Logo_Black.svg";
+import OptareLogoWhite from "@/public/images/logos/optare/Logo_White.svg";
 
 const HEADING = "ESTE ENDEREÇO NÃO EXISTE NO PROJETO";
 
@@ -33,15 +35,14 @@ export default function NotFound() {
 			/>
 
 			<div className="relative z-10 flex min-h-screen flex-col">
-				<nav className="flex items-center justify-between px-6 py-4">
-					<Image
-						src="/images/optare_logo.png"
-						alt="Optare Engenharia"
-						width={320}
-						height={242}
-						className="h-32 w-32 object-contain"
-						priority
-					/>
+				<nav
+					className="flex items-center px-6 py-4"
+					style={{ justifyContent: "space-around" }}
+				>
+					<div className="relative w-45">
+						<OptareLogoBlack className="h-full w-full object-contain dark:hidden" />
+						<OptareLogoWhite className="hidden h-full w-full object-contain dark:block" />
+					</div>
 					<ThemeToggle />
 				</nav>
 
