@@ -235,7 +235,7 @@ export async function POST(req: Request) {
 			// Quando o domínio optare.com.br for verificado em Resend → Domains,
 			// troca esse `from` por algo tipo "OPTARE Engenharia <naoresponda@optare.com.br>".
 			from: "OPTARE Engenharia <onboarding@resend.dev>",
-			to: "joaovpfarias@gmail.com",
+			to: "administrativo@optare.com.br",
 			replyTo: body.email,
 			subject: `[Contato site] ${sanitize(body.subject)}`,
 			html: buildContactEmailHtml(body),
@@ -244,7 +244,6 @@ export async function POST(req: Request) {
 		if (error) {
 			Sentry.captureException(new Error(`Resend error: ${error.message}`));
 			console.error("[/api/email] Erro Resend:", error);
-			await InsertEmailAttempt(body.email, ip_address);
 			return NextResponse.json(
 				{ message: "Erro ao enviar email", success: false },
 				{ status: 500 },
